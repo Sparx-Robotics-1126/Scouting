@@ -9,5 +9,13 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
+    <string name="auto">Auto</string>
+    <string name="tele">Tele</string>
+    <string name="general">General</string>
+    <array name="tab_names">
+        <item>@string/auto</item>
+        <item>@string/tele</item>
+        <item>@string/general</item>
+    </array>
 
 </resources>
