@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:stretchColumns="0" >
+
+    <TableRow>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/where_did_the_robot_start" />
+
+        <Button
+            android:id="@+id/buttonAutoStartLocationSelect"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/select">
+
+        </Button>
+
+    </TableRow>
+
+    <TableRow>
+        <Switch
+            android:id="@+id/switchStartWithBall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_span="2"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/did_the_team_start_with_a_ball"
+            android:checked="false"
+            android:textOff="@string/no"
+            android:textOn="@string/yes" />
+
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/number_of_balls_acquired" />
+
+        <NumberPicker
+            android:id="@+id/numberPickerAutoNumBallsAcq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/number_of_balls_shot" />
+
+        <NumberPicker
+            android:id="@+id/numberPickerAutoNumBallsShot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/auto_list_of_balls" />
+
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/number_of_balls_scored" />
+
+        <NumberPicker
+            android:id="@+id/numberPickerAutoNumBallsScored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/auto_list_of_balls" />
+
+    </TableRow>
+    <TableRow>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/number_of_balls_scored_in_hot_high" />
+
+        <NumberPicker
+            android:id="@+id/numberPickerAutoNumBallsHotHigh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/auto_list_of_balls" />
+
+    </TableRow>
+    <TableRow>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/number_of_balls_scored" />
+
+        <NumberPicker
+            android:id="@+id/numberPickerAutoNumBallsHotLow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/auto_list_of_balls" />
+
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/number_of_balls_scored_in_high" />
+
+        <NumberPicker
+            android:id="@+id/numberPickerAutoNumBallsHigh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/auto_list_of_balls" />
+
+    </TableRow>
+    <TableRow>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/number_of_balls_scored_in_low" />
+
+        <NumberPicker
+            android:id="@+id/numberPickerAutoNumBallsLow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/auto_list_of_balls" />
+
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/where_did_the_robot_end" />
+
+        <Button
+            android:id="@+id/buttonAutoEndLocationSelect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/select">
+
+        </Button>
+
+    </TableRow>
+</TableLayout>

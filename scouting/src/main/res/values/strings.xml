@@ -12,10 +12,32 @@
     <string name="auto">Auto</string>
     <string name="tele">Tele</string>
     <string name="general">General</string>
+    <string name="select_robot_location">Select the robots location:</string>
+    <string name="where_did_the_robot_start">Where did the robot start?</string>
+    <string name="where_did_the_robot_end">Where did the robot end?</string>
+    <string name="select">Select</string>
+    <string name="did_the_team_start_with_a_ball">Did the team start with a ball?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="number_of_balls_acquired">Number of balls acquired:</string>
+    <string name="number_of_balls_shot">Number of balls shot:</string>
+    <string name="number_of_balls_scored">Number of balls scored:</string>
+    <string name="number_of_balls_scored_in_hot_high">Number of balls scored in Hot High:</string>
+    <string name="number_of_balls_scored_in_hot_low">Number of balls scored in Hot Low:</string>
+    <string name="number_of_balls_scored_in_high">Number of balls scored in High:</string>
+    <string name="number_of_balls_scored_in_low">Number of balls scored in Low:</string>
     <array name="tab_names">
         <item>@string/auto</item>
         <item>@string/tele</item>
         <item>@string/general</item>
     </array>
+    <string-array name="auto_list_of_balls">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
 
 </resources>
