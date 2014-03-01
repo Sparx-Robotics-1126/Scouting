@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <Switch
+        android:id="@+id/switchPlaysDefense"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textOff="@string/no"
+        android:textOn="@string/yes"
+        android:text="@string/plays_defense" />
+
+
+    <TextView
+        android:id="@+id/textViewPenalties"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/switchPlaysDefense"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/number_of_penalties" />
+    <EditText
+        android:id="@+id/editTextPenalties"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:layout_below="@+id/textViewPenalties"
+        android:layout_alignParentRight="true"
+        android:ems="3"
+        android:text="@string/zero" />
+    <SeekBar
+        android:id="@+id/seekBarPenalties"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewPenalties"
+        android:layout_toLeftOf="@+id/editTextPenalties"
+        android:max="10"/>
+
+
+    <TextView
+        android:id="@+id/textViewPenaltyComments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextPenalties"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/comments_on_penalties" />
+    <EditText
+        android:id="@+id/editTextPenaltyComments"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewPenaltyComments"
+        android:inputType="textLongMessage|textMultiLine" />
+
+
+    <TextView
+        android:id="@+id/textViewTechnicalFouls"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextPenaltyComments"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/number_of_technical_fouls" />
+    <EditText
+        android:id="@+id/editTextTechnicalFouls"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:layout_below="@+id/textViewTechnicalFouls"
+        android:layout_alignParentRight="true"
+        android:ems="3"
+        android:text="@string/zero" />
+    <SeekBar
+        android:id="@+id/seekBarTechnicalFouls"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewTechnicalFouls"
+        android:layout_toLeftOf="@+id/editTextTechnicalFouls"
+        android:max="10"/>
+
+
+    <TextView
+        android:id="@+id/textViewTechnicalFoulComments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextTechnicalFouls"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/comments_on_technical_fouls" />
+    <EditText
+        android:id="@+id/editTextTechnicalFoulComments"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewTechnicalFoulComments"
+        android:inputType="textLongMessage|textMultiLine" />
+
+
+    <TextView
+        android:id="@+id/textViewGeneralComments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextTechnicalFoulComments"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/general_comments" />
+    <EditText
+        android:id="@+id/editTextGeneralComments"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewGeneralComments"
+        android:inputType="textLongMessage|textMultiLine" />
+
+</RelativeLayout>

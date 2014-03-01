@@ -32,7 +32,7 @@
     <string name="number_of_balls_acq_from_floor">Number of balls acquired from floor:</string>
     <string name="completed_assist_from_floor">Completed assist from floor:</string>
     <string name="number_of_balls_acq_from_human">Number of balls acquired from human:</string>
-    <string name="complete_assist_from_human">Completed assist from human:</string>
+    <string name="complete_assist_from_human">Completed Assist from Human:</string>
     <string name="shot_high">Shot high:</string>
     <string name="shot_low">Shot low:</string>
     <string name="scored_high">Scored High:</string>
@@ -41,6 +41,12 @@
     <string name="alliance">Alliance</string>
     <string name="middle">Middle</string>
     <string name="opponent">Opponent</string>
+    <string name="plays_defense">Plays Defence?</string>
+    <string name="number_of_penalties">Number of Penalties:</string>
+    <string name="comments_on_penalties">Comments on Penalties:</string>
+    <string name="number_of_technical_fouls">Number of Technical Fouls?</string>
+    <string name="comments_on_technical_fouls">Comments on Technical Fouls:</string>
+    <string name="general_comments">General Comments:</string>
 
     <array name="tab_names">
         <item>@string/auto</item>
