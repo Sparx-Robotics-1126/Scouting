@@ -208,7 +208,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/editTextScoredLow"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/scored_low" />
+        android:text="@string/balls_caught_over_truss" />
     <EditText
         android:id="@+id/editTextCaughtOverTruss"
         android:layout_width="wrap_content"
@@ -233,7 +233,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/editTextCaughtOverTruss"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/scored_low" />
+        android:text="@string/balls_thrown_over_truss" />
     <EditText
         android:id="@+id/editTextThrownOverTruss"
         android:layout_width="wrap_content"

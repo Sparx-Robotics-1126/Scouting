@@ -37,6 +37,8 @@
     <string name="shot_low">Shot low:</string>
     <string name="scored_high">Scored High:</string>
     <string name="scored_low">Scored low:</string>
+    <string name="balls_caught_over_truss">Balls caught over the truss:</string>
+    <string name="balls_thrown_over_truss">Balls caught over the truss:</string>
     <string name="robot_stayed_in_what_zone_most">Robot stayed in what zone most?</string>
     <string name="alliance">Alliance</string>
     <string name="middle">Middle</string>
