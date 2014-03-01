@@ -29,9 +29,27 @@
     <string name="number_of_balls_scored_in_high">Number of balls scored in High:</string>
     <string name="number_of_balls_scored_in_low">Number of balls scored in Low:</string>
     <string name="zero">0</string>
+    <string name="number_of_balls_acq_from_floor">Number of balls acquired from floor:</string>
+    <string name="completed_assist_from_floor">Completed assist from floor:</string>
+    <string name="number_of_balls_acq_from_human">Number of balls acquired from human:</string>
+    <string name="complete_assist_from_human">Completed assist from human:</string>
+    <string name="shot_high">Shot high:</string>
+    <string name="shot_low">Shot low:</string>
+    <string name="scored_high">Scored High:</string>
+    <string name="scored_low">Scored low:</string>
+    <string name="robot_stayed_in_what_zone_most">Robot stayed in what zone most?</string>
+    <string name="alliance">Alliance</string>
+    <string name="middle">Middle</string>
+    <string name="opponent">Opponent</string>
+
     <array name="tab_names">
         <item>@string/auto</item>
         <item>@string/tele</item>
         <item>@string/general</item>
+    </array>
+    <array name="zones">
+        <item>@string/alliance</item>
+        <item>@string/middle</item>
+        <item>@string/opponent</item>
     </array>
 </resources>

@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textViewNumBallsAcqFromFloor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/number_of_balls_acq_from_floor" />
+    <EditText
+        android:id="@+id/editTextNumBallsAcqFromFloor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:layout_below="@+id/textViewNumBallsAcqFromFloor"
+        android:layout_alignParentRight="true"
+        android:ems="3"
+        android:text="@string/zero" />
+    <SeekBar
+        android:id="@+id/seekBarNumBallsAcqFromFloor"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewNumBallsAcqFromFloor"
+        android:layout_toLeftOf="@+id/editTextNumBallsAcqFromFloor"
+        android:max="10"/>
+
+
+    <TextView
+        android:id="@+id/textViewAssistCompletedFromFloor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextNumBallsAcqFromFloor"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/completed_assist_from_floor" />
+    <EditText
+        android:id="@+id/editTextAssistCompletedFromFloor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:layout_below="@+id/textViewAssistCompletedFromFloor"
+        android:layout_alignParentRight="true"
+        android:ems="3"
+        android:text="@string/zero" />
+    <SeekBar
+        android:id="@+id/seekBarAssistCompletedFromFloor"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewAssistCompletedFromFloor"
+        android:layout_toLeftOf="@+id/editTextAssistCompletedFromFloor"
+        android:max="10"/>
+
+
+    <TextView
+        android:id="@+id/textViewNumBallsAcqFromHuman"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextAssistCompletedFromFloor"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/number_of_balls_acq_from_human" />
+    <EditText
+        android:id="@+id/editTextNumBallsAcqFromHuman"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:layout_below="@+id/textViewNumBallsAcqFromHuman"
+        android:layout_alignParentRight="true"
+        android:ems="3"
+        android:text="@string/zero" />
+    <SeekBar
+        android:id="@+id/seekBarNumBallsAcqFromHuman"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewNumBallsAcqFromHuman"
+        android:layout_toLeftOf="@+id/editTextNumBallsAcqFromHuman"
+        android:max="10"/>
+
+
+    <TextView
+        android:id="@+id/textViewAssistCompletedFromHuman"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextNumBallsAcqFromHuman"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/complete_assist_from_human" />
+    <EditText
+        android:id="@+id/editTextAssistCompletedFromHuman"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:layout_below="@+id/textViewAssistCompletedFromHuman"
+        android:layout_alignParentRight="true"
+        android:ems="3"
+        android:text="@string/zero" />
+    <SeekBar
+        android:id="@+id/seekBarAssistCompletedFromHuman"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewAssistCompletedFromHuman"
+        android:layout_toLeftOf="@+id/editTextAssistCompletedFromHuman"
+        android:max="10"/>
+
+
+    <TextView
+        android:id="@+id/textViewShotHigh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextAssistCompletedFromHuman"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/shot_high" />
+    <EditText
+        android:id="@+id/editTextShotHigh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:layout_below="@+id/textViewShotHigh"
+        android:layout_alignParentRight="true"
+        android:ems="3"
+        android:text="@string/zero" />
+    <SeekBar
+        android:id="@+id/seekBarShotHigh"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewShotHigh"
+        android:layout_toLeftOf="@+id/editTextShotHigh"
+        android:max="10"/>
+
+
+    <TextView
+        android:id="@+id/textViewScoredHigh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextShotHigh"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/scored_high" />
+    <EditText
+        android:id="@+id/editTextScoredHigh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:layout_below="@+id/textViewScoredHigh"
+        android:layout_alignParentRight="true"
+        android:ems="3"
+        android:text="@string/zero" />
+    <SeekBar
+        android:id="@+id/seekBarScoredHigh"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewScoredHigh"
+        android:layout_toLeftOf="@+id/editTextScoredHigh"
+        android:max="10"/>
+
+
+    <TextView
+        android:id="@+id/textViewShotLow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextScoredHigh"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/shot_low" />
+    <EditText
+        android:id="@+id/editTextShotLow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:layout_below="@+id/textViewShotLow"
+        android:layout_alignParentRight="true"
+        android:ems="3"
+        android:text="@string/zero" />
+    <SeekBar
+        android:id="@+id/seekBarShotLow"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewShotLow"
+        android:layout_toLeftOf="@+id/editTextShotLow"
+        android:max="10"/>
+
+
+    <TextView
+        android:id="@+id/textViewScoredLow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextShotLow"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/scored_low" />
+    <EditText
+        android:id="@+id/editTextScoredLow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:layout_below="@+id/textViewScoredLow"
+        android:layout_alignParentRight="true"
+        android:ems="3"
+        android:text="@string/zero" />
+    <SeekBar
+        android:id="@+id/seekBarScoredLow"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewScoredLow"
+        android:layout_toLeftOf="@+id/editTextScoredLow"
+        android:max="10"/>
+
+
+    <TextView
+        android:id="@+id/textViewCaughtOverTruss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextScoredLow"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/scored_low" />
+    <EditText
+        android:id="@+id/editTextCaughtOverTruss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:layout_below="@+id/textViewCaughtOverTruss"
+        android:layout_alignParentRight="true"
+        android:ems="3"
+        android:text="@string/zero" />
+    <SeekBar
+        android:id="@+id/seekBarCaughtOverTruss"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewCaughtOverTruss"
+        android:layout_toLeftOf="@+id/editTextCaughtOverTruss"
+        android:max="10"/>
+
+
+    <TextView
+        android:id="@+id/textViewThrownOverTruss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextCaughtOverTruss"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/scored_low" />
+    <EditText
+        android:id="@+id/editTextThrownOverTruss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:layout_below="@+id/textViewThrownOverTruss"
+        android:layout_alignParentRight="true"
+        android:ems="3"
+        android:text="@string/zero" />
+    <SeekBar
+        android:id="@+id/seekBarThrownOverTruss"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewThrownOverTruss"
+        android:layout_toLeftOf="@+id/editTextThrownOverTruss"
+        android:max="10"/>
+
+    <TextView
+        android:id="@+id/textViewZoneMostPlayed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextThrownOverTruss"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/robot_stayed_in_what_zone_most"/>
+    <Spinner
+        android:id="@+id/spinnerZoneMostPlayed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewZoneMostPlayed"
+        android:layout_alignParentRight="true"
+        android:entries="@array/zones"/>
+</RelativeLayout>
