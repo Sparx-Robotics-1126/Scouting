@@ -28,16 +28,10 @@
     <string name="number_of_balls_scored_in_hot_low">Number of balls scored in Hot Low:</string>
     <string name="number_of_balls_scored_in_high">Number of balls scored in High:</string>
     <string name="number_of_balls_scored_in_low">Number of balls scored in Low:</string>
+    <string name="zero">0</string>
     <array name="tab_names">
         <item>@string/auto</item>
         <item>@string/tele</item>
         <item>@string/general</item>
     </array>
-    <string-array name="auto_list_of_balls">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-
 </resources>

@@ -1,175 +1,222 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:stretchColumns="0" >
+    android:layout_height="match_parent" >
 
-    <TableRow>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/where_did_the_robot_start" />
+    <TextView
+        android:id="@+id/textViewRobotStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/where_did_the_robot_start" />
+    <Button
+        android:id="@+id/buttonAutoStartLocationSelect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewRobotStart"
+        android:layout_alignParentRight="true"
+        android:text="@string/select" />
 
-        <Button
-            android:id="@+id/buttonAutoStartLocationSelect"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/select">
+    <Switch
+        android:id="@+id/switchStartWithBall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buttonAutoStartLocationSelect"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/did_the_team_start_with_a_ball"
+        android:checked="false"
+        android:textOff="@string/no"
+        android:textOn="@string/yes" />
 
-        </Button>
+    <TextView
+        android:id="@+id/textViewAutoNumBallsAcq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/switchStartWithBall"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/number_of_balls_acquired" />
+    <EditText
+        android:id="@+id/editTextAutoNumBallsAcq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewAutoNumBallsAcq"
+        android:layout_alignParentRight="true"
+        android:ems="3"
+        android:inputType="number"
+        android:text="@string/zero"/>
+    <SeekBar
+        android:id="@+id/seekBarAutoNumBallsAcq"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewAutoNumBallsAcq"
+        android:layout_toLeftOf="@id/editTextAutoNumBallsAcq"
+        android:max="3" />
 
-    </TableRow>
 
-    <TableRow>
-        <Switch
-            android:id="@+id/switchStartWithBall"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_span="2"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/did_the_team_start_with_a_ball"
-            android:checked="false"
-            android:textOff="@string/no"
-            android:textOn="@string/yes" />
+    <TextView
+        android:id="@+id/textViewAutoNumBallsShot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextAutoNumBallsAcq"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/number_of_balls_shot" />
+    <EditText
+        android:id="@+id/editTextAutoNumBallsShot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewAutoNumBallsShot"
+        android:layout_alignParentRight="true"
+        android:ems="3"
+        android:inputType="number"
+        android:text="@string/zero"/>
+    <SeekBar
+        android:id="@+id/seekBarAutoNumBallsShot"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewAutoNumBallsShot"
+        android:layout_toLeftOf="@+id/editTextAutoNumBallsShot"
+        android:max="3" />
 
-    </TableRow>
+    <TextView
+        android:id="@+id/textViewAutoNumBallsScored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextAutoNumBallsShot"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/number_of_balls_scored" />
+    <EditText
+        android:id="@+id/editTextAutoNumBallsScored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewAutoNumBallsScored"
+        android:layout_alignParentRight="true"
+        android:ems="3"
+        android:inputType="number"
+        android:text="@string/zero"/>
+    <SeekBar
+        android:id="@+id/seekBarAutoNumBallsScored"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewAutoNumBallsScored"
+        android:layout_toLeftOf="@+id/editTextAutoNumBallsScored"
+        android:max="3" />
 
-    <TableRow>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/number_of_balls_acquired" />
 
-        <NumberPicker
-            android:id="@+id/numberPickerAutoNumBallsAcq"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/textViewAutoNumBallsHotHigh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextAutoNumBallsScored"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/number_of_balls_scored_in_hot_high" />
+    <EditText
+        android:id="@+id/editTextAutoNumBallsHotHigh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewAutoNumBallsHotHigh"
+        android:layout_alignParentRight="true"
+        android:ems="3"
+        android:inputType="number"
+        android:text="@string/zero"/>
+    <SeekBar
+        android:id="@+id/seekBarAutoNumBallsHotHigh"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewAutoNumBallsHotHigh"
+        android:layout_toLeftOf="@+id/editTextAutoNumBallsHotHigh"
+        android:max="3" />
 
-    </TableRow>
+    <TextView
+        android:id="@+id/textViewAutoNumBallsHotLow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextAutoNumBallsHotHigh"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/number_of_balls_scored_in_hot_low" />
+    <EditText
+        android:id="@+id/editTextAutoNumBallsHotLow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewAutoNumBallsHotLow"
+        android:layout_alignParentRight="true"
+        android:ems="3"
+        android:inputType="number"
+        android:text="@string/zero"/>
+    <SeekBar
+        android:id="@+id/seekBarAutoNumBallsHotLow"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewAutoNumBallsHotLow"
+        android:layout_toLeftOf="@+id/editTextAutoNumBallsHotLow"
+        android:max="3" />
 
-    <TableRow>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/number_of_balls_shot" />
+    <TextView
+        android:id="@+id/textViewAutoNumBallsHigh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextAutoNumBallsHotLow"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/number_of_balls_scored_in_high" />
+    <EditText
+        android:id="@+id/editTextAutoNumBallsHigh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewAutoNumBallsHigh"
+        android:layout_alignParentRight="true"
+        android:ems="3"
+        android:inputType="number"
+        android:text="@string/zero"/>
+    <SeekBar
+        android:id="@+id/seekBarAutoNumBallsHigh"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewAutoNumBallsHigh"
+        android:layout_toLeftOf="@+id/editTextAutoNumBallsHigh"
+        android:max="3" />
 
-        <NumberPicker
-            android:id="@+id/numberPickerAutoNumBallsShot"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:entries="@array/auto_list_of_balls" />
 
-    </TableRow>
+    <TextView
+        android:id="@+id/AutoNumBallsLow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextAutoNumBallsHigh"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/number_of_balls_scored_in_low" />
+    <EditText
+        android:id="@+id/editTextAutoNumBallsLow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/AutoNumBallsLow"
+        android:layout_alignParentRight="true"
+        android:ems="3"
+        android:inputType="number"
+        android:text="@string/zero"/>
+    <SeekBar
+        android:id="@+id/seekBarAutoNumBallsLow"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/AutoNumBallsLow"
+        android:layout_toLeftOf="@+id/editTextAutoNumBallsLow"
+        android:max="3" />
 
-    <TableRow>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/number_of_balls_scored" />
+    <TextView
+        android:id="@+id/textViewAutoEndLocationSelect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextAutoNumBallsLow"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/where_did_the_robot_end" />
+    <Button
+        android:id="@+id/buttonAutoEndLocationSelect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewAutoEndLocationSelect"
+        android:layout_alignParentRight="true"
+        android:text="@string/select">
 
-        <NumberPicker
-            android:id="@+id/numberPickerAutoNumBallsScored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:entries="@array/auto_list_of_balls" />
+    </Button>
 
-    </TableRow>
-    <TableRow>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/number_of_balls_scored_in_hot_high" />
-
-        <NumberPicker
-            android:id="@+id/numberPickerAutoNumBallsHotHigh"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:entries="@array/auto_list_of_balls" />
-
-    </TableRow>
-    <TableRow>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/number_of_balls_scored" />
-
-        <NumberPicker
-            android:id="@+id/numberPickerAutoNumBallsHotLow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:entries="@array/auto_list_of_balls" />
-
-    </TableRow>
-
-    <TableRow>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/number_of_balls_scored_in_high" />
-
-        <NumberPicker
-            android:id="@+id/numberPickerAutoNumBallsHigh"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:entries="@array/auto_list_of_balls" />
-
-    </TableRow>
-    <TableRow>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/number_of_balls_scored_in_low" />
-
-        <NumberPicker
-            android:id="@+id/numberPickerAutoNumBallsLow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:entries="@array/auto_list_of_balls" />
-
-    </TableRow>
-
-    <TableRow>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/where_did_the_robot_end" />
-
-        <Button
-            android:id="@+id/buttonAutoEndLocationSelect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/select">
-
-        </Button>
-
-    </TableRow>
-</TableLayout>
+</RelativeLayout>
