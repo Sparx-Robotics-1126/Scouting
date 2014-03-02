@@ -8,7 +8,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 19
         versionCode 1
-        versionName "1.0"
+        versionName "0.0.1"
     }
     buildTypes {
         release {
@@ -20,5 +20,7 @@ android {
 
 dependencies {
     compile 'com.android.support:support-v4:+'
+    compile 'com.google.code.gson:gson:2.2.4+'
+    compile 'com.koushikdutta.ion:ion:1.2.4'
     compile fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 }
