@@ -8,9 +8,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.normandy.aerialassist.scouting.dto.Event;
+import com.normandy.aerialassist.scouting.dto.Team;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 /**
  * Created by jbass on 3/1/14.
@@ -262,4 +264,66 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return event;
     }
 
+    public void createTeam(Team team){
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(TABLE_TEAMS_KEY, team.getKey());
+        values.put(TABLE_TEAMS_NAME, team.getName());
+        values.put(TABLE_TEAMS_NICKNAME, team.getNickname());
+        values.put(TABLE_TEAMS_TEAM_NUMBER, team.getTeamNumber());
+        values.put(TABLE_TEAMS_WEBSITE, team.getWebsite());
+        values.put(TABLE_TEAMS_CITY, team.getCity());
+        values.put(TABLE_TEAMS_STATE, team.getState());
+        values.put(TABLE_TEAMS_COUNTRY, team.getCountry());
+        values.put(TABLE_TEAMS_LOCATION, team.getLocation());
+
+        db.insert(TABLE_TEAMS, null, values);
+
+        for(Event event : team.getEvents()){
+            createE2TAssociation(event.getKey(), team.getKey());
+        }
+
+    }
+
+    public Team getTeam(String teamKey){
+        SQLiteDatabase db = getReadableDatabase();
+        String selectQuery = "SELECT * FROM " + TABLE_TEAMS + " WHERE " + TABLE_TEAMS_KEY + " = " + teamKey;
+
+        Log.v(TAG, selectQuery);
+
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        Team team = new Team();
+        if(c != null && c.moveToNext()){
+            team.setKey(c.getString(c.getColumnIndex(TABLE_TEAMS_KEY)));
+            team.setName(c.getString(c.getColumnIndex(TABLE_TEAMS_NAME)));
+            team.setNickname(c.getString(c.getColumnIndex(TABLE_TEAMS_NICKNAME)));
+            team.setTeamNumber(c.getInt(c.getColumnIndex(TABLE_TEAMS_TEAM_NUMBER)));
+            team.setWebsite(c.getString(c.getColumnIndex(TABLE_TEAMS_WEBSITE)));
+            team.setCity(c.getString(c.getColumnIndex(TABLE_TEAMS_CITY)));
+            team.setCountry(c.getString(c.getColumnIndex(TABLE_TEAMS_COUNTRY)));
+            team.setLocation(c.getString(c.getColumnIndex(TABLE_TEAMS_LOCATION)));
+            team.setEvents(new ArrayList<Event>());
+        }
+
+        selectQuery = "SELECT * FROM " +TABLE_E2T + " WHERE " + TABLE_E2T_TEAM + " = " + team.getKey();
+        c = db.rawQuery(selectQuery, null);
+
+        while(c != null && c.moveToNext()){
+            team.getEvents().add(getEvent(c.getString(c.getColumnIndex(TABLE_E2T_EVENT))));
+        }
+
+        return team;
+    }
+
+    private void createE2TAssociation(String eventKey, String teamKey){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(TABLE_E2T_EVENT, eventKey);
+        values.put(TABLE_E2T_TEAM, teamKey);
+
+        db.insert(TABLE_E2T, null, values);
+
+    }
 }
