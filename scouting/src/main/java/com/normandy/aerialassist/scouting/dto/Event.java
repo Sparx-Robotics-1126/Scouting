@@ -3,6 +3,7 @@ package com.normandy.aerialassist.scouting.dto;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by jbass on 3/1/14.
@@ -23,51 +24,95 @@ public class Event {
     private String location;
     private boolean official;
     @SerializedName("start_date")
-    private Calendar startDate;
+    private Date startDate;
     @SerializedName("end_date")
-    private Calendar endDate;
+    private Date endDate;
 
     public String getKey() {
         return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getShortName() {
         return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 
     public String getEventCode() {
         return eventCode;
     }
 
+    public void setEventCode(String eventCode) {
+        this.eventCode = eventCode;
+    }
+
     public String getEventTypeString() {
         return eventTypeString;
+    }
+
+    public void setEventTypeString(String eventTypeString) {
+        this.eventTypeString = eventTypeString;
     }
 
     public int getEventType() {
         return eventType;
     }
 
+    public void setEventType(int eventType) {
+        this.eventType = eventType;
+    }
+
     public int getYear() {
         return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
     }
 
     public String getLocation() {
         return location;
     }
 
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     public boolean isOfficial() {
         return official;
     }
 
-    public Calendar getStartDate() {
+    public void setOfficial(boolean official) {
+        this.official = official;
+    }
+
+    public Date getStartDate() {
         return startDate;
     }
 
-    public Calendar getEndDate() {
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
         return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 }

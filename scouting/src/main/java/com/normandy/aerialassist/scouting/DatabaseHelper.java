@@ -2,17 +2,22 @@ package com.normandy.aerialassist.scouting;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.normandy.aerialassist.scouting.dto.Event;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by jbass on 3/1/14.
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
     // Logcat tag
-    private static final String LOG = "DatabaseHelper";
+    private static final String TAG = "DatabaseHelper";
 
     // Database Version
     private static final int DATABASE_VERSION = 1;
@@ -184,7 +189,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + TABLE_SCOUTING_GENERAL_COMMENTS_TECH_FOULS + " TEXT, "
             + TABLE_SCOUTING_GENERAL_COMMENTS + " TEXT)";
 
-
+    SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public DatabaseHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -203,4 +208,58 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
         throw new NoSuchMethodError();
     }
+
+    public void createEvent(Event event){
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(TABLE_EVENTS_KEY, event.getKey());
+        values.put(TABLE_EVENTS_NAME, event.getName());
+        values.put(TABLE_EVENTS_SHORT_NAME, event.getShortName());
+        values.put(TABLE_EVENTS_EVENT_CODE, event.getEventCode());
+        values.put(TABLE_EVENTS_EVENT_TYPE_STRING, event.getEventTypeString());
+        values.put(TABLE_EVENTS_EVENT_TYPE, event.getEventType());
+        values.put(TABLE_EVENTS_YEAR, event.getYear());
+        values.put(TABLE_EVENTS_LOCATION, event.getLocation());
+        values.put(TABLE_EVENTS_OFFICIAL, event.isOfficial());
+        values.put(TABLE_EVENTS_START_DATE, iso8601Format.format(event.getStartDate()));
+        values.put(TABLE_EVENTS_END_DATE, iso8601Format.format(event.getEndDate()));
+
+        db.insert(TABLE_EVENTS, null, values);
+    }
+
+    public Event getEvent(String eventKey){
+        SQLiteDatabase db = getReadableDatabase();
+        String selectQuery = "SELECT * FROM " + TABLE_EVENTS
+                + " WHERE " + TABLE_EVENTS_KEY + " = " + eventKey;
+
+        Log.v(TAG, selectQuery);
+
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        Event event = new Event();
+        if(c != null && c.moveToNext()){
+            event.setKey(c.getString(c.getColumnIndex(TABLE_MATCHES_EVENT_KEY)));
+            event.setName(c.getString(c.getColumnIndex(TABLE_EVENTS_NAME)));
+            event.setShortName(c.getString(c.getColumnIndex(TABLE_EVENTS_SHORT_NAME)));
+            event.setEventCode(c.getString(c.getColumnIndex(TABLE_EVENTS_EVENT_CODE)));
+            event.setEventTypeString(c.getString(c.getColumnIndex(TABLE_EVENTS_EVENT_TYPE_STRING)));
+            event.setEventType(c.getInt(c.getColumnIndex(TABLE_EVENTS_EVENT_TYPE)));
+            event.setYear(c.getInt(c.getColumnIndex(TABLE_EVENTS_YEAR)));
+            event.setLocation(c.getString(c.getColumnIndex(TABLE_EVENTS_LOCATION)));
+            event.setOfficial(c.getInt(c.getColumnIndex(TABLE_EVENTS_OFFICIAL)) == 1);
+            try{
+                event.setStartDate(iso8601Format.parse(c.getString(c.getColumnIndex(TABLE_EVENTS_START_DATE))));
+            } catch (ParseException e) {
+                Log.e(TAG, "Could not parse Event's start date.", e);
+            }try{
+                event.setEndDate(iso8601Format.parse(c.getString(c.getColumnIndex(TABLE_EVENTS_END_DATE))));
+            } catch (ParseException e) {
+                Log.e(TAG, "Could not parse Event's end date.", e);
+            }
+        }
+
+        return event;
+    }
+
 }
