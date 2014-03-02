@@ -7,7 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.normandy.aerialassist.scouting.dto.Alliance;
+import com.normandy.aerialassist.scouting.dto.Alliances;
 import com.normandy.aerialassist.scouting.dto.Event;
+import com.normandy.aerialassist.scouting.dto.Match;
 import com.normandy.aerialassist.scouting.dto.Team;
 
 import java.text.ParseException;
@@ -324,6 +327,64 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(TABLE_E2T_TEAM, teamKey);
 
         db.insert(TABLE_E2T, null, values);
+    }
 
+    public void createMatch(Match match){
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(TABLE_MATCHES_KEY, match.getKey());
+        values.put(TABLE_MATCHES_EVENT_KEY, match.getEventKey());
+        values.put(TABLE_MATCHES_MATCH_NUMBER, match.getMatchNumber());
+        values.put(TABLE_MATCHES_SET_NUMBER, match.getSetNumber());
+        values.put(TABLE_MATCHES_COMP_LEVEL, match.getCompetitionLevel());
+        values.put(TABLE_MATCHES_BLUE_SCORE, match.getAlliances().getBlue().getScore());
+        values.put(TABLE_MATCHES_BLUE_ONE, match.getAlliances().getBlue().getTeams().get(0));
+        values.put(TABLE_MATCHES_BLUE_TWO, match.getAlliances().getBlue().getTeams().get(1));
+        values.put(TABLE_MATCHES_BLUE_THREE, match.getAlliances().getBlue().getTeams().get(2));
+        values.put(TABLE_MATCHES_RED_SCORE, match.getAlliances().getRed().getScore());
+        values.put(TABLE_MATCHES_RED_ONE, match.getAlliances().getRed().getTeams().get(0));
+        values.put(TABLE_MATCHES_RED_TWO, match.getAlliances().getRed().getTeams().get(1));
+        values.put(TABLE_MATCHES_RED_THREE, match.getAlliances().getRed().getTeams().get(2));
+
+        db.insert(TABLE_MATCHES, null, values);
+    }
+
+    public Match getMatch(String matchKey){
+        SQLiteDatabase db = getReadableDatabase();
+        String selectStatement = "SELECT * FROM " + TABLE_MATCHES
+                + " WHERE " + TABLE_MATCHES_KEY + " = " + matchKey;
+
+        Cursor c = db.rawQuery(selectStatement, null);
+
+        Match match = new Match();
+
+        if(c!=null && c.moveToNext()){
+            match.setKey(c.getString(c.getColumnIndex(TABLE_MATCHES_KEY)));
+            match.setEventKey(c.getString(c.getColumnIndex(TABLE_MATCHES_EVENT_KEY)));
+            match.setMatchNumber(c.getInt(c.getColumnIndex(TABLE_MATCHES_MATCH_NUMBER)));
+            match.setSetNumber(c.getInt(c.getColumnIndex(TABLE_MATCHES_SET_NUMBER)));
+            match.setCompetitionLevel(c.getString(c.getColumnIndex(TABLE_MATCHES_COMP_LEVEL)));
+
+            Alliances alliances = new Alliances();
+            Alliance red = new Alliance();
+            red.setTeams(new ArrayList<String>(3));
+            Alliance blue = new Alliance();
+            blue.setTeams(new ArrayList<String>(3));
+            alliances.setBlue(blue);
+            alliances.setRed(red);
+
+            blue.setScore(c.getInt(c.getColumnIndex(TABLE_MATCHES_BLUE_SCORE)));
+            blue.getTeams().add(c.getString(c.getColumnIndex(TABLE_MATCHES_BLUE_ONE)));
+            blue.getTeams().add(c.getString(c.getColumnIndex(TABLE_MATCHES_BLUE_TWO)));
+            blue.getTeams().add(c.getString(c.getColumnIndex(TABLE_MATCHES_BLUE_THREE)));
+
+            red.setScore(c.getInt(c.getColumnIndex(TABLE_MATCHES_RED_SCORE)));
+            red.getTeams().add(c.getString(c.getColumnIndex(TABLE_MATCHES_RED_ONE)));
+            red.getTeams().add(c.getString(c.getColumnIndex(TABLE_MATCHES_RED_TWO)));
+            red.getTeams().add(c.getString(c.getColumnIndex(TABLE_MATCHES_RED_THREE)));
+        }
+
+        return match;
     }
 }

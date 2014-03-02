@@ -13,7 +13,15 @@ public class Alliance {
         return score;
     }
 
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     public List<String> getTeams() {
         return teams;
+    }
+
+    public void setTeams(List<String> teams) {
+        this.teams = teams;
     }
 }
