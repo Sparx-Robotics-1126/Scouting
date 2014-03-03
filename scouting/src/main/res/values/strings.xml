@@ -49,6 +49,8 @@
     <string name="number_of_technical_fouls">Number of Technical Fouls?</string>
     <string name="comments_on_technical_fouls">Comments on Technical Fouls:</string>
     <string name="general_comments">General Comments:</string>
+    <string name="matches">Matches</string>
+    <string name="teams">Teams</string>
 
     <array name="tab_names">
         <item>@string/auto</item>
@@ -59,5 +61,9 @@
         <item>@string/alliance</item>
         <item>@string/middle</item>
         <item>@string/opponent</item>
+    </array>
+    <array name="matchesAndTeams">
+        <item>@string/matches</item>
+        <item>@string/teams</item>
     </array>
 </resources>

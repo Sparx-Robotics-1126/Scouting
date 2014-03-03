@@ -4,6 +4,7 @@ package com.normandy.aerialassist.scouting.fragments;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.database.Cursor;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -20,9 +21,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
 
+import com.normandy.aerialassist.scouting.DatabaseHelper;
 import com.normandy.aerialassist.scouting.R;
+import com.normandy.aerialassist.scouting.adapters.DrawerAdapter;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -53,8 +57,13 @@ public class NavigationDrawerFragment extends Fragment {
     private ActionBarDrawerToggle mDrawerToggle;
 
     private DrawerLayout mDrawerLayout;
+    private Spinner spinnerRegional;
+    private SimpleCursorAdapter cursorRegionalNames;
+    private Spinner spinnerMatchesOrTeams;
     private ExpandableListView mDrawerListView;
     private View mFragmentContainerView;
+
+    private DatabaseHelper dbHelper;
 
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
@@ -66,6 +75,8 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        dbHelper = new DatabaseHelper(getActivity());
 
         // Read in the flag indicating whether or not the user has demonstrated awareness of the
         // drawer. See PREF_USER_LEARNED_DRAWER for details.
@@ -90,24 +101,30 @@ public class NavigationDrawerFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mDrawerListView = (ExpandableListView) inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+        View mainView = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+
+        spinnerRegional = (Spinner) mainView.findViewById(R.id.spinnerRegional);
+        cursorRegionalNames = new SimpleCursorAdapter(
+                getActivity(),
+                android.R.layout.simple_spinner_item,
+                dbHelper.createEventNameCursor(),
+                new String[]{"short_name"},
+                new int[]{android.R.id.text1}, 0);
+        cursorRegionalNames.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerRegional.setAdapter(cursorRegionalNames);
+
+        spinnerMatchesOrTeams = (Spinner) mainView.findViewById(R.id.spinnerMatchOrTeams);
+
+        mDrawerListView = (ExpandableListView) mainView.findViewById(R.id.expandableListViewDrawerContent);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectItem(position);
             }
         });
-//        mDrawerListView.setAdapter(new ArrayAdapter<String>(
-//                getActionBar().getThemedContext(),
-//                android.R.layout.simple_list_item_activated_1,
-//                android.R.id.text1,
-//                new String[]{
-//                        getString(R.string.title_section1),
-//                        getString(R.string.title_section2),
-//                        getString(R.string.title_section3),
-//                }));
+        mDrawerListView.setAdapter(new DrawerAdapter(new DatabaseHelper(getActivity())));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-        return mDrawerListView;
+        return mainView;
     }
 
     public boolean isDrawerOpen() {
@@ -154,6 +171,7 @@ public class NavigationDrawerFragment extends Fragment {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
+                cursorRegionalNames.changeCursor(dbHelper.createEventNameCursor());
                 if (!isAdded()) {
                     return;
                 }

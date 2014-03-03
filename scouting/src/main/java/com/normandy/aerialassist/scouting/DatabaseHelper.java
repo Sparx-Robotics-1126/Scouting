@@ -297,6 +297,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return event;
     }
 
+    public Cursor createEventNameCursor(){
+        SQLiteDatabase db = getReadableDatabase();
+        return db.query(true, TABLE_EVENTS, new String[]{"rowid AS _id", TABLE_EVENTS_SHORT_NAME, TABLE_EVENTS_START_DATE}, null, null, null, null, TABLE_EVENTS_START_DATE + " DESC", null);
+    }
+
     public void createTeam(Team team){
         SQLiteDatabase db = getWritableDatabase();
 
