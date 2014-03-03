@@ -34,7 +34,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     // Database Name
-    private static final String DATABASE_NAME = "contactsManager";
+    private static final String DATABASE_NAME = "arialAssist";
 
     // Table Names
     private static final String TABLE_EVENTS = "events";
@@ -200,10 +200,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + TABLE_SCOUTING_GENERAL_COMMENTS_TECH_FOULS + " TEXT, "
             + TABLE_SCOUTING_GENERAL_COMMENTS + " TEXT)";
 
-    SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private SimpleDateFormat iso8601Format;
 
     public DatabaseHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     }
 
     @Override
@@ -220,9 +221,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         throw new NoSuchMethodError();
     }
 
-    public void createEvent(Event event){
-        SQLiteDatabase db = getWritableDatabase();
-
+    private ContentValues mapEvent(Event event){
         ContentValues values = new ContentValues();
         values.put(TABLE_EVENTS_KEY, event.getKey());
         values.put(TABLE_EVENTS_NAME, event.getName());
@@ -236,7 +235,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(TABLE_EVENTS_START_DATE, iso8601Format.format(event.getStartDate()));
         values.put(TABLE_EVENTS_END_DATE, iso8601Format.format(event.getEndDate()));
 
-        db.insert(TABLE_EVENTS, null, values);
+        return values;
+    }
+
+    public void createEvent(Event event){
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.insert(TABLE_EVENTS, null, mapEvent(event));
+    }
+
+    public boolean doesEventExist(Event event){
+        boolean retVal = false;
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor c = db.query(TABLE_EVENTS, new String[]{TABLE_EVENTS_KEY},
+                TABLE_EVENTS_KEY + " = ?", new String[]{event.getKey()}, null, null, null);
+
+        if(c != null && c.getCount() > 0)
+            retVal = true;
+
+        return retVal;
+    }
+
+    public void updateEvent(Event event){
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.update(TABLE_EVENTS, mapEvent(event), TABLE_EVENTS_KEY + " = ?", new String[]{event.getKey()});
     }
 
     public Event getEvent(String eventKey){

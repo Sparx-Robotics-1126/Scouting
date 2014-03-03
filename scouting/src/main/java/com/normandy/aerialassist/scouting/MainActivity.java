@@ -10,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 
 import com.normandy.aerialassist.scouting.fragments.MatchOverviewFragment;
 import com.normandy.aerialassist.scouting.fragments.NavigationDrawerFragment;
+import com.normandy.aerialassist.scouting.networking.BlueAlliance;
 
 public class MainActivity extends FragmentActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -72,6 +73,10 @@ public class MainActivity extends FragmentActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+            BlueAlliance ba = new BlueAlliance(this);
+            ba.loadEvent("2014mitry");
+            ba.loadEvent("2014nyro");
+
             return true;
         }
         return super.onOptionsItemSelected(item);
