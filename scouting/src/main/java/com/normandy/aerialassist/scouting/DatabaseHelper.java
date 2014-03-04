@@ -266,15 +266,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Event getEvent(String eventKey){
         SQLiteDatabase db = getReadableDatabase();
         String selectQuery = "SELECT * FROM " + TABLE_EVENTS
-                + " WHERE " + TABLE_EVENTS_KEY + " = " + eventKey;
+                + " WHERE " + TABLE_EVENTS_KEY + " = ?";
 
         Log.v(TAG, selectQuery);
 
-        Cursor c = db.rawQuery(selectQuery, null);
+        Cursor c = db.rawQuery(selectQuery, new String[]{eventKey});
 
         Event event = new Event();
         if(c != null && c.moveToNext()){
-            event.setKey(c.getString(c.getColumnIndex(TABLE_MATCHES_EVENT_KEY)));
+            event.setKey(c.getString(c.getColumnIndex(TABLE_EVENTS_KEY)));
             event.setName(c.getString(c.getColumnIndex(TABLE_EVENTS_NAME)));
             event.setShortName(c.getString(c.getColumnIndex(TABLE_EVENTS_SHORT_NAME)));
             event.setEventCode(c.getString(c.getColumnIndex(TABLE_EVENTS_EVENT_CODE)));
@@ -299,7 +299,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor createEventNameCursor(){
         SQLiteDatabase db = getReadableDatabase();
-        return db.query(true, TABLE_EVENTS, new String[]{"rowid AS _id", TABLE_EVENTS_SHORT_NAME, TABLE_EVENTS_START_DATE}, null, null, null, null, TABLE_EVENTS_START_DATE + " DESC", null);
+        return db.query(true, TABLE_EVENTS, new String[]{"rowid AS _id, key", TABLE_EVENTS_SHORT_NAME, TABLE_EVENTS_START_DATE}, null, null, null, null, TABLE_EVENTS_START_DATE + " DESC", null);
     }
 
     public void createTeam(Team team){
@@ -326,11 +326,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Team getTeam(String teamKey){
         SQLiteDatabase db = getReadableDatabase();
-        String selectQuery = "SELECT * FROM " + TABLE_TEAMS + " WHERE " + TABLE_TEAMS_KEY + " = " + teamKey;
+        String selectQuery = "SELECT * FROM " + TABLE_TEAMS + " WHERE " + TABLE_TEAMS_KEY + " = ?";
 
         Log.v(TAG, selectQuery);
 
-        Cursor c = db.rawQuery(selectQuery, null);
+        Cursor c = db.rawQuery(selectQuery, new String[]{teamKey});
 
         Team team = new Team();
         if(c != null && c.moveToNext()){
@@ -364,9 +364,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE_E2T, null, values);
     }
 
-    public void createMatch(Match match){
-        SQLiteDatabase db = getWritableDatabase();
-
+    private ContentValues mapMatch(Match match){
         ContentValues values = new ContentValues();
         values.put(TABLE_MATCHES_KEY, match.getKey());
         values.put(TABLE_MATCHES_EVENT_KEY, match.getEventKey());
@@ -382,15 +380,41 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(TABLE_MATCHES_RED_TWO, match.getAlliances().getRed().getTeams().get(1));
         values.put(TABLE_MATCHES_RED_THREE, match.getAlliances().getRed().getTeams().get(2));
 
+        return values;
+    }
+
+    public void createMatch(Match match){
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = mapMatch(match);
+
         db.insert(TABLE_MATCHES, null, values);
+    }
+
+    public boolean doesMatchExist(Match match){
+        boolean retVal = false;
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor c = db.query(TABLE_MATCHES, new String[]{TABLE_MATCHES_KEY},
+                TABLE_MATCHES_KEY+" = ?", new String[]{match.getKey()}, null, null, null);
+
+        if(c != null && c.getCount() > 0)
+            retVal = true;
+
+        return retVal;
+    }
+
+    public void updateMatch(Match match){
+        SQLiteDatabase db = getWritableDatabase();
+        db.update(TABLE_MATCHES, mapMatch(match), TABLE_MATCHES_KEY+" = ?", new String[]{match.getKey()});
     }
 
     public Match getMatch(String matchKey){
         SQLiteDatabase db = getReadableDatabase();
         String selectStatement = "SELECT * FROM " + TABLE_MATCHES
-                + " WHERE " + TABLE_MATCHES_KEY + " = " + matchKey;
+                + " WHERE " + TABLE_MATCHES_KEY + " = ?";
 
-        Cursor c = db.rawQuery(selectStatement, null);
+        Cursor c = db.rawQuery(selectStatement, new String[]{matchKey});
 
         Match match = new Match();
 
@@ -421,6 +445,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         return match;
+    }
+
+    public Cursor createMatchCursor(Event event){
+        SQLiteDatabase db = getReadableDatabase();
+        return db.rawQuery("SELECT *, rowid AS _id FROM "+TABLE_MATCHES+" WHERE " + TABLE_MATCHES_EVENT_KEY + " = ?",new String[]{event.getKey()});
+    }
+
+    public int getMatchCount(Event event){
+        int retVal = 0;
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor c = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_MATCHES, null);
+
+        if(c != null && c.moveToNext())
+            retVal = c.getInt(0);
+
+        return retVal;
     }
 
     public void createScouting(Scouting scouting){
@@ -474,10 +515,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<Scouting> getScouting(String matchKey, String teamKey){
         SQLiteDatabase db = getReadableDatabase();
         String selectStatement = "SELECT * FROM " + TABLE_SCOUTING
-                + " WHERE " + TABLE_SCOUTING_MATCH_KEY + " = " + matchKey
-                + " AND " + TABLE_SCOUTING_TEAM_KEY + " = " + teamKey;
+                + " WHERE " + TABLE_SCOUTING_MATCH_KEY + " = ?"
+                + " AND " + TABLE_SCOUTING_TEAM_KEY + " = ?";
 
-        Cursor c = db.rawQuery(selectStatement, null);
+        Cursor c = db.rawQuery(selectStatement, new String[]{matchKey, teamKey});
 
         List<Scouting> scouting = new ArrayList<Scouting>();
 

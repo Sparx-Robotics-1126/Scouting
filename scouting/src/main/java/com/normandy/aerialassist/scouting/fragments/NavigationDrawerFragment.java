@@ -19,21 +19,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 
 import com.normandy.aerialassist.scouting.DatabaseHelper;
 import com.normandy.aerialassist.scouting.R;
-import com.normandy.aerialassist.scouting.adapters.DrawerAdapter;
+import com.normandy.aerialassist.scouting.adapters.ScoutingDrawerAdapter;
+import com.normandy.aerialassist.scouting.dto.Event;
+import com.normandy.aerialassist.scouting.networking.BlueAlliance;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
  * design guidelines</a> for a complete explanation of the behaviors implemented here.
  */
-public class NavigationDrawerFragment extends Fragment {
+public class NavigationDrawerFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     /**
      * Remember the position of the selected item.
@@ -56,13 +57,16 @@ public class NavigationDrawerFragment extends Fragment {
      */
     private ActionBarDrawerToggle mDrawerToggle;
 
+    private ScoutingDrawerAdapter scoutingDrawerAdapter;
+
     private DrawerLayout mDrawerLayout;
     private Spinner spinnerRegional;
-    private SimpleCursorAdapter cursorRegionalNames;
-    private Spinner spinnerMatchesOrTeams;
+    private SimpleCursorAdapter cursorAdapterRegionalNames;
+    private Spinner spinnerTaskSelection;
     private ExpandableListView mDrawerListView;
     private View mFragmentContainerView;
 
+    private BlueAlliance blueAlliance;
     private DatabaseHelper dbHelper;
 
     private int mCurrentSelectedPosition = 0;
@@ -76,6 +80,7 @@ public class NavigationDrawerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        blueAlliance = new BlueAlliance(getActivity());
         dbHelper = new DatabaseHelper(getActivity());
 
         // Read in the flag indicating whether or not the user has demonstrated awareness of the
@@ -103,17 +108,27 @@ public class NavigationDrawerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View mainView = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
 
+        scoutingDrawerAdapter = new ScoutingDrawerAdapter(getActivity(), dbHelper);
+
         spinnerRegional = (Spinner) mainView.findViewById(R.id.spinnerRegional);
-        cursorRegionalNames = new SimpleCursorAdapter(
+        cursorAdapterRegionalNames = new SimpleCursorAdapter(
                 getActivity(),
                 android.R.layout.simple_spinner_item,
                 dbHelper.createEventNameCursor(),
                 new String[]{"short_name"},
                 new int[]{android.R.id.text1}, 0);
-        cursorRegionalNames.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerRegional.setAdapter(cursorRegionalNames);
+        cursorAdapterRegionalNames.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        cursorAdapterRegionalNames.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+            @Override
+            public boolean setViewValue(View view, Cursor cursor, int i) {
+                view.setTag(cursor.getString(cursor.getColumnIndex("key")));
+                return false;
+            }
+        });
+        spinnerRegional.setAdapter(cursorAdapterRegionalNames);
+        spinnerRegional.setOnItemSelectedListener(this);
 
-        spinnerMatchesOrTeams = (Spinner) mainView.findViewById(R.id.spinnerMatchOrTeams);
+        spinnerTaskSelection = (Spinner) mainView.findViewById(R.id.spinnerTaskSelection);
 
         mDrawerListView = (ExpandableListView) mainView.findViewById(R.id.expandableListViewDrawerContent);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -122,8 +137,14 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
-        mDrawerListView.setAdapter(new DrawerAdapter(new DatabaseHelper(getActivity())));
+        mDrawerListView.setAdapter(scoutingDrawerAdapter);
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+        mDrawerListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i2, long l) {
+                return false;
+            }
+        });
         return mainView;
     }
 
@@ -171,7 +192,7 @@ public class NavigationDrawerFragment extends Fragment {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                cursorRegionalNames.changeCursor(dbHelper.createEventNameCursor());
+                updateDrawerData();
                 if (!isAdded()) {
                     return;
                 }
@@ -214,8 +235,8 @@ public class NavigationDrawerFragment extends Fragment {
         if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
         }
-        if (mCallbacks != null) {
-            mCallbacks.onNavigationDrawerItemSelected(position);
+        if (mCallbacks != null && spinnerRegional != null) {
+            mCallbacks.onNavigationDrawerItemSelected(spinnerRegional.getSelectedItemPosition(), position);
         }
     }
 
@@ -283,13 +304,35 @@ public class NavigationDrawerFragment extends Fragment {
         return getActivity().getActionBar();
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        //TODO: Update stuff based on selection
+        switch (parent.getId()){
+            case R.id.spinnerRegional:
+                Event current = dbHelper.getEvent((String) spinnerRegional.getSelectedView().getTag());
+                if(current != null){
+                    scoutingDrawerAdapter.setCurrentEvent(current);
+                    blueAlliance.loadMatches(current);
+                    updateDrawerData();
+                }
+        }
+    }
+
+    private void updateDrawerData(){
+        cursorAdapterRegionalNames.changeCursor(dbHelper.createEventNameCursor());
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {}
+
     /**
      * Callbacks interface that all activities using this fragment must implement.
      */
     public static interface NavigationDrawerCallbacks {
+
         /**
          * Called when an item in the navigation drawer is selected.
          */
-        void onNavigationDrawerItemSelected(int position);
+        void onNavigationDrawerItemSelected(int state, int position);
     }
 }

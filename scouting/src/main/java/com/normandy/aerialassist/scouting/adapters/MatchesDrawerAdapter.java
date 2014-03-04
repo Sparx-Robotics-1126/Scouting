@@ -9,17 +9,17 @@ import com.normandy.aerialassist.scouting.DatabaseHelper;
 /**
  * Created by jbass on 3/1/14.
  */
-public class DrawerAdapter extends BaseExpandableListAdapter {
+public class MatchesDrawerAdapter extends BaseExpandableListAdapter {
 
     private DatabaseHelper dbHelper;
 
-    public DrawerAdapter(DatabaseHelper dbHelper){
+    public MatchesDrawerAdapter(DatabaseHelper dbHelper){
         this.dbHelper = dbHelper;
     }
 
     @Override
     public int getGroupCount() {
-        return 0;
+        return dbHelper.getMatchCount(null);
     }
 
     @Override

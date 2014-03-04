@@ -39,7 +39,7 @@ public class MainActivity extends FragmentActivity
     }
 
     @Override
-    public void onNavigationDrawerItemSelected(int position) {
+    public void onNavigationDrawerItemSelected(int state, int position) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.container, new MatchOverviewFragment()).commit();
@@ -74,8 +74,7 @@ public class MainActivity extends FragmentActivity
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             BlueAlliance ba = new BlueAlliance(this);
-            ba.loadEvent("2014mitry");
-            ba.loadEvent("2014nyro");
+            ba.loadEvents(2013);
 
             return true;
         }
