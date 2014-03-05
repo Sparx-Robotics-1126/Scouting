@@ -302,9 +302,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.query(true, TABLE_EVENTS, new String[]{"rowid AS _id, key", TABLE_EVENTS_SHORT_NAME, TABLE_EVENTS_START_DATE}, null, null, null, null, TABLE_EVENTS_START_DATE + " DESC", null);
     }
 
-    public void createTeam(Team team){
-        SQLiteDatabase db = getWritableDatabase();
-
+    private ContentValues mapTeam(Team team){
         ContentValues values = new ContentValues();
         values.put(TABLE_TEAMS_KEY, team.getKey());
         values.put(TABLE_TEAMS_NAME, team.getName());
@@ -315,13 +313,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(TABLE_TEAMS_STATE, team.getState());
         values.put(TABLE_TEAMS_COUNTRY, team.getCountry());
         values.put(TABLE_TEAMS_LOCATION, team.getLocation());
+        return values;
+    }
 
-        db.insert(TABLE_TEAMS, null, values);
+    public void createTeam(Team team){
+        SQLiteDatabase db = getWritableDatabase();
 
-        for(Event event : team.getEvents()){
-            createE2TAssociation(event.getKey(), team.getKey());
-        }
+        db.insert(TABLE_TEAMS, null, mapTeam(team));
+    }
 
+    public boolean doesTeamExist(Team team){
+        boolean retVal = false;
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor c = db.query(TABLE_TEAMS, new String[]{TABLE_TEAMS_KEY},
+                TABLE_TEAMS_KEY + " = ?", new String[]{team.getKey()}, null, null, null);
+
+        if(c != null && c.getCount() >0)
+            return true;
+
+        return retVal;
+    }
+
+    public void updateTeam(Team team){
+        getWritableDatabase().update(TABLE_TEAMS, mapTeam(team), TABLE_TEAMS_KEY + " = ?", new String[]{team.getKey()});
     }
 
     public Team getTeam(String teamKey){
@@ -345,8 +360,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             team.setEvents(new ArrayList<Event>());
         }
 
-        selectQuery = "SELECT * FROM " +TABLE_E2T + " WHERE " + TABLE_E2T_TEAM + " = " + team.getKey();
-        c = db.rawQuery(selectQuery, null);
+        selectQuery = "SELECT * FROM " +TABLE_E2T + " WHERE " + TABLE_E2T_TEAM + " = ?";
+        c = db.rawQuery(selectQuery, new String[]{team.getKey()});
 
         while(c != null && c.moveToNext()){
             team.getEvents().add(getEvent(c.getString(c.getColumnIndex(TABLE_E2T_EVENT))));
@@ -355,7 +370,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return team;
     }
 
-    private void createE2TAssociation(String eventKey, String teamKey){
+    public void createE2TAssociation(String eventKey, String teamKey){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(TABLE_E2T_EVENT, eventKey);

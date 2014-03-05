@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.SimpleCursorTreeAdapter;
 import android.widget.Spinner;
 
 import com.normandy.aerialassist.scouting.DatabaseHelper;
@@ -92,9 +93,6 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
             mFromSavedInstanceState = true;
         }
-
-        // Select either the default item (0) or the last selected item.
-        selectItem(mCurrentSelectedPosition);
     }
 
     @Override
@@ -131,17 +129,19 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
         spinnerTaskSelection = (Spinner) mainView.findViewById(R.id.spinnerTaskSelection);
 
         mDrawerListView = (ExpandableListView) mainView.findViewById(R.id.expandableListViewDrawerContent);
-        mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectItem(position);
-            }
-        });
         mDrawerListView.setAdapter(scoutingDrawerAdapter);
-        mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         mDrawerListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
-            public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i2, long l) {
+            public boolean onChildClick(ExpandableListView expandableListView, View view, int groupPos, int childPos, long id) {
+                switch (spinnerTaskSelection.getSelectedItemPosition()){
+                    case 0:
+                        if (mCallbacks != null && spinnerRegional != null) {
+                            // spinner tag == Regional Key && view tag == team key
+                            mCallbacks.onScoutingTeamSelected((String) spinnerRegional.getSelectedView().getTag(), (String) view.getTag());
+                        }
+                        break;
+                }
+                mDrawerLayout.closeDrawers();
                 return false;
             }
         });
@@ -227,19 +227,6 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
-    private void selectItem(int position) {
-        mCurrentSelectedPosition = position;
-        if (mDrawerListView != null) {
-            mDrawerListView.setItemChecked(position, true);
-        }
-        if (mDrawerLayout != null) {
-            mDrawerLayout.closeDrawer(mFragmentContainerView);
-        }
-        if (mCallbacks != null && spinnerRegional != null) {
-            mCallbacks.onNavigationDrawerItemSelected(spinnerRegional.getSelectedItemPosition(), position);
-        }
-    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -311,8 +298,9 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
             case R.id.spinnerRegional:
                 Event current = dbHelper.getEvent((String) spinnerRegional.getSelectedView().getTag());
                 if(current != null){
-                    scoutingDrawerAdapter.setCurrentEvent(current);
+                    scoutingDrawerAdapter.changeCursor(dbHelper.createMatchCursor(current));
                     blueAlliance.loadMatches(current);
+                    blueAlliance.loadTeams(current);
                     updateDrawerData();
                 }
         }
@@ -330,9 +318,10 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
      */
     public static interface NavigationDrawerCallbacks {
 
-        /**
-         * Called when an item in the navigation drawer is selected.
-         */
-        void onNavigationDrawerItemSelected(int state, int position);
+        public void onScoutingTeamSelected(String matchId, String teamId);
+
+        public void onMatchSelected(String matchId);
+
+        public void onTeamSelected(String teamId);
     }
 }

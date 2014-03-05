@@ -4,9 +4,11 @@ import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.widget.DrawerLayout;
+import android.widget.Toast;
 
 import com.normandy.aerialassist.scouting.fragments.MatchOverviewFragment;
 import com.normandy.aerialassist.scouting.fragments.NavigationDrawerFragment;
@@ -38,13 +40,6 @@ public class MainActivity extends FragmentActivity
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
     }
 
-    @Override
-    public void onNavigationDrawerItemSelected(int state, int position) {
-        // update the main content by replacing fragments
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.container, new MatchOverviewFragment()).commit();
-    }
-
     public void restoreActionBar() {
         ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
@@ -72,7 +67,7 @@ public class MainActivity extends FragmentActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_download_data) {
             BlueAlliance ba = new BlueAlliance(this);
             ba.loadEvents(2013);
 
@@ -81,4 +76,19 @@ public class MainActivity extends FragmentActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onScoutingTeamSelected(String matchId, String teamId) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.container, new MatchOverviewFragment()).commit();
+    }
+
+    @Override
+    public void onMatchSelected(String matchId) {
+        Toast.makeText(this, "Match "+matchId+" selected.", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onTeamSelected(String teamId) {
+        Toast.makeText(this, "Team "+teamId+" selected.", Toast.LENGTH_SHORT).show();
+    }
 }

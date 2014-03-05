@@ -12,6 +12,7 @@ import com.koushikdutta.ion.Ion;
 import com.normandy.aerialassist.scouting.DatabaseHelper;
 import com.normandy.aerialassist.scouting.dto.Event;
 import com.normandy.aerialassist.scouting.dto.Match;
+import com.normandy.aerialassist.scouting.dto.Team;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class BlueAlliance {
     private static final String GET_EVENT_LIST = "/api/v2/events/{YEAR}";
     private static final String GET_EVENT = "/api/v2/event/{EVENT_KEY}";
     private static final String GET_MATCH_LIST = "/api/v2/event/{EVENT_KEY}/matches";
+    private static final String GET_TEAM_LIST = "/api/v2/event/{EVENT_KEY}/teams";
 
     private Context context;
     private Ion ion;
@@ -54,7 +56,7 @@ public class BlueAlliance {
                     @Override
                     public void onCompleted(Exception e, List<String> eventKeys) {
                         if(e != null){
-                            Log.e(TAG, "Issue with getting events", e);
+                            Log.e(TAG, "Issue getting event list", e);
                             return;
                         }
                         for(String eventKey : eventKeys){
@@ -73,7 +75,7 @@ public class BlueAlliance {
                     @Override
                     public void onCompleted(Exception e, Event event) {
                         if(e != null){
-                            Log.e(TAG, "Issue with getting event: "+eventCode, e);
+                            Log.e(TAG, "Issue getting event("+eventCode+")", e);
                             return;
                         }
                         if(dbHelper.doesEventExist(event))
@@ -84,7 +86,7 @@ public class BlueAlliance {
                 });
     }
 
-    public void loadMatches(Event event){
+    public void loadMatches(final Event event){
         String request = (BASE_URL+GET_MATCH_LIST).replace("{EVENT_KEY}", event.getKey());
         ion.build(context, request)
                 .addHeader("X-TBA-App-Id", "frc1126:scouting-app-2014:" + versionName)
@@ -92,11 +94,39 @@ public class BlueAlliance {
                 .setCallback(new FutureCallback<List<Match>>() {
                     @Override
                     public void onCompleted(Exception e, List<Match> result) {
+                        if( e != null){
+                            Log.e(TAG, "Issue getting matches from event("+event.getKey()+")", e);
+                            return;
+                        }
                         for (Match match : result) {
                             if (dbHelper.doesMatchExist(match))
                                 dbHelper.updateMatch(match);
                             else
                                 dbHelper.createMatch(match);
+                        }
+                    }
+                });
+    }
+
+    public void loadTeams(final Event event){
+        String request = (BASE_URL+GET_TEAM_LIST).replace("{EVENT_KEY}", event.getKey());
+        ion.build(context, request)
+                .addHeader("X-TBA-App-Id", "frc1126:scouting-app-2014:" + versionName)
+                .as(new TypeToken<List<Team>>(){})
+                .setCallback(new FutureCallback<List<Team>>() {
+                    @Override
+                    public void onCompleted(Exception e, List<Team> result) {
+                        if(e != null || result == null){
+                            Log.e(TAG, "Issue getting teams from event("+event.getKey()+")", e);
+                            return;
+                        }
+                        for(Team team : result){
+                            if(dbHelper.doesTeamExist(team))
+                                dbHelper.updateTeam(team);
+                            else
+                                dbHelper.createTeam(team);
+
+                            dbHelper.createE2TAssociation(event.getKey(), team.getKey());
                         }
                     }
                 });
