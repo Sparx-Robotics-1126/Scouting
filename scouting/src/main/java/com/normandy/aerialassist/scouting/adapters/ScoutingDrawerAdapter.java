@@ -59,4 +59,26 @@ public class ScoutingDrawerAdapter extends SimpleCursorTreeAdapter {
         }
         return c;
     }
+
+    @Override
+    protected void bindGroupView(View view, Context context, Cursor cursor, boolean isExpanded) {
+        StringBuilder matchString = new StringBuilder();
+        String compLevel = cursor.getString(cursor.getColumnIndex("comp_level"));
+        int setNumber = cursor.getInt(cursor.getColumnIndex("set_number"));
+        if("qm".equals(compLevel))
+            matchString.append("Qual ");
+        else if("qf".equals(compLevel)){
+            matchString.append("Q/F: ");
+            matchString.append(setNumber);
+        }else if("sf".equals(compLevel)){
+            matchString.append("S/F: ");
+            matchString.append(setNumber);
+        }else if("f".equals(compLevel)){
+            matchString.append("Final: ");
+            matchString.append(setNumber);
+        }
+        matchString.append(" Match: ").append(cursor.getInt(cursor.getColumnIndex("match_number")));
+
+        ((TextView) view).setText(matchString.toString());
+    }
 }

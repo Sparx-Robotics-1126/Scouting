@@ -464,7 +464,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor createMatchCursor(Event event){
         SQLiteDatabase db = getReadableDatabase();
-        return db.rawQuery("SELECT *, rowid AS _id FROM "+TABLE_MATCHES+" WHERE " + TABLE_MATCHES_EVENT_KEY + " = ?",new String[]{event.getKey()});
+        return db.query(TABLE_MATCHES,
+                new String[]{"*", "rowid As _id"},
+                TABLE_MATCHES_EVENT_KEY + " = ?", new String[]{event.getKey()},
+                null, null,
+                "(CASE " + TABLE_MATCHES_COMP_LEVEL + " "
+                        + "WHEN 'qm' THEN 1 "
+                        + "WHEN 'qf' THEN 2 "
+                        + "WHEN 'sf' THEN 3 "
+                        + "WHEN 'f'  THEN 4 "
+                        + "ELSE 5 END), "
+                        + TABLE_MATCHES_SET_NUMBER +", "
+                        + TABLE_MATCHES_MATCH_NUMBER + " ASC",
+                null);
     }
 
     public int getMatchCount(Event event){
