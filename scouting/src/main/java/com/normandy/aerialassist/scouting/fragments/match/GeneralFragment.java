@@ -66,6 +66,10 @@ public class GeneralFragment extends Fragment implements SeekBar.OnSeekBarChange
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {}
 
+    public void setScoutingGeneral(ScoutingGeneral sg){
+
+    }
+
     public ScoutingGeneral getScoutingGeneral(){
         ScoutingGeneral sg = new ScoutingGeneral();
         if (switchPlaysDefence != null) {

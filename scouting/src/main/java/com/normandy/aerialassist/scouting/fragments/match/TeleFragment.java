@@ -136,6 +136,10 @@ public class TeleFragment extends Fragment implements SeekBar.OnSeekBarChangeLis
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {}
 
+    public void setScoutingTele(ScoutingTele st){
+
+    }
+
     public ScoutingTele getScoutingTele(){
         ScoutingTele st = new ScoutingTele();
         if (editTextNumberBallsAcqFromFloor != null) {

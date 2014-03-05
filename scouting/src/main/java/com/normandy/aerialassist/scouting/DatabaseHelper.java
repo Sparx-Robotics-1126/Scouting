@@ -574,13 +574,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[]{scouting.getTeamKey(), scouting.getMatchKey(), scouting.getNameOfScouter()});
     }
 
-    public List<Scouting> getScouting(String matchKey, String teamKey){
+    public List<Scouting> getScouting(String matchKey, String teamKey, String scouterName){
         SQLiteDatabase db = getReadableDatabase();
         String selectStatement = "SELECT * FROM " + TABLE_SCOUTING
                 + " WHERE " + TABLE_SCOUTING_MATCH_KEY + " = ?"
-                + " AND " + TABLE_SCOUTING_TEAM_KEY + " = ?";
+                + " AND " + TABLE_SCOUTING_TEAM_KEY + " = ?"
+                + " AND " + TABLE_SCOUTING_NAME + " = ?";
 
-        Cursor c = db.rawQuery(selectStatement, new String[]{matchKey, teamKey});
+        Cursor c = db.rawQuery(selectStatement, new String[]{matchKey, teamKey, scouterName});
 
         List<Scouting> scouting = new ArrayList<Scouting>();
 
@@ -629,6 +630,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             general.setCommentsOnTechnicalFouls(c.getString(c.getColumnIndex(TABLE_SCOUTING_GENERAL_COMMENTS_TECH_FOULS)));
             general.setGeneralComments(c.getString(c.getColumnIndex(TABLE_SCOUTING_GENERAL_COMMENTS)));
 
+            scouting.add(data);
         }
 
         return scouting;

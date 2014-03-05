@@ -14,6 +14,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.normandy.aerialassist.scouting.R;
+import com.normandy.aerialassist.scouting.dto.Scouting;
 import com.normandy.aerialassist.scouting.dto.ScoutingAuto;
 
 /**
@@ -47,6 +48,8 @@ public class AutoFragment extends Fragment implements View.OnClickListener, Seek
     private EditText editTextBallsScoredHotLow;
     private EditText editTextBallsScoredHigh;
     private EditText editTextBallsScoredLow;
+
+    private ScoutingAuto sa;
 
     public AutoFragment(){
         fieldLocationSelectionFragment = new FieldLocationSelectionFragment();
@@ -93,6 +96,18 @@ public class AutoFragment extends Fragment implements View.OnClickListener, Seek
         seekBarBallsScoredHigh.setTag(editTextBallsScoredHigh);
         seekBarBallsScoredLow.setOnSeekBarChangeListener(this);
         seekBarBallsScoredLow.setTag(editTextBallsScoredLow);
+
+        if(sa != null){
+            startingLocation = sa.getStartingLocation();
+            seekBarBallsAcq.setProgress(sa.getBallsAcquired());
+            seekBarBallsShot.setProgress(sa.getBallsShot());
+            seekBarBallsScored.setProgress(sa.getBallsScored());
+            seekBarBallsScoredHotHigh.setProgress(sa.getBallsScoredHotHigh());
+            seekBarBallsScoredHotLow.setProgress(sa.getBallsScoredHotLow());
+            seekBarBallsScoredHigh.setProgress(sa.getBallsScoredHigh());
+            seekBarBallsScoredLow.setProgress(sa.getBallsScoredLow());
+            endingLocaiton = sa.getEndingLocation();
+        }
 
         return retVal;
     }
@@ -142,8 +157,14 @@ public class AutoFragment extends Fragment implements View.OnClickListener, Seek
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {}
 
+    public void setScoutingAuto(ScoutingAuto sa){
+        this.sa = sa;
+    }
+
     public ScoutingAuto getScoutingAuto(){
-        ScoutingAuto sa = new ScoutingAuto();
+        if(sa == null)
+            sa = new ScoutingAuto();
+
         if (editTextBallsAcq != null) {
             sa.setStartingLocation(startingLocation);
             sa.setStartedWithBall(switchStartWithBall.isChecked());

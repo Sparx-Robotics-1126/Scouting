@@ -23,6 +23,7 @@ import android.widget.ExpandableListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.SimpleCursorTreeAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.normandy.aerialassist.scouting.DatabaseHelper;
 import com.normandy.aerialassist.scouting.R;
@@ -137,8 +138,10 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
                     case 0:
                         if (mCallbacks != null && spinnerRegional != null) {
                             // spinner tag == Regional Key && view tag == team key
-                            mCallbacks.onScoutingTeamSelected((String) spinnerRegional.getSelectedView().getTag(),
-                                    (String) view.findViewById(android.R.id.text1).getTag());
+                            TextView tv = (TextView) view.findViewById(android.R.id.text1);
+                            mCallbacks.onScoutingTeamSelected(
+                                    (String) tv.getTag(R.id.match_key),
+                                    (String) tv.getTag(R.id.team_key));
                         }
                         break;
                 }

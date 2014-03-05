@@ -1,6 +1,7 @@
 package com.normandy.aerialassist.scouting;
 
 import android.app.ActionBar;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -14,8 +15,9 @@ import com.normandy.aerialassist.scouting.fragments.MatchOverviewFragment;
 import com.normandy.aerialassist.scouting.fragments.NavigationDrawerFragment;
 import com.normandy.aerialassist.scouting.networking.BlueAlliance;
 
-public class MainActivity extends FragmentActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+public class MainActivity extends FragmentActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+
+    private static final String NAME_PREFERENCE = "Name of Scouter";
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -80,8 +82,12 @@ public class MainActivity extends FragmentActivity
     public void onScoutingTeamSelected(String matchId, String teamId) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         MatchOverviewFragment matchOverviewFragment = new MatchOverviewFragment();
-        matchOverviewFragment.setMatchId(matchId);
-        matchOverviewFragment.setTeamId(teamId);
+        SharedPreferences sp = getPreferences(MODE_PRIVATE);
+        Bundle args = new Bundle();
+        args.putString(MatchOverviewFragment.ARG_SCOUTER_NAME, sp.getString(NAME_PREFERENCE, "Unknown"));
+        args.putString(MatchOverviewFragment.ARG_MATCH_ID, matchId);
+        args.putString(MatchOverviewFragment.ARG_TEAM_ID, teamId);
+        matchOverviewFragment.setArguments(args);
         fragmentManager.beginTransaction().replace(R.id.container, matchOverviewFragment).commit();
     }
 

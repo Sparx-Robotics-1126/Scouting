@@ -3,6 +3,7 @@ package com.normandy.aerialassist.scouting.fragments;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +16,18 @@ import com.normandy.aerialassist.scouting.fragments.match.AutoFragment;
 import com.normandy.aerialassist.scouting.fragments.match.GeneralFragment;
 import com.normandy.aerialassist.scouting.fragments.match.TeleFragment;
 
+import java.util.List;
+
 /**
  * Created by jbass on 2/17/14.
  */
 public class MatchOverviewFragment extends Fragment implements View.OnClickListener {
+
+    private static final String TAG = "MatchOverviewFragment";
+
+    public static final String ARG_SCOUTER_NAME = "Scouter Name";
+    public static final String ARG_MATCH_ID = "Match Id";
+    public static final String ARG_TEAM_ID = "Team Id";
 
     private Button buttonAuto;
     private Button buttonTele;
@@ -28,24 +37,42 @@ public class MatchOverviewFragment extends Fragment implements View.OnClickListe
     private TeleFragment teleFragment;
     private GeneralFragment generalFragment;
 
-    private String matchId;
-    private String teamId;
-
-    public void setMatchId(String matchId) {
-        this.matchId = matchId;
-    }
-
-    public void setTeamId(String teamId) {
-        this.teamId = teamId;
-    }
+    private Scouting scouting;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
+        String matchId = getArguments().getString(ARG_MATCH_ID);
+        String teamId = getArguments().getString(ARG_TEAM_ID);
+        String scouterName = getArguments().getString(ARG_SCOUTER_NAME);
+
+        DatabaseHelper dbHelper = new DatabaseHelper(getActivity());
+        List<Scouting> scoutingList = dbHelper.getScouting(
+                matchId,
+                teamId,
+                scouterName);
+
+        if (scoutingList.size() > 1) {
+            Log.w(TAG, "Multiple sets of scouting data by same scouter!");
+        }
+        // Grab the last element, should be latest
+        if (scoutingList != null && !scoutingList.isEmpty())
+            scouting = scoutingList.get(scoutingList.size() - 1);
+
+        if(scouting == null){
+            scouting = new Scouting();
+            scouting.setMatchKey(matchId);
+            scouting.setTeamKey(teamId);
+            scouting.setNameOfScouter(scouterName);
+        }
+
         autoFragment = new AutoFragment();
+        autoFragment.setScoutingAuto(scouting.getAuto());
         teleFragment = new TeleFragment();
+        teleFragment.setScoutingTele(scouting.getTele());
         generalFragment = new GeneralFragment();
+        generalFragment.setScoutingGeneral(scouting.getGeneral());
     }
 
     @Override
@@ -62,9 +89,7 @@ public class MatchOverviewFragment extends Fragment implements View.OnClickListe
         buttonTele.setOnClickListener(this);
         buttonGeneral.setOnClickListener(this);
 
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.matchOverviewContent, autoFragment);
-        fragmentTransaction.commit();
+        onClick(buttonAuto);
 
         return retVal;
     }
@@ -93,10 +118,6 @@ public class MatchOverviewFragment extends Fragment implements View.OnClickListe
     public void onPause() {
         super.onPause();
         DatabaseHelper dbHelper = new DatabaseHelper(getActivity());
-        Scouting scouting = new Scouting();
-        scouting.setNameOfScouter("TEST");
-        scouting.setTeamKey(teamId);
-        scouting.setMatchKey(matchId);
         scouting.setAuto(autoFragment.getScoutingAuto());
         scouting.setTele(teleFragment.getScoutingTele());
         scouting.setGeneral(generalFragment.getScoutingGeneral());

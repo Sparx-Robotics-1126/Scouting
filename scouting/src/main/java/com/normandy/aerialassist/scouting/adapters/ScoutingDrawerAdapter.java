@@ -8,6 +8,7 @@ import android.widget.SimpleCursorTreeAdapter;
 import android.widget.TextView;
 
 import com.normandy.aerialassist.scouting.DatabaseHelper;
+import com.normandy.aerialassist.scouting.R;
 import com.normandy.aerialassist.scouting.dto.Event;
 import com.normandy.aerialassist.scouting.dto.Team;
 
@@ -30,7 +31,8 @@ public class ScoutingDrawerAdapter extends SimpleCursorTreeAdapter {
         setViewBinder(new SimpleCursorTreeAdapter.ViewBinder() {
             @Override
             public boolean setViewValue(View view, Cursor cursor, int i) {
-                view.setTag(cursor.getString(cursor.getColumnIndex("key")));
+                view.setTag(R.id.match_key,cursor.getString(cursor.getColumnIndex("match_key")));
+                view.setTag(R.id.team_key, cursor.getString(cursor.getColumnIndex("team_key")));
                 return false;
             }
         });
@@ -38,7 +40,7 @@ public class ScoutingDrawerAdapter extends SimpleCursorTreeAdapter {
 
     @Override
     protected Cursor getChildrenCursor(Cursor cursor) {
-        MatrixCursor c = new MatrixCursor(new String[]{"_id", "key", "team_number", "team_nick"}, 6);
+        MatrixCursor c = new MatrixCursor(new String[]{"_id", "match_key", "team_key", "team_number", "team_nick"}, 6);
         String[] teamList = new String[]{
                 cursor.getString(cursor.getColumnIndex("blue_one")),
                 cursor.getString(cursor.getColumnIndex("blue_two")),
@@ -52,6 +54,7 @@ public class ScoutingDrawerAdapter extends SimpleCursorTreeAdapter {
             Team team = dbHelper.getTeam(teamList[i]);
             c.addRow(new String[]{
                     Integer.toString(i),
+                    cursor.getString(cursor.getColumnIndex("key")),
                     teamList[i],
                     Integer.toString(team.getTeamNumber()),
                     team.getNickname()
