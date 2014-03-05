@@ -79,7 +79,10 @@ public class MainActivity extends FragmentActivity
     @Override
     public void onScoutingTeamSelected(String matchId, String teamId) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.container, new MatchOverviewFragment()).commit();
+        MatchOverviewFragment matchOverviewFragment = new MatchOverviewFragment();
+        matchOverviewFragment.setMatchId(matchId);
+        matchOverviewFragment.setTeamId(teamId);
+        fragmentManager.beginTransaction().replace(R.id.container, matchOverviewFragment).commit();
     }
 
     @Override

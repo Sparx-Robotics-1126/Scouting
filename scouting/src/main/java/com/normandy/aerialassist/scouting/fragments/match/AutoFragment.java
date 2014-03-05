@@ -1,6 +1,7 @@
 package com.normandy.aerialassist.scouting.fragments.match;
 
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.normandy.aerialassist.scouting.R;
+import com.normandy.aerialassist.scouting.dto.ScoutingAuto;
 
 /**
  * Created by jbass on 2/20/14.
@@ -25,7 +27,9 @@ public class AutoFragment extends Fragment implements View.OnClickListener, Seek
     private FieldLocationSelectionFragment fieldLocationSelectionFragment;
 
     private Button buttonSelectStartLocation;
+    private Point startingLocation;
     private Button buttonSelectEndLocation;
+    private Point endingLocaiton;
     private Switch switchStartWithBall;
 
     private SeekBar seekBarBallsAcq;
@@ -111,7 +115,18 @@ public class AutoFragment extends Fragment implements View.OnClickListener, Seek
 
     @Override
     public void onActivityResult(int requestCode, int responseCode, Intent intent){
-        Toast.makeText(getActivity(), "We have returned, responseCode("+responseCode+")", Toast.LENGTH_LONG).show();
+        switch (requestCode){
+            case START_REQUEST_CODE:
+                startingLocation = new Point(
+                        intent.getIntExtra(FieldLocationSelectionFragment.X_BUNDLE_KEY, -1),
+                        intent.getIntExtra(FieldLocationSelectionFragment.Y_BUNDLE_KEY, -1));
+                break;
+            case END_REQUEST_CODE:
+                endingLocaiton = new Point(
+                        intent.getIntExtra(FieldLocationSelectionFragment.X_BUNDLE_KEY, -1),
+                        intent.getIntExtra(FieldLocationSelectionFragment.Y_BUNDLE_KEY, -1));
+                break;
+        }
     }
 
     @Override
@@ -126,4 +141,21 @@ public class AutoFragment extends Fragment implements View.OnClickListener, Seek
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {}
+
+    public ScoutingAuto getScoutingAuto(){
+        ScoutingAuto sa = new ScoutingAuto();
+        if (editTextBallsAcq != null) {
+            sa.setStartingLocation(startingLocation);
+            sa.setStartedWithBall(switchStartWithBall.isChecked());
+            sa.setBallsAcquired(Integer.parseInt(editTextBallsAcq.getText().toString()));
+            sa.setBallsShot(Integer.parseInt(editTextBallsShot.getText().toString()));
+            sa.setBallsScored(Integer.parseInt(editTextBallsScored.getText().toString()));
+            sa.setBallsScoredHotHigh(Integer.parseInt(editTextBallsScoredHotHigh.getText().toString()));
+            sa.setBallsScoredHotLow(Integer.parseInt(editTextBallsScoredHotLow.getText().toString()));
+            sa.setBallsScoredHigh(Integer.parseInt(editTextBallsScoredHigh.getText().toString()));
+            sa.setBallsScoredLow(Integer.parseInt(editTextBallsScoredLow.getText().toString()));
+            sa.setEndingLocation(endingLocaiton);
+        }
+        return sa;
+    }
 }

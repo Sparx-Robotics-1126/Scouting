@@ -83,7 +83,6 @@ public class FieldLocationSelectionFragment extends DialogFragment implements Vi
             c.drawCircle(selectedLocation.x, selectedLocation.y, 50, paint);
             imageView.setImageDrawable(new BitmapDrawable(getResources(), tempBitmap));
             imageView.invalidate();
-            Toast.makeText(getActivity(), selectedLocation.toString(), Toast.LENGTH_SHORT).show();
         }
         return true;
     }

@@ -8,6 +8,7 @@ import android.graphics.Point;
 public class ScoutingAuto {
 
     private Point startingLocation;
+    private boolean startedWithBall;
     private int ballsAcquired;
     private int ballsShot;
     private int ballsScored;
@@ -23,6 +24,14 @@ public class ScoutingAuto {
 
     public void setStartingLocation(Point startingLocation) {
         this.startingLocation = startingLocation;
+    }
+
+    public boolean isStartedWithBall() {
+        return startedWithBall;
+    }
+
+    public void setStartedWithBall(boolean startedWithBall) {
+        this.startedWithBall = startedWithBall;
     }
 
     public int getBallsAcquired() {

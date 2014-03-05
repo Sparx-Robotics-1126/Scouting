@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.normandy.aerialassist.scouting.DatabaseHelper;
 import com.normandy.aerialassist.scouting.R;
+import com.normandy.aerialassist.scouting.dto.Scouting;
 import com.normandy.aerialassist.scouting.fragments.match.AutoFragment;
 import com.normandy.aerialassist.scouting.fragments.match.GeneralFragment;
 import com.normandy.aerialassist.scouting.fragments.match.TeleFragment;
@@ -25,6 +27,17 @@ public class MatchOverviewFragment extends Fragment implements View.OnClickListe
     private AutoFragment autoFragment;
     private TeleFragment teleFragment;
     private GeneralFragment generalFragment;
+
+    private String matchId;
+    private String teamId;
+
+    public void setMatchId(String matchId) {
+        this.matchId = matchId;
+    }
+
+    public void setTeamId(String teamId) {
+        this.teamId = teamId;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -74,5 +87,23 @@ public class MatchOverviewFragment extends Fragment implements View.OnClickListe
                 throw new RuntimeException("Invalid button handle!");
         }
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        DatabaseHelper dbHelper = new DatabaseHelper(getActivity());
+        Scouting scouting = new Scouting();
+        scouting.setNameOfScouter("TEST");
+        scouting.setTeamKey(teamId);
+        scouting.setMatchKey(matchId);
+        scouting.setAuto(autoFragment.getScoutingAuto());
+        scouting.setTele(teleFragment.getScoutingTele());
+        scouting.setGeneral(generalFragment.getScoutingGeneral());
+
+        if(dbHelper.doesScoutingExist(scouting))
+            dbHelper.updateScouting(scouting);
+        else
+            dbHelper.createScouting(scouting);
     }
 }

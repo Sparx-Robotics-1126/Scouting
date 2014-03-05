@@ -10,6 +10,7 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 
 import com.normandy.aerialassist.scouting.R;
+import com.normandy.aerialassist.scouting.dto.ScoutingTele;
 
 /**
  * Created by jbass on 2/20/14.
@@ -134,4 +135,22 @@ public class TeleFragment extends Fragment implements SeekBar.OnSeekBarChangeLis
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {}
+
+    public ScoutingTele getScoutingTele(){
+        ScoutingTele st = new ScoutingTele();
+        if (editTextNumberBallsAcqFromFloor != null) {
+            st.setBallsAcquiredFromFloor(Integer.parseInt(editTextNumberBallsAcqFromFloor.getText().toString()));
+            st.setCompletedAssistsFromFloor(Integer.parseInt(editTextCompletedAssistFromFloor.getText().toString()));
+            st.setBallsAcquiredFromHuman(Integer.parseInt(editTextNumberBallsAcqFromHuman.getText().toString()));
+            st.setCompletedAssistsFromHuman(Integer.parseInt(editTextCompletedAssistFromHuman.getText().toString()));
+            st.setShotHigh(Integer.parseInt(editTextShotHigh.getText().toString()));
+            st.setScoredHigh(Integer.parseInt(editTextScoredHigh.getText().toString()));
+            st.setShotLow(Integer.parseInt(editTextShotLow.getText().toString()));
+            st.setScoredLow(Integer.parseInt(editTextScoredLow.getText().toString()));
+            st.setBallsCaughtOverTruss(Integer.parseInt(editTextBallCaughtOverTruss.getText().toString()));
+            st.setBallsThrownOverTruss(Integer.parseInt(editTextBallThrownOverTruss.getText().toString()));
+            st.setStayedInZone(spinnerZoneSpentMostTime.getSelectedItem().toString());
+        }
+        return st;
+    }
 }

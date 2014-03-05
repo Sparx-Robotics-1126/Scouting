@@ -10,6 +10,7 @@ import android.widget.SeekBar;
 import android.widget.Switch;
 
 import com.normandy.aerialassist.scouting.R;
+import com.normandy.aerialassist.scouting.dto.ScoutingGeneral;
 
 /**
  * Created by jbass on 2/20/14.
@@ -64,4 +65,17 @@ public class GeneralFragment extends Fragment implements SeekBar.OnSeekBarChange
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {}
+
+    public ScoutingGeneral getScoutingGeneral(){
+        ScoutingGeneral sg = new ScoutingGeneral();
+        if (switchPlaysDefence != null) {
+            sg.setPlaysDefense(switchPlaysDefence.isChecked());
+            sg.setNumberOfPenalties(Integer.parseInt(editTextNumberPenalties.getText().toString()));
+            sg.setCommentsOnPenalties(editTextPenaltyComments.getText().toString());
+            sg.setNumberOfTechnicalFouls(Integer.parseInt(editTextNumberTechnicalFouls.getText().toString()));
+            sg.setCommentsOnTechnicalFouls(editTextTechnicalFoulsComments.getText().toString());
+            sg.setGeneralComments(editTextGeneralComments.getText().toString());
+        }
+        return sg;
+    }
 }

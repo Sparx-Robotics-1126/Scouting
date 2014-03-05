@@ -95,6 +95,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_SCOUTING_AUTO_STARTING_LOCATION_X = "auto_starting_location_x";
     private static final String TABLE_SCOUTING_AUTO_STARTING_LOCATION_Y = "auto_starting_location_y";
     private static final String TABLE_SCOUTING_AUTO_BALLS_ACQUIRED = "auto_balls_acquired";
+    private static final String TABLE_SCOUTING_AUTO_STARTED_WITH_BALL = "auto_started_with_ball";
     private static final String TABLE_SCOUTING_AUTO_BALLS_SHOT = "auto_balls_shot";
     private static final String TABLE_SCOUTING_AUTO_BALLS_SCORED = "auto_balls_scored";
     private static final String TABLE_SCOUTING_AUTO_BALLS_SCORED_HOT_HIGH = "auto_balls_scored_hot_high";
@@ -173,6 +174,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + TABLE_SCOUTING_TEAM_KEY + " TEXT, "
             + TABLE_SCOUTING_AUTO_STARTING_LOCATION_X + " INTEGER, "
             + TABLE_SCOUTING_AUTO_STARTING_LOCATION_Y + " INTEGER, "
+            + TABLE_SCOUTING_AUTO_STARTED_WITH_BALL + " INTEGER, "
             + TABLE_SCOUTING_AUTO_BALLS_ACQUIRED + " INTEGER, "
             + TABLE_SCOUTING_AUTO_BALLS_SHOT + " INTEGER, "
             + TABLE_SCOUTING_AUTO_BALLS_SCORED + " INTEGER, "
@@ -491,9 +493,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return retVal;
     }
 
-    public void createScouting(Scouting scouting){
-        SQLiteDatabase db = getWritableDatabase();
-
+    private ContentValues mapScouting(Scouting scouting){
         ScoutingAuto scoutingAuto = scouting.getAuto();
         ScoutingTele scoutingTele = scouting.getTele();
         ScoutingGeneral scoutingGeneral = scouting.getGeneral();
@@ -503,40 +503,75 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(TABLE_SCOUTING_MATCH_KEY, scouting.getMatchKey());
         values.put(TABLE_SCOUTING_TEAM_KEY, scouting.getTeamKey());
 
-        if(scoutingAuto.getStartingLocation() != null){
-            values.put(TABLE_SCOUTING_AUTO_STARTING_LOCATION_X, scoutingAuto.getStartingLocation().x);
-            values.put(TABLE_SCOUTING_AUTO_STARTING_LOCATION_Y, scoutingAuto.getStartingLocation().y);
+        if (scoutingAuto != null) {
+            if (scoutingAuto.getStartingLocation() != null) {
+                values.put(TABLE_SCOUTING_AUTO_STARTING_LOCATION_X, scoutingAuto.getStartingLocation().x);
+                values.put(TABLE_SCOUTING_AUTO_STARTING_LOCATION_Y, scoutingAuto.getStartingLocation().y);
+            }
+            values.put(TABLE_SCOUTING_AUTO_BALLS_ACQUIRED, scoutingAuto.getBallsAcquired());
+            values.put(TABLE_SCOUTING_AUTO_STARTED_WITH_BALL, scoutingAuto.isStartedWithBall());
+            values.put(TABLE_SCOUTING_AUTO_BALLS_SHOT, scoutingAuto.getBallsShot());
+            values.put(TABLE_SCOUTING_AUTO_BALLS_SCORED, scoutingAuto.getBallsScored());
+            values.put(TABLE_SCOUTING_AUTO_BALLS_SCORED_HOT_HIGH, scoutingAuto.getBallsScoredHotHigh());
+            values.put(TABLE_SCOUTING_AUTO_BALLS_SCORED_HOT_LOW, scoutingAuto.getBallsScoredHotLow());
+            values.put(TABLE_SCOUTING_AUTO_BALLS_SCORED_HIGH, scoutingAuto.getBallsScoredHigh());
+            values.put(TABLE_SCOUTING_AUTO_BALLS_SCORED_LOW, scoutingAuto.getBallsScoredLow());
+            if (scoutingAuto.getEndingLocation() != null) {
+                values.put(TABLE_SCOUTING_AUTO_ENDING_LOCATION_X, scoutingAuto.getEndingLocation().x);
+                values.put(TABLE_SCOUTING_AUTO_ENDING_LOCATION_Y, scoutingAuto.getEndingLocation().y);
+            }
         }
-        values.put(TABLE_SCOUTING_AUTO_BALLS_ACQUIRED, scoutingAuto.getBallsAcquired());
-        values.put(TABLE_SCOUTING_AUTO_BALLS_SHOT, scoutingAuto.getBallsShot());
-        values.put(TABLE_SCOUTING_AUTO_BALLS_SCORED, scoutingAuto.getBallsScored());
-        values.put(TABLE_SCOUTING_AUTO_BALLS_SCORED_HOT_HIGH, scoutingAuto.getBallsScoredHotHigh());
-        values.put(TABLE_SCOUTING_AUTO_BALLS_SCORED_HOT_LOW, scoutingAuto.getBallsScoredHotLow());
-        values.put(TABLE_SCOUTING_AUTO_BALLS_SCORED_HIGH, scoutingAuto.getBallsScoredHigh());
-        values.put(TABLE_SCOUTING_AUTO_BALLS_SCORED_LOW, scoutingAuto.getBallsScoredLow());
-        if(scoutingAuto.getEndingLocation() != null){
-            values.put(TABLE_SCOUTING_AUTO_ENDING_LOCATION_X, scoutingAuto.getEndingLocation().x);
-            values.put(TABLE_SCOUTING_AUTO_ENDING_LOCATION_Y, scoutingAuto.getEndingLocation().y);
+        if (scoutingTele != null) {
+            values.put(TABLE_SCOUTING_TELE_ACQUIRED_FROM_FLOOR, scoutingTele.getBallsAcquiredFromFloor());
+            values.put(TABLE_SCOUTING_TELE_COMPLETED_ASSISTS_FROM_FLOOR, scoutingTele.getCompletedAssistsFromFloor());
+            values.put(TABLE_SCOUTING_TELE_ACQUIRED_FROM_HUMAN, scoutingTele.getBallsAcquiredFromHuman());
+            values.put(TABLE_SCOUTING_TELE_COMPLETED_ASSISTS_FROM_HUMAN, scoutingTele.getCompletedAssistsFromHuman());
+            values.put(TABLE_SCOUTING_TELE_SHOT_HIGH, scoutingTele.getShotHigh());
+            values.put(TABLE_SCOUTING_TELE_SCORED_HIGH, scoutingTele.getScoredHigh());
+            values.put(TABLE_SCOUTING_TELE_SHOT_LOW, scoutingTele.getShotLow());
+            values.put(TABLE_SCOUTING_TELE_SCORED_LOW, scoutingTele.getScoredLow());
+            values.put(TABLE_SCOUTING_TELE_CAUGHT_TRUSS, scoutingTele.getBallsCaughtOverTruss());
+            values.put(TABLE_SCOUTING_TELE_THROWN_TRUSS, scoutingTele.getBallsThrownOverTruss());
+            values.put(TABLE_SCOUTING_TELE_STAYED_ZONE, scoutingTele.getStayedInZone());
         }
+        if (scoutingGeneral != null) {
+            values.put(TABLE_SCOUTING_GENERAL_PLAYS_DEFENSE, scoutingGeneral.isPlaysDefense());
+            values.put(TABLE_SCOUTING_GENERAL_NUM_PENALITES, scoutingGeneral.getNumberOfPenalties());
+            values.put(TABLE_SCOUTING_GENERAL_COMMENTS_PENALTIES, scoutingGeneral.getCommentsOnPenalties());
+            values.put(TABLE_SCOUTING_GENERAL_NUM_TECH_FOULS, scoutingGeneral.getNumberOfTechnicalFouls());
+            values.put(TABLE_SCOUTING_GENERAL_COMMENTS_TECH_FOULS, scoutingGeneral.getCommentsOnTechnicalFouls());
+            values.put(TABLE_SCOUTING_GENERAL_COMMENTS, scoutingGeneral.getGeneralComments());
+        }
+        return values;
+    }
 
-        values.put(TABLE_SCOUTING_TELE_ACQUIRED_FROM_FLOOR, scoutingTele.getBallsAcquiredFromFloor());
-        values.put(TABLE_SCOUTING_TELE_COMPLETED_ASSISTS_FROM_FLOOR, scoutingTele.getCompletedAssistsFromFloor());
-        values.put(TABLE_SCOUTING_TELE_ACQUIRED_FROM_HUMAN, scoutingTele.getBallsAcquiredFromHuman());
-        values.put(TABLE_SCOUTING_TELE_COMPLETED_ASSISTS_FROM_HUMAN, scoutingTele.getCompletedAssistsFromHuman());
-        values.put(TABLE_SCOUTING_TELE_SHOT_HIGH, scoutingTele.getShotHigh());
-        values.put(TABLE_SCOUTING_TELE_SCORED_HIGH, scoutingTele.getScoredHigh());
-        values.put(TABLE_SCOUTING_TELE_SHOT_LOW, scoutingTele.getShotLow());
-        values.put(TABLE_SCOUTING_TELE_SCORED_LOW, scoutingTele.getScoredLow());
-        values.put(TABLE_SCOUTING_TELE_CAUGHT_TRUSS, scoutingTele.getBallsCaughtOverTruss());
-        values.put(TABLE_SCOUTING_TELE_THROWN_TRUSS, scoutingTele.getBallsThrownOverTruss());
-        values.put(TABLE_SCOUTING_TELE_STAYED_ZONE, scoutingTele.getStayedInZone());
+    public void createScouting(Scouting scouting){
+        SQLiteDatabase db = getWritableDatabase();
 
-        values.put(TABLE_SCOUTING_GENERAL_PLAYS_DEFENSE, scoutingGeneral.isPlaysDefense());
-        values.put(TABLE_SCOUTING_GENERAL_NUM_PENALITES, scoutingGeneral.getNumberOfPenalties());
-        values.put(TABLE_SCOUTING_GENERAL_COMMENTS_PENALTIES, scoutingGeneral.getCommentsOnPenalties());
-        values.put(TABLE_SCOUTING_GENERAL_NUM_TECH_FOULS, scoutingGeneral.getNumberOfTechnicalFouls());
-        values.put(TABLE_SCOUTING_GENERAL_COMMENTS_TECH_FOULS, scoutingGeneral.getCommentsOnTechnicalFouls());
-        values.put(TABLE_SCOUTING_GENERAL_COMMENTS, scoutingGeneral.getGeneralComments());
+        db.insert(TABLE_SCOUTING, null, mapScouting(scouting));
+    }
+
+    public boolean doesScoutingExist(Scouting scouting){
+        boolean retVal = false;
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor c = db.query(TABLE_SCOUTING, new String[]{TABLE_SCOUTING_TEAM_KEY, TABLE_SCOUTING_MATCH_KEY, TABLE_SCOUTING_NAME},
+                TABLE_SCOUTING_TEAM_KEY + " = ? AND " + TABLE_SCOUTING_MATCH_KEY + " = ? AND " + TABLE_SCOUTING_NAME +" = ?",
+                new String[]{scouting.getTeamKey(), scouting.getMatchKey(), scouting.getNameOfScouter()},
+                null, null, null);
+
+        if(c != null && c.getCount() > 0)
+            retVal = true;
+
+        return retVal;
+    }
+
+    public void updateScouting(Scouting scouting){
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.update(TABLE_SCOUTING, mapScouting(scouting),
+                TABLE_SCOUTING_TEAM_KEY + " = ? AND " + TABLE_SCOUTING_MATCH_KEY + " = ? AND " + TABLE_SCOUTING_NAME +" = ?",
+                new String[]{scouting.getTeamKey(), scouting.getMatchKey(), scouting.getNameOfScouter()});
     }
 
     public List<Scouting> getScouting(String matchKey, String teamKey){
@@ -560,6 +595,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             auto.setStartingLocation(new Point(
                     c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_STARTING_LOCATION_X)),
                     c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_STARTING_LOCATION_Y))));
+            auto.setStartedWithBall(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_STARTING_LOCATION_Y)) == 1);
             auto.setBallsAcquired(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_ACQUIRED)));
             auto.setBallsShot(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_SHOT)));
             auto.setBallsScored(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_SCORED)));

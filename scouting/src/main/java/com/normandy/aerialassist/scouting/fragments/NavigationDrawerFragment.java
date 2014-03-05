@@ -137,7 +137,8 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
                     case 0:
                         if (mCallbacks != null && spinnerRegional != null) {
                             // spinner tag == Regional Key && view tag == team key
-                            mCallbacks.onScoutingTeamSelected((String) spinnerRegional.getSelectedView().getTag(), (String) view.getTag());
+                            mCallbacks.onScoutingTeamSelected((String) spinnerRegional.getSelectedView().getTag(),
+                                    (String) view.findViewById(android.R.id.text1).getTag());
                         }
                         break;
                 }
@@ -192,7 +193,9 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                updateDrawerData();
+                if(spinnerRegional != null){
+                    updateDrawerData(dbHelper.getEvent((String) spinnerRegional.getSelectedView().getTag()));
+                }
                 if (!isAdded()) {
                     return;
                 }
@@ -301,13 +304,14 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
                     scoutingDrawerAdapter.changeCursor(dbHelper.createMatchCursor(current));
                     blueAlliance.loadMatches(current);
                     blueAlliance.loadTeams(current);
-                    updateDrawerData();
+                    updateDrawerData(current);
                 }
         }
     }
 
-    private void updateDrawerData(){
+    private void updateDrawerData(Event currentEvent){
         cursorAdapterRegionalNames.changeCursor(dbHelper.createEventNameCursor());
+        scoutingDrawerAdapter.changeCursor(dbHelper.createMatchCursor(currentEvent));
     }
 
     @Override
