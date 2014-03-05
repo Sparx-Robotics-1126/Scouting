@@ -1,4 +1,4 @@
-package com.normandy.aerialassist.scouting.adapters;
+package org.gosparx.scouting.aerialassist.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -7,10 +7,11 @@ import android.view.View;
 import android.widget.SimpleCursorTreeAdapter;
 import android.widget.TextView;
 
-import com.normandy.aerialassist.scouting.DatabaseHelper;
-import com.normandy.aerialassist.scouting.R;
-import com.normandy.aerialassist.scouting.dto.Event;
-import com.normandy.aerialassist.scouting.dto.Team;
+import org.gosparx.scouting.aerialassist.R;
+
+import org.gosparx.scouting.aerialassist.DatabaseHelper;
+
+import org.gosparx.scouting.aerialassist.dto.Team;
 
 /**
  * Created by jbass on 3/3/14.

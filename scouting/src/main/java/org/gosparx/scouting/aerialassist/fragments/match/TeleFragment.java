@@ -1,4 +1,4 @@
-package com.normandy.aerialassist.scouting.fragments.match;
+package org.gosparx.scouting.aerialassist.fragments.match;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,8 +9,9 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 
-import com.normandy.aerialassist.scouting.R;
-import com.normandy.aerialassist.scouting.dto.ScoutingTele;
+import org.gosparx.scouting.aerialassist.R;
+
+import org.gosparx.scouting.aerialassist.dto.ScoutingTele;
 
 /**
  * Created by jbass on 2/20/14.

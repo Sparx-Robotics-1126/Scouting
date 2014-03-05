@@ -1,4 +1,4 @@
-package com.normandy.aerialassist.scouting.dto;
+package org.gosparx.scouting.aerialassist.dto;
 
 import com.google.gson.annotations.SerializedName;
 

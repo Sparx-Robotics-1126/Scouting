@@ -1,4 +1,4 @@
-package com.normandy.aerialassist.scouting.fragments;
+package org.gosparx.scouting.aerialassist.fragments;
 
 
 import android.app.Activity;
@@ -21,15 +21,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.SimpleCursorAdapter;
-import android.widget.SimpleCursorTreeAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.normandy.aerialassist.scouting.DatabaseHelper;
-import com.normandy.aerialassist.scouting.R;
-import com.normandy.aerialassist.scouting.adapters.ScoutingDrawerAdapter;
-import com.normandy.aerialassist.scouting.dto.Event;
-import com.normandy.aerialassist.scouting.networking.BlueAlliance;
+import org.gosparx.scouting.aerialassist.R;
+
+import org.gosparx.scouting.aerialassist.DatabaseHelper;
+import org.gosparx.scouting.aerialassist.adapters.ScoutingDrawerAdapter;
+import org.gosparx.scouting.aerialassist.dto.Event;
+import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.

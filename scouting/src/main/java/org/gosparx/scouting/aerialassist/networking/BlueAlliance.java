@@ -1,4 +1,4 @@
-package com.normandy.aerialassist.scouting.networking;
+package org.gosparx.scouting.aerialassist.networking;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -9,10 +9,10 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
-import com.normandy.aerialassist.scouting.DatabaseHelper;
-import com.normandy.aerialassist.scouting.dto.Event;
-import com.normandy.aerialassist.scouting.dto.Match;
-import com.normandy.aerialassist.scouting.dto.Team;
+import org.gosparx.scouting.aerialassist.DatabaseHelper;
+import org.gosparx.scouting.aerialassist.dto.Event;
+import org.gosparx.scouting.aerialassist.dto.Match;
+import org.gosparx.scouting.aerialassist.dto.Team;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.normandy.aerialassist.scouting.fragments.match;
+package org.gosparx.scouting.aerialassist.fragments.match;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -11,18 +11,14 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.PaintDrawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.normandy.aerialassist.scouting.R;
+import org.gosparx.scouting.aerialassist.R;
 
 /**
  * Created by jbass on 2/25/14.

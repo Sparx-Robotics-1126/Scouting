@@ -1,4 +1,4 @@
-package com.normandy.aerialassist.scouting.fragments.match;
+package org.gosparx.scouting.aerialassist.fragments.match;
 
 import android.content.Intent;
 import android.graphics.Point;
@@ -11,11 +11,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Switch;
-import android.widget.Toast;
 
-import com.normandy.aerialassist.scouting.R;
-import com.normandy.aerialassist.scouting.dto.Scouting;
-import com.normandy.aerialassist.scouting.dto.ScoutingAuto;
+import org.gosparx.scouting.aerialassist.R;
+
+import org.gosparx.scouting.aerialassist.dto.ScoutingAuto;
 
 /**
  * Created by jbass on 2/20/14.

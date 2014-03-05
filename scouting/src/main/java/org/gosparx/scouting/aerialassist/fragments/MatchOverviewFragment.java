@@ -1,4 +1,4 @@
-package com.normandy.aerialassist.scouting.fragments;
+package org.gosparx.scouting.aerialassist.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,12 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.normandy.aerialassist.scouting.DatabaseHelper;
-import com.normandy.aerialassist.scouting.R;
-import com.normandy.aerialassist.scouting.dto.Scouting;
-import com.normandy.aerialassist.scouting.fragments.match.AutoFragment;
-import com.normandy.aerialassist.scouting.fragments.match.GeneralFragment;
-import com.normandy.aerialassist.scouting.fragments.match.TeleFragment;
+import org.gosparx.scouting.aerialassist.R;
+
+import org.gosparx.scouting.aerialassist.DatabaseHelper;
+import org.gosparx.scouting.aerialassist.dto.Scouting;
+import org.gosparx.scouting.aerialassist.fragments.match.AutoFragment;
+import org.gosparx.scouting.aerialassist.fragments.match.GeneralFragment;
+import org.gosparx.scouting.aerialassist.fragments.match.TeleFragment;
 
 import java.util.List;
 

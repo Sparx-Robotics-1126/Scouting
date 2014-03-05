@@ -1,4 +1,4 @@
-package com.normandy.aerialassist.scouting;
+package org.gosparx.scouting.aerialassist;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,15 +8,15 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Point;
 import android.util.Log;
 
-import com.normandy.aerialassist.scouting.dto.Alliance;
-import com.normandy.aerialassist.scouting.dto.Alliances;
-import com.normandy.aerialassist.scouting.dto.Event;
-import com.normandy.aerialassist.scouting.dto.Match;
-import com.normandy.aerialassist.scouting.dto.Scouting;
-import com.normandy.aerialassist.scouting.dto.ScoutingAuto;
-import com.normandy.aerialassist.scouting.dto.ScoutingGeneral;
-import com.normandy.aerialassist.scouting.dto.ScoutingTele;
-import com.normandy.aerialassist.scouting.dto.Team;
+import org.gosparx.scouting.aerialassist.dto.Alliance;
+import org.gosparx.scouting.aerialassist.dto.Alliances;
+import org.gosparx.scouting.aerialassist.dto.Event;
+import org.gosparx.scouting.aerialassist.dto.Match;
+import org.gosparx.scouting.aerialassist.dto.Scouting;
+import org.gosparx.scouting.aerialassist.dto.ScoutingAuto;
+import org.gosparx.scouting.aerialassist.dto.ScoutingGeneral;
+import org.gosparx.scouting.aerialassist.dto.ScoutingTele;
+import org.gosparx.scouting.aerialassist.dto.Team;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
