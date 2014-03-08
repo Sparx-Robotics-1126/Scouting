@@ -126,7 +126,8 @@ public class BlueAlliance {
                             else
                                 dbHelper.createTeam(team);
 
-                            dbHelper.createE2TAssociation(event.getKey(), team.getKey());
+                            if(!dbHelper.doesE2TAssociationExist(event.getKey(), team.getKey()))
+                                dbHelper.createE2TAssociation(event.getKey(), team.getKey());
                         }
                     }
                 });

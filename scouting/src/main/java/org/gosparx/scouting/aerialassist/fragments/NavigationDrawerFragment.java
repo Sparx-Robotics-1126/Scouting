@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -60,12 +61,14 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
     private ActionBarDrawerToggle mDrawerToggle;
 
     private ScoutingDrawerAdapter scoutingDrawerAdapter;
+    private SimpleCursorAdapter teamsDrawerAdapter;
 
     private DrawerLayout mDrawerLayout;
     private Spinner spinnerRegional;
     private SimpleCursorAdapter cursorAdapterRegionalNames;
     private Spinner spinnerTaskSelection;
-    private ExpandableListView mDrawerListView;
+    private ExpandableListView mDrawerExpandableListView;
+    private ListView mDrawerListView;
     private View mFragmentContainerView;
 
     private BlueAlliance blueAlliance;
@@ -108,6 +111,12 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
         View mainView = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
 
         scoutingDrawerAdapter = new ScoutingDrawerAdapter(getActivity(), dbHelper);
+        teamsDrawerAdapter = new SimpleCursorAdapter(getActivity(),
+                android.R.layout.simple_list_item_2,
+                null,
+                new String[]{"team_number", "nickname"},
+                new int[]{android.R.id.text1, android.R.id.text2},
+                0);
 
         spinnerRegional = (Spinner) mainView.findViewById(R.id.spinnerRegional);
         cursorAdapterRegionalNames = new SimpleCursorAdapter(
@@ -122,7 +131,7 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
             public boolean setViewValue(View view, Cursor cursor, int i) {
                 view.setTag(cursor.getString(cursor.getColumnIndex("key")));
                 StringBuilder textBuilder = new StringBuilder(cursor.getString(cursor.getColumnIndex("start_date")).substring(0,10));
-                    textBuilder.append(" | ").append(cursor.getString(i));
+                textBuilder.append(" | ").append(cursor.getString(i));
                 if(view instanceof TextView)
                     ((TextView) view).setText(textBuilder.toString());
                 return true;
@@ -132,13 +141,14 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
         spinnerRegional.setOnItemSelectedListener(this);
 
         spinnerTaskSelection = (Spinner) mainView.findViewById(R.id.spinnerTaskSelection);
+        spinnerTaskSelection.setOnItemSelectedListener(this);
 
-        mDrawerListView = (ExpandableListView) mainView.findViewById(R.id.expandableListViewDrawerContent);
-        mDrawerListView.setAdapter(scoutingDrawerAdapter);
-        mDrawerListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+        mDrawerExpandableListView = (ExpandableListView) mainView.findViewById(R.id.expandableListViewDrawerContent);
+        mDrawerExpandableListView.setAdapter(scoutingDrawerAdapter);
+        mDrawerExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView expandableListView, View view, int groupPos, int childPos, long id) {
-                switch (spinnerTaskSelection.getSelectedItemPosition()){
+                switch (spinnerTaskSelection.getSelectedItemPosition()) {
                     case 0:
                         if (mCallbacks != null && spinnerRegional != null) {
                             // spinner tag == Regional Key && view tag == team key
@@ -154,6 +164,9 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
                 return false;
             }
         });
+
+        mDrawerListView = (ListView) mainView.findViewById(R.id.listViewDrawerContent);
+
         return mainView;
     }
 
@@ -201,9 +214,13 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
+                String eventKey = null;
                 if(spinnerRegional != null && spinnerRegional.getSelectedView() != null){
-                    updateDrawerData(dbHelper.getEvent((String) spinnerRegional.getSelectedView().getTag()));
-                }
+                    eventKey = (String) spinnerRegional.getSelectedView().getTag();
+                    updateDrawerData(dbHelper.getEvent(eventKey));
+                }else
+                    updateDrawerData(null);
+
                 if (!isAdded()) {
                     return;
                 }
@@ -305,21 +322,45 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         //TODO: Update stuff based on selection
-        switch (parent.getId()){
+        Event current = null;
+        if(spinnerRegional != null && spinnerRegional.getSelectedView() != null)
+            current= dbHelper.getEvent((String) spinnerRegional.getSelectedView().getTag());
+        switch (parent.getId()) {
             case R.id.spinnerRegional:
-                Event current = dbHelper.getEvent((String) spinnerRegional.getSelectedView().getTag());
-                if(current != null){
+                if (current != null) {
                     scoutingDrawerAdapter.changeCursor(dbHelper.createMatchCursor(current));
+                    teamsDrawerAdapter.changeCursor(dbHelper.createTeamCursor(current));
                     blueAlliance.loadMatches(current);
                     blueAlliance.loadTeams(current);
                     updateDrawerData(current);
                 }
+                break;
+
+            case R.id.spinnerTaskSelection:
+                if(current != null){
+                    if(spinnerTaskSelection.getSelectedItem().equals(getString(R.string.scouting))){
+                        mDrawerExpandableListView.setVisibility(View.VISIBLE);
+                        mDrawerListView.setVisibility(View.GONE);
+                        mDrawerExpandableListView.setAdapter(scoutingDrawerAdapter);
+                    }else if(spinnerTaskSelection.getSelectedItem().equals(getString(R.string.teams))){
+                        mDrawerExpandableListView.setVisibility(View.GONE);
+                        mDrawerListView.setVisibility(View.VISIBLE);
+                        mDrawerListView.setAdapter(teamsDrawerAdapter);
+                    }else{
+
+                    }
+                    updateDrawerData(current);
+                }
+                break;
         }
     }
 
     private void updateDrawerData(Event currentEvent){
         cursorAdapterRegionalNames.changeCursor(dbHelper.createEventNameCursor());
-        scoutingDrawerAdapter.changeCursor(dbHelper.createMatchCursor(currentEvent));
+        if(currentEvent != null) {
+            scoutingDrawerAdapter.changeCursor(dbHelper.createMatchCursor(currentEvent));
+            teamsDrawerAdapter.changeCursor(dbHelper.createTeamCursor(currentEvent));
+        }
     }
 
     @Override

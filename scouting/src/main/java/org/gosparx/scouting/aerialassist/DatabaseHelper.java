@@ -377,6 +377,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return team;
     }
 
+    public Cursor createTeamCursor(Event event){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.query(TABLE_TEAMS+","+TABLE_E2T,
+                new String[]{"*", TABLE_TEAMS+".rowid AS _id"},
+                TABLE_TEAMS+"."+TABLE_TEAMS_KEY+" = "+TABLE_E2T+"."+TABLE_E2T_TEAM
+                +" AND "+TABLE_E2T+"."+TABLE_E2T_EVENT+" = ?",
+                new String[]{event.getKey()},
+                null, null, TABLE_TEAMS+"."+TABLE_TEAMS_TEAM_NUMBER+" ASC");
+
+        return c;
+    }
+
     public void createE2TAssociation(String eventKey, String teamKey){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -384,6 +396,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(TABLE_E2T_TEAM, teamKey);
 
         db.insert(TABLE_E2T, null, values);
+    }
+
+    public boolean doesE2TAssociationExist(String eventKey, String teamKey){
+        SQLiteDatabase db = getReadableDatabase();
+        boolean retVal = false;
+
+        Cursor c = db.query(TABLE_E2T, new String[]{"*"},
+                TABLE_E2T_EVENT+" = ? AND "+TABLE_E2T_TEAM+" = ?",
+                new String[]{eventKey, teamKey}, null, null, null);
+
+        if(c != null && c.getCount() > 0)
+            retVal = true;
+
+        return retVal;
     }
 
     private ContentValues mapMatch(Match match){

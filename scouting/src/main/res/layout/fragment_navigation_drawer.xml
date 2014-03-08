@@ -22,8 +22,11 @@
         android:id="@+id/expandableListViewDrawerContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:choiceMode="singleChoice"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="0dp"/>
+        android:choiceMode="singleChoice"/>
+    <ListView
+        android:id="@+id/listViewDrawerContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"/>
 
 </LinearLayout>
