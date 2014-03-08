@@ -113,12 +113,23 @@ public class AutoFragment extends Fragment implements View.OnClickListener, Seek
 
     @Override
     public void onClick(View view) {
+        Bundle args = new Bundle();
         switch (view.getId()){
             case R.id.buttonAutoStartLocationSelect:
+                if(startingLocation != null && startingLocation.x > 0 && startingLocation.y > 0){
+                    args.putInt(FieldLocationSelectionFragment.X_BUNDLE_KEY, startingLocation.x);
+                    args.putInt(FieldLocationSelectionFragment.Y_BUNDLE_KEY, startingLocation.y);
+                    fieldLocationSelectionFragment.setArguments(args);
+                }
                 fieldLocationSelectionFragment.setTargetFragment(this, START_REQUEST_CODE);
                 fieldLocationSelectionFragment.show(getFragmentManager(), "FieldLocationSelectionStart");
                 break;
             case R.id.buttonAutoEndLocationSelect:
+                if(endingLocaiton != null && endingLocaiton.x > 0 && endingLocaiton.y > 0){
+                    args.putInt(FieldLocationSelectionFragment.X_BUNDLE_KEY, endingLocaiton.x);
+                    args.putInt(FieldLocationSelectionFragment.Y_BUNDLE_KEY, endingLocaiton.y);
+                    fieldLocationSelectionFragment.setArguments(args);
+                }
                 fieldLocationSelectionFragment.setTargetFragment(this, END_REQUEST_CODE);
                 fieldLocationSelectionFragment.show(getFragmentManager(), "FieldLocationSelectionEnd");
                 break;

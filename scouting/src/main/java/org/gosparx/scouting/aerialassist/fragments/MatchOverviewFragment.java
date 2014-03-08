@@ -74,6 +74,7 @@ public class MatchOverviewFragment extends Fragment implements View.OnClickListe
             scouting = new Scouting();
             scouting.setMatchKey(matchId);
             scouting.setTeamKey(teamId);
+            scouting.setEventKey(eventId);
             scouting.setNameOfScouter(scouterName);
         }
 

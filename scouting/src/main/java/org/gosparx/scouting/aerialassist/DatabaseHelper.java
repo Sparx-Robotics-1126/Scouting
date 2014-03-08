@@ -589,9 +589,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         boolean retVal = false;
         SQLiteDatabase db = getReadableDatabase();
 
-        Cursor c = db.query(TABLE_SCOUTING, new String[]{TABLE_SCOUTING_TEAM_KEY, TABLE_SCOUTING_MATCH_KEY, TABLE_SCOUTING_NAME},
-                TABLE_SCOUTING_TEAM_KEY + " = ? AND " + TABLE_SCOUTING_MATCH_KEY + " = ? AND " + TABLE_SCOUTING_NAME +" = ?",
-                new String[]{scouting.getTeamKey(), scouting.getMatchKey(), scouting.getNameOfScouter()},
+        Cursor c = db.query(TABLE_SCOUTING,
+                new String[]{TABLE_SCOUTING_TEAM_KEY, TABLE_SCOUTING_MATCH_KEY, TABLE_SCOUTING_NAME, TABLE_SCOUTING_EVENT_KEY},
+                TABLE_SCOUTING_TEAM_KEY + " = ? AND " + TABLE_SCOUTING_MATCH_KEY + " = ? AND "
+                + TABLE_SCOUTING_NAME +" = ? AND " + TABLE_SCOUTING_EVENT_KEY + " = ?",
+                new String[]{scouting.getTeamKey(), scouting.getMatchKey(), scouting.getNameOfScouter(), scouting.getEventKey()},
                 null, null, null);
 
         if(c != null && c.getCount() > 0)

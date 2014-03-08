@@ -40,6 +40,13 @@ public class FieldLocationSelectionFragment extends DialogFragment implements Vi
         imageView = (ImageView) view.findViewById(R.id.imageViewLocationSelectionImage);
         imageView.setOnTouchListener(this);
 
+        if(getArguments() != null
+                && getArguments().containsKey(X_BUNDLE_KEY)
+                && getArguments().containsKey(Y_BUNDLE_KEY))
+            handleTouch(BitmapFactory.decodeResource(getResources(), R.drawable.field).copy(Bitmap.Config.RGB_565, true),
+                    getArguments().getInt(X_BUNDLE_KEY),
+                    getArguments().getInt(Y_BUNDLE_KEY));
+
         return new AlertDialog.Builder(getActivity())
                 .setView(view)
                 .setTitle(R.string.select_robot_location)
@@ -69,17 +76,20 @@ public class FieldLocationSelectionFragment extends DialogFragment implements Vi
     public boolean onTouch(View view, MotionEvent motionEvent) {
         if(motionEvent.getAction() == MotionEvent.ACTION_UP){
             Bitmap tempBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.field).copy(Bitmap.Config.RGB_565, true);
-            selectedLocation = new Point(
-                    (int)(motionEvent.getX() * tempBitmap.getWidth()/imageView.getWidth()),
-                    (int)(motionEvent.getY() * tempBitmap.getHeight()/imageView.getHeight()));
-
-            Canvas c = new Canvas(tempBitmap);
-            Paint paint = new Paint();
-            paint.setColor(0xFF000000);
-            c.drawCircle(selectedLocation.x, selectedLocation.y, 50, paint);
-            imageView.setImageDrawable(new BitmapDrawable(getResources(), tempBitmap));
-            imageView.invalidate();
+            handleTouch(tempBitmap,
+                    motionEvent.getX()*tempBitmap.getWidth()/imageView.getWidth(),
+                    motionEvent.getY()*tempBitmap.getHeight()/imageView.getHeight());
         }
         return true;
+    }
+
+    private void handleTouch(Bitmap tempBitmap, float x, float y) {
+        selectedLocation = new Point((int) x, (int) y);
+        Canvas c = new Canvas(tempBitmap);
+        Paint paint = new Paint();
+        paint.setColor(0xFF000000);
+        c.drawCircle(selectedLocation.x, selectedLocation.y, 50, paint);
+        imageView.setImageDrawable(new BitmapDrawable(getResources(), tempBitmap));
+        imageView.invalidate();
     }
 }
