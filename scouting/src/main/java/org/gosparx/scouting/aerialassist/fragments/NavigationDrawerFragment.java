@@ -144,7 +144,7 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
                             // spinner tag == Regional Key && view tag == team key
                             TextView tv = (TextView) view.findViewById(android.R.id.text1);
                             mCallbacks.onScoutingTeamSelected(
-                                    (String) spinnerRegional.getTag(),
+                                    (String) spinnerRegional.getSelectedView().getTag(),
                                     (String) tv.getTag(R.id.team_key),
                                     (String) tv.getTag(R.id.match_key));
                         }

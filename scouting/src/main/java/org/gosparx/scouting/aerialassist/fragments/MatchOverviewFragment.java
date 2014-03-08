@@ -8,11 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import org.gosparx.scouting.aerialassist.R;
 
 import org.gosparx.scouting.aerialassist.DatabaseHelper;
+import org.gosparx.scouting.aerialassist.dto.Match;
 import org.gosparx.scouting.aerialassist.dto.Scouting;
+import org.gosparx.scouting.aerialassist.dto.Team;
 import org.gosparx.scouting.aerialassist.fragments.match.AutoFragment;
 import org.gosparx.scouting.aerialassist.fragments.match.GeneralFragment;
 import org.gosparx.scouting.aerialassist.fragments.match.TeleFragment;
@@ -31,6 +34,8 @@ public class MatchOverviewFragment extends Fragment implements View.OnClickListe
     public static final String ARG_TEAM_ID = "Team Id";
     public static final String ARG_EVENT_ID = "Event Id";
 
+    private TextView textViewScoutingTitle;
+
     private Button buttonAuto;
     private Button buttonTele;
     private Button buttonGeneral;
@@ -39,6 +44,7 @@ public class MatchOverviewFragment extends Fragment implements View.OnClickListe
     private TeleFragment teleFragment;
     private GeneralFragment generalFragment;
 
+    private DatabaseHelper dbHelper;
     private Scouting scouting;
 
     @Override
@@ -50,10 +56,11 @@ public class MatchOverviewFragment extends Fragment implements View.OnClickListe
         String matchId = getArguments().getString(ARG_MATCH_ID);
         String scouterName = getArguments().getString(ARG_SCOUTER_NAME);
 
-        DatabaseHelper dbHelper = new DatabaseHelper(getActivity());
+        dbHelper = new DatabaseHelper(getActivity());
         List<Scouting> scoutingList = dbHelper.getScouting(
-                matchId,
+                eventId,
                 teamId,
+                matchId,
                 scouterName);
 
         if (scoutingList.size() > 1) {
@@ -81,6 +88,10 @@ public class MatchOverviewFragment extends Fragment implements View.OnClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View retVal =  inflater.inflate(R.layout.fragment_match_overview, container, false);
+
+        textViewScoutingTitle = (TextView) retVal.findViewById(R.id.textViewScoutingTitle);
+        Team team = dbHelper.getTeam(scouting.getTeamKey());
+        textViewScoutingTitle.setText(team.getTeamNumber() + " | " + team.getNickname());
 
         // Linking
         buttonAuto = (Button) retVal.findViewById(R.id.buttonAuto);

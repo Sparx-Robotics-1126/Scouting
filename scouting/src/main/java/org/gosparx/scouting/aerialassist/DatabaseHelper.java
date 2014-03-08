@@ -582,14 +582,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[]{scouting.getTeamKey(), scouting.getMatchKey(), scouting.getNameOfScouter()});
     }
 
-    public List<Scouting> getScouting(String matchKey, String teamKey, String scouterName){
+    public List<Scouting> getScouting(String eventKey, String teamKey, String matchKey, String scouterName){
         SQLiteDatabase db = getReadableDatabase();
         String selectStatement = "SELECT * FROM " + TABLE_SCOUTING
-                + " WHERE " + TABLE_SCOUTING_MATCH_KEY + " = ?"
+                + " WHERE " + TABLE_SCOUTING_EVENT_KEY + " = ?"
+                + " AND " + TABLE_SCOUTING_MATCH_KEY + " = ?"
                 + " AND " + TABLE_SCOUTING_TEAM_KEY + " = ?"
                 + " AND " + TABLE_SCOUTING_NAME + " = ?";
 
-        Cursor c = db.rawQuery(selectStatement, new String[]{matchKey, teamKey, scouterName});
+        Cursor c = db.rawQuery(selectStatement, new String[]{eventKey, matchKey, teamKey, scouterName});
 
         List<Scouting> scouting = new ArrayList<Scouting>();
 
