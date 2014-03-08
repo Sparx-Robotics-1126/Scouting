@@ -29,6 +29,7 @@ public class MatchOverviewFragment extends Fragment implements View.OnClickListe
     public static final String ARG_SCOUTER_NAME = "Scouter Name";
     public static final String ARG_MATCH_ID = "Match Id";
     public static final String ARG_TEAM_ID = "Team Id";
+    public static final String ARG_EVENT_ID = "Event Id";
 
     private Button buttonAuto;
     private Button buttonTele;
@@ -44,8 +45,9 @@ public class MatchOverviewFragment extends Fragment implements View.OnClickListe
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
-        String matchId = getArguments().getString(ARG_MATCH_ID);
         String teamId = getArguments().getString(ARG_TEAM_ID);
+        String eventId = getArguments().getString(ARG_EVENT_ID);
+        String matchId = getArguments().getString(ARG_MATCH_ID);
         String scouterName = getArguments().getString(ARG_SCOUTER_NAME);
 
         DatabaseHelper dbHelper = new DatabaseHelper(getActivity());

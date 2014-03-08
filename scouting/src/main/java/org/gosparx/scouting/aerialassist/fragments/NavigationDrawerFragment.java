@@ -121,7 +121,11 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
             @Override
             public boolean setViewValue(View view, Cursor cursor, int i) {
                 view.setTag(cursor.getString(cursor.getColumnIndex("key")));
-                return false;
+                StringBuilder textBuilder = new StringBuilder(cursor.getString(cursor.getColumnIndex("start_date")).substring(0,10));
+                    textBuilder.append(" | ").append(cursor.getString(i));
+                if(view instanceof TextView)
+                    ((TextView) view).setText(textBuilder.toString());
+                return true;
             }
         });
         spinnerRegional.setAdapter(cursorAdapterRegionalNames);
@@ -140,8 +144,9 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
                             // spinner tag == Regional Key && view tag == team key
                             TextView tv = (TextView) view.findViewById(android.R.id.text1);
                             mCallbacks.onScoutingTeamSelected(
-                                    (String) tv.getTag(R.id.match_key),
-                                    (String) tv.getTag(R.id.team_key));
+                                    (String) spinnerRegional.getTag(),
+                                    (String) tv.getTag(R.id.team_key),
+                                    (String) tv.getTag(R.id.match_key));
                         }
                         break;
                 }
@@ -196,7 +201,7 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                if(spinnerRegional != null){
+                if(spinnerRegional != null && spinnerRegional.getSelectedView() != null){
                     updateDrawerData(dbHelper.getEvent((String) spinnerRegional.getSelectedView().getTag()));
                 }
                 if (!isAdded()) {
@@ -325,7 +330,7 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
      */
     public static interface NavigationDrawerCallbacks {
 
-        public void onScoutingTeamSelected(String matchId, String teamId);
+        public void onScoutingTeamSelected(String eventId, String teamId, String matchId);
 
         public void onMatchSelected(String matchId);
 

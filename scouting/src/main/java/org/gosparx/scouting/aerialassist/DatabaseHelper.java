@@ -21,6 +21,8 @@ import org.gosparx.scouting.aerialassist.dto.Team;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -89,8 +91,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Scouting Column Names
     private static final String TABLE_SCOUTING_KEY = "key";
-    private static final String TABLE_SCOUTING_MATCH_KEY = "match_key";
+    private static final String TABLE_SCOUTING_LAST_UPDATE = "last_updated";
+    private static final String TABLE_SCOUTING_LAST_SYNC = "last_sync";
     private static final String TABLE_SCOUTING_TEAM_KEY = "team_key";
+    private static final String TABLE_SCOUTING_EVENT_KEY = "event_key";
+    private static final String TABLE_SCOUTING_MATCH_KEY = "match_key";
     private static final String TABLE_SCOUTING_NAME = "scouter_name";
     private static final String TABLE_SCOUTING_AUTO_STARTING_LOCATION_X = "auto_starting_location_x";
     private static final String TABLE_SCOUTING_AUTO_STARTING_LOCATION_Y = "auto_starting_location_y";
@@ -169,9 +174,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_SCOUTING = "CREATE TABLE " + TABLE_SCOUTING + "("
             + TABLE_SCOUTING_KEY + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + TABLE_SCOUTING_NAME + " TEXT, "
-            + TABLE_SCOUTING_MATCH_KEY + " TEXT, "
+            + TABLE_SCOUTING_LAST_UPDATE + " DATETIME DEFAULT CURRENT_TIMESTAMP, "
+            + TABLE_SCOUTING_LAST_SYNC + " DATETIME, "
             + TABLE_SCOUTING_TEAM_KEY + " TEXT, "
+            + TABLE_SCOUTING_EVENT_KEY + " TEXT, "
+            + TABLE_SCOUTING_MATCH_KEY + " TEXT, "
+            + TABLE_SCOUTING_NAME + " TEXT, "
             + TABLE_SCOUTING_AUTO_STARTING_LOCATION_X + " INTEGER, "
             + TABLE_SCOUTING_AUTO_STARTING_LOCATION_Y + " INTEGER, "
             + TABLE_SCOUTING_AUTO_STARTED_WITH_BALL + " INTEGER, "
@@ -202,11 +210,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + TABLE_SCOUTING_GENERAL_COMMENTS_TECH_FOULS + " TEXT, "
             + TABLE_SCOUTING_GENERAL_COMMENTS + " TEXT)";
 
-    private SimpleDateFormat iso8601Format;
+    public static SimpleDateFormat ISO6701_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static String getDateTime(){return ISO6701_FORMAT.format(new Date());}
 
     public DatabaseHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     }
 
     @Override
@@ -234,8 +242,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(TABLE_EVENTS_YEAR, event.getYear());
         values.put(TABLE_EVENTS_LOCATION, event.getLocation());
         values.put(TABLE_EVENTS_OFFICIAL, event.isOfficial());
-        values.put(TABLE_EVENTS_START_DATE, iso8601Format.format(event.getStartDate()));
-        values.put(TABLE_EVENTS_END_DATE, iso8601Format.format(event.getEndDate()));
+        values.put(TABLE_EVENTS_START_DATE, ISO6701_FORMAT.format(event.getStartDate()));
+        values.put(TABLE_EVENTS_END_DATE, ISO6701_FORMAT.format(event.getEndDate()));
 
         return values;
     }
@@ -270,8 +278,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String selectQuery = "SELECT * FROM " + TABLE_EVENTS
                 + " WHERE " + TABLE_EVENTS_KEY + " = ?";
 
-        Log.v(TAG, selectQuery);
-
         Cursor c = db.rawQuery(selectQuery, new String[]{eventKey});
 
         Event event = new Event();
@@ -286,11 +292,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             event.setLocation(c.getString(c.getColumnIndex(TABLE_EVENTS_LOCATION)));
             event.setOfficial(c.getInt(c.getColumnIndex(TABLE_EVENTS_OFFICIAL)) == 1);
             try{
-                event.setStartDate(iso8601Format.parse(c.getString(c.getColumnIndex(TABLE_EVENTS_START_DATE))));
+                event.setStartDate(ISO6701_FORMAT.parse(c.getString(c.getColumnIndex(TABLE_EVENTS_START_DATE))));
             } catch (ParseException e) {
                 Log.e(TAG, "Could not parse Event's start date.", e);
             }try{
-                event.setEndDate(iso8601Format.parse(c.getString(c.getColumnIndex(TABLE_EVENTS_END_DATE))));
+                event.setEndDate(ISO6701_FORMAT.parse(c.getString(c.getColumnIndex(TABLE_EVENTS_END_DATE))));
             } catch (ParseException e) {
                 Log.e(TAG, "Could not parse Event's end date.", e);
             }
@@ -301,7 +307,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor createEventNameCursor(){
         SQLiteDatabase db = getReadableDatabase();
-        return db.query(true, TABLE_EVENTS, new String[]{"rowid AS _id, key", TABLE_EVENTS_SHORT_NAME, TABLE_EVENTS_START_DATE}, null, null, null, null, TABLE_EVENTS_START_DATE + " DESC", null);
+        return db.query(true, TABLE_EVENTS, new String[]{"rowid AS _id, key", TABLE_EVENTS_SHORT_NAME, TABLE_EVENTS_START_DATE},
+                null, null, null, null, TABLE_EVENTS_START_DATE + " ASC", null);
     }
 
     private ContentValues mapTeam(Team team){
@@ -344,8 +351,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Team getTeam(String teamKey){
         SQLiteDatabase db = getReadableDatabase();
         String selectQuery = "SELECT * FROM " + TABLE_TEAMS + " WHERE " + TABLE_TEAMS_KEY + " = ?";
-
-        Log.v(TAG, selectQuery);
 
         Cursor c = db.rawQuery(selectQuery, new String[]{teamKey});
 
@@ -485,7 +490,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int retVal = 0;
         SQLiteDatabase db = getReadableDatabase();
 
-        Cursor c = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_MATCHES, null);
+        Cursor c = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_MATCHES +" WHERE "+TABLE_MATCHES_EVENT_KEY +" = ?", new String[]{event.getKey()});
 
         if(c != null && c.moveToNext())
             retVal = c.getInt(0);
@@ -499,9 +504,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ScoutingGeneral scoutingGeneral = scouting.getGeneral();
 
         ContentValues values = new ContentValues();
-        values.put(TABLE_SCOUTING_NAME, scouting.getNameOfScouter());
-        values.put(TABLE_SCOUTING_MATCH_KEY, scouting.getMatchKey());
+        values.put(TABLE_SCOUTING_LAST_UPDATE, getDateTime());
         values.put(TABLE_SCOUTING_TEAM_KEY, scouting.getTeamKey());
+        values.put(TABLE_SCOUTING_EVENT_KEY, scouting.getEventKey());
+        values.put(TABLE_SCOUTING_MATCH_KEY, scouting.getMatchKey());
+        values.put(TABLE_SCOUTING_NAME, scouting.getNameOfScouter());
 
         if (scoutingAuto != null) {
             if (scoutingAuto.getStartingLocation() != null) {
@@ -547,8 +554,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void createScouting(Scouting scouting){
         SQLiteDatabase db = getWritableDatabase();
-
-        db.insert(TABLE_SCOUTING, null, mapScouting(scouting));
+        ContentValues values = mapScouting(scouting);
+        values.put(TABLE_SCOUTING_LAST_SYNC, "2000-01-01 00:00:00");
+        db.insert(TABLE_SCOUTING, null, values);
     }
 
     public boolean doesScoutingExist(Scouting scouting){
@@ -586,53 +594,80 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         List<Scouting> scouting = new ArrayList<Scouting>();
 
         while (c != null && c.moveToNext()){
-            Scouting data = new Scouting();
-            data.setNameOfScouter(c.getString(c.getColumnIndex(TABLE_SCOUTING_NAME)));
-            data.setMatchKey(c.getString(c.getColumnIndex(TABLE_SCOUTING_MATCH_KEY)));
-            data.setTeamKey(c.getString(c.getColumnIndex(TABLE_SCOUTING_TEAM_KEY)));
-
-            ScoutingAuto auto = new ScoutingAuto();
-            data.setAuto(auto);
-            auto.setStartingLocation(new Point(
-                    c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_STARTING_LOCATION_X)),
-                    c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_STARTING_LOCATION_Y))));
-            auto.setStartedWithBall(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_STARTING_LOCATION_Y)) == 1);
-            auto.setBallsAcquired(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_ACQUIRED)));
-            auto.setBallsShot(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_SHOT)));
-            auto.setBallsScored(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_SCORED)));
-            auto.setBallsScoredHotHigh(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_SCORED_HOT_HIGH)));
-            auto.setBallsScoredHotLow(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_SCORED_HOT_LOW)));
-            auto.setBallsScoredHigh(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_SCORED_HIGH)));
-            auto.setBallsScoredLow(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_SCORED_LOW)));
-            auto.setEndingLocation(new Point(
-                    c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_ENDING_LOCATION_X)),
-                    c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_ENDING_LOCATION_Y))));
-
-            ScoutingTele tele = new ScoutingTele();
-            data.setTele(tele);
-            tele.setBallsAcquiredFromFloor(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_ACQUIRED_FROM_FLOOR)));
-            tele.setBallsAcquiredFromFloor(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_COMPLETED_ASSISTS_FROM_FLOOR)));
-            tele.setBallsAcquiredFromFloor(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_ACQUIRED_FROM_HUMAN)));
-            tele.setBallsAcquiredFromFloor(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_COMPLETED_ASSISTS_FROM_HUMAN)));
-            tele.setShotHigh(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_SHOT_HIGH)));
-            tele.setScoredHigh(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_SCORED_HIGH)));
-            tele.setShotLow(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_SHOT_LOW)));
-            tele.setScoredLow(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_SCORED_LOW)));
-            tele.setBallsCaughtOverTruss(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_CAUGHT_TRUSS)));
-            tele.setBallsThrownOverTruss(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_THROWN_TRUSS)));
-
-            ScoutingGeneral general = new ScoutingGeneral();
-            data.setGeneral(general);
-            general.setPlaysDefense(c.getInt(c.getColumnIndex(TABLE_SCOUTING_GENERAL_PLAYS_DEFENSE)) == 1);
-            general.setNumberOfPenalties(c.getInt(c.getColumnIndex(TABLE_SCOUTING_GENERAL_NUM_PENALITES)));
-            general.setCommentsOnPenalties(c.getString(c.getColumnIndex(TABLE_SCOUTING_GENERAL_COMMENTS_PENALTIES)));
-            general.setNumberOfTechnicalFouls(c.getInt(c.getColumnIndex(TABLE_SCOUTING_GENERAL_NUM_TECH_FOULS)));
-            general.setCommentsOnTechnicalFouls(c.getString(c.getColumnIndex(TABLE_SCOUTING_GENERAL_COMMENTS_TECH_FOULS)));
-            general.setGeneralComments(c.getString(c.getColumnIndex(TABLE_SCOUTING_GENERAL_COMMENTS)));
-
-            scouting.add(data);
+            scouting.add(mapScouting(c));
         }
 
         return scouting;
+    }
+
+    private static Scouting mapScouting(Cursor c){
+        Scouting data = new Scouting();
+        data.setNameOfScouter(c.getString(c.getColumnIndex(TABLE_SCOUTING_NAME)));
+        data.setEventKey(c.getString(c.getColumnIndex(TABLE_SCOUTING_EVENT_KEY)));
+        data.setTeamKey(c.getString(c.getColumnIndex(TABLE_SCOUTING_TEAM_KEY)));
+        data.setMatchKey(c.getString(c.getColumnIndex(TABLE_SCOUTING_MATCH_KEY)));
+
+        ScoutingAuto auto = new ScoutingAuto();
+        data.setAuto(auto);
+        auto.setStartingLocation(new Point(
+                c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_STARTING_LOCATION_X)),
+                c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_STARTING_LOCATION_Y))));
+        auto.setStartedWithBall(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_STARTING_LOCATION_Y)) == 1);
+        auto.setBallsAcquired(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_ACQUIRED)));
+        auto.setBallsShot(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_SHOT)));
+        auto.setBallsScored(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_SCORED)));
+        auto.setBallsScoredHotHigh(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_SCORED_HOT_HIGH)));
+        auto.setBallsScoredHotLow(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_SCORED_HOT_LOW)));
+        auto.setBallsScoredHigh(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_SCORED_HIGH)));
+        auto.setBallsScoredLow(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_SCORED_LOW)));
+        auto.setEndingLocation(new Point(
+                c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_ENDING_LOCATION_X)),
+                c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_ENDING_LOCATION_Y))));
+
+        ScoutingTele tele = new ScoutingTele();
+        data.setTele(tele);
+        tele.setBallsAcquiredFromFloor(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_ACQUIRED_FROM_FLOOR)));
+        tele.setBallsAcquiredFromFloor(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_COMPLETED_ASSISTS_FROM_FLOOR)));
+        tele.setBallsAcquiredFromFloor(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_ACQUIRED_FROM_HUMAN)));
+        tele.setBallsAcquiredFromFloor(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_COMPLETED_ASSISTS_FROM_HUMAN)));
+        tele.setShotHigh(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_SHOT_HIGH)));
+        tele.setScoredHigh(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_SCORED_HIGH)));
+        tele.setShotLow(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_SHOT_LOW)));
+        tele.setScoredLow(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_SCORED_LOW)));
+        tele.setBallsCaughtOverTruss(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_CAUGHT_TRUSS)));
+        tele.setBallsThrownOverTruss(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_THROWN_TRUSS)));
+
+        ScoutingGeneral general = new ScoutingGeneral();
+        data.setGeneral(general);
+        general.setPlaysDefense(c.getInt(c.getColumnIndex(TABLE_SCOUTING_GENERAL_PLAYS_DEFENSE)) == 1);
+        general.setNumberOfPenalties(c.getInt(c.getColumnIndex(TABLE_SCOUTING_GENERAL_NUM_PENALITES)));
+        general.setCommentsOnPenalties(c.getString(c.getColumnIndex(TABLE_SCOUTING_GENERAL_COMMENTS_PENALTIES)));
+        general.setNumberOfTechnicalFouls(c.getInt(c.getColumnIndex(TABLE_SCOUTING_GENERAL_NUM_TECH_FOULS)));
+        general.setCommentsOnTechnicalFouls(c.getString(c.getColumnIndex(TABLE_SCOUTING_GENERAL_COMMENTS_TECH_FOULS)));
+        general.setGeneralComments(c.getString(c.getColumnIndex(TABLE_SCOUTING_GENERAL_COMMENTS)));
+
+        return data;
+    }
+
+    public List<Scouting> getAllScoutingNeedingSyncing(){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.query(TABLE_SCOUTING, new String[]{"*"},
+                TABLE_SCOUTING_LAST_UPDATE +" > "+TABLE_SCOUTING_LAST_SYNC,
+                null, null, null, null);
+
+        List<Scouting> retVal = new ArrayList<Scouting>();
+        while (c != null && c.moveToNext())
+            retVal.add(mapScouting(c));
+
+        return retVal;
+    }
+
+    public void setDoneSyncing(Scouting scouting){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(TABLE_SCOUTING_LAST_SYNC, getDateTime());
+        db.update(TABLE_SCOUTING, cv, TABLE_SCOUTING_TEAM_KEY+" = ? AND "+TABLE_SCOUTING_EVENT_KEY
+                +" = ? AND "+TABLE_SCOUTING_MATCH_KEY+" = ? AND "+TABLE_SCOUTING_NAME+" = ?",
+                new String[]{scouting.getTeamKey(), scouting.getEventKey(), scouting.getMatchKey(), scouting.getNameOfScouter()});
     }
 }

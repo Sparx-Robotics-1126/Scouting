@@ -50,6 +50,8 @@ public class TeleFragment extends Fragment implements SeekBar.OnSeekBarChangeLis
 
     private Spinner spinnerZoneSpentMostTime;
 
+    private ScoutingTele st;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View retVal =  inflater.inflate(R.layout.fragment_tele, container, false);
@@ -121,6 +123,26 @@ public class TeleFragment extends Fragment implements SeekBar.OnSeekBarChangeLis
 
         spinnerZoneSpentMostTime = (Spinner) retVal.findViewById(R.id.spinnerZoneMostPlayed);
 
+        if(st != null){
+            seekBarNumberBallsAcqFromFloor.setProgress(st.getBallsAcquiredFromFloor());
+            seekBarCompletedAssistFromFloor.setProgress(st.getCompletedAssistsFromFloor());
+            seekBarNumberBallsAcqFromHuman.setProgress(st.getBallsAcquiredFromHuman());
+            seekBarCompletedAssistFromHuman.setProgress(st.getCompletedAssistsFromHuman());
+            seekBarShotHigh.setProgress(st.getShotHigh());
+            seekBarScoredHigh.setProgress(st.getScoredHigh());
+            seekBarShotLow.setProgress(st.getShotLow());
+            seekBarScoredLow.setProgress(st.getScoredLow());
+            seekBarBallCaughtOverTruss.setProgress(st.getBallsCaughtOverTruss());
+            seekBarBallThrownOverTruss.setProgress(st.getBallsThrownOverTruss());
+            String[] zones = getResources().getStringArray(R.array.zones);
+            for (int i = 0; i < zones.length; i++) {
+                if (zones[i].equals(st.getStayedInZone())) {
+                    spinnerZoneSpentMostTime.setSelection(i);
+                    break;
+                }
+            }
+        }
+
         return retVal;
     }
 
@@ -138,11 +160,13 @@ public class TeleFragment extends Fragment implements SeekBar.OnSeekBarChangeLis
     public void onStopTrackingTouch(SeekBar seekBar) {}
 
     public void setScoutingTele(ScoutingTele st){
-
+        this.st = st;
     }
 
     public ScoutingTele getScoutingTele(){
-        ScoutingTele st = new ScoutingTele();
+        if(st == null)
+            st = new ScoutingTele();
+
         if (editTextNumberBallsAcqFromFloor != null) {
             st.setBallsAcquiredFromFloor(Integer.parseInt(editTextNumberBallsAcqFromFloor.getText().toString()));
             st.setCompletedAssistsFromFloor(Integer.parseInt(editTextCompletedAssistFromFloor.getText().toString()));

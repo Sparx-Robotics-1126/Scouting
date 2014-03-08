@@ -13,10 +13,12 @@ import android.widget.Toast;
 import org.gosparx.scouting.aerialassist.fragments.MatchOverviewFragment;
 import org.gosparx.scouting.aerialassist.fragments.NavigationDrawerFragment;
 import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
+import org.gosparx.scouting.aerialassist.networking.SparxScouting;
 
 public class MainActivity extends FragmentActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
-    private static final String NAME_PREFERENCE = "Name of Scouter";
+    public static final String PREFERENCE_KEY = "AerialAssist";
+    public static final String NAME_PREFERENCE = "Name of Scouter";
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -67,25 +69,31 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_download_data) {
-            BlueAlliance ba = new BlueAlliance(this);
-            ba.loadEvents(2013);
+        switch (item.getItemId()){
+            case R.id.action_download_data:
+                BlueAlliance ba = new BlueAlliance(this);
+                ba.loadEvents(2014);
 
-            return true;
+                break;
+
+            case R.id.action_upload_data:
+                SparxScouting sc = new SparxScouting(this);
+                sc.postAllScouting();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public void onScoutingTeamSelected(String matchId, String teamId) {
+    public void onScoutingTeamSelected(String eventId, String teamId, String matchId) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         MatchOverviewFragment matchOverviewFragment = new MatchOverviewFragment();
-        SharedPreferences sp = getPreferences(MODE_PRIVATE);
+        SharedPreferences sp = getSharedPreferences(PREFERENCE_KEY, MODE_PRIVATE);
         Bundle args = new Bundle();
         args.putString(MatchOverviewFragment.ARG_SCOUTER_NAME, sp.getString(NAME_PREFERENCE, "Unknown"));
         args.putString(MatchOverviewFragment.ARG_MATCH_ID, matchId);
         args.putString(MatchOverviewFragment.ARG_TEAM_ID, teamId);
+        args.putString(MatchOverviewFragment.ARG_EVENT_ID, eventId);
         matchOverviewFragment.setArguments(args);
         fragmentManager.beginTransaction().replace(R.id.container, matchOverviewFragment).commit();
     }

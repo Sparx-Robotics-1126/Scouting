@@ -7,6 +7,7 @@ public class Scouting {
 
     private String nameOfScouter;
 
+    private String eventKey;
     private String matchKey;
     private String teamKey;
 
@@ -20,6 +21,14 @@ public class Scouting {
 
     public void setNameOfScouter(String nameOfScouter) {
         this.nameOfScouter = nameOfScouter;
+    }
+
+    public String getEventKey() {
+        return eventKey;
+    }
+
+    public void setEventKey(String eventKey) {
+        this.eventKey = eventKey;
     }
 
     public String getMatchKey() {

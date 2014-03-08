@@ -34,7 +34,7 @@ public class BlueAlliance {
 
     public BlueAlliance(Context context){
         this.context = context;
-        ion = Ion.getDefault(context);
+        ion = Ion.getInstance(context, TAG);
         ion.configure().setLogging(TAG, Log.DEBUG);
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
         ion.configure().setGson(gson);

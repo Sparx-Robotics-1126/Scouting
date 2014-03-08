@@ -29,6 +29,8 @@ public class GeneralFragment extends Fragment implements SeekBar.OnSeekBarChange
 
     private EditText editTextGeneralComments;
 
+    private ScoutingGeneral sg;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View retVal =  inflater.inflate(R.layout.fragment_general, container, false);
@@ -50,6 +52,15 @@ public class GeneralFragment extends Fragment implements SeekBar.OnSeekBarChange
 
         editTextGeneralComments = (EditText) retVal.findViewById(R.id.editTextGeneralComments);
 
+        if(sg != null){
+            switchPlaysDefence.setChecked(sg.isPlaysDefense());
+            seekBarNumberPenalties.setProgress(sg.getNumberOfPenalties());
+            editTextPenaltyComments.setText(sg.getCommentsOnPenalties());
+            seekBarNumberTechnicalFouls.setProgress(sg.getNumberOfTechnicalFouls());
+            editTextTechnicalFoulsComments.setText(sg.getCommentsOnTechnicalFouls());
+            editTextGeneralComments.setText(sg.getGeneralComments());
+        }
+
         return retVal;
     }
 
@@ -67,11 +78,13 @@ public class GeneralFragment extends Fragment implements SeekBar.OnSeekBarChange
     public void onStopTrackingTouch(SeekBar seekBar) {}
 
     public void setScoutingGeneral(ScoutingGeneral sg){
-
+        this.sg = sg;
     }
 
     public ScoutingGeneral getScoutingGeneral(){
-        ScoutingGeneral sg = new ScoutingGeneral();
+        if(sg == null)
+            sg = new ScoutingGeneral();
+
         if (switchPlaysDefence != null) {
             sg.setPlaysDefense(switchPlaysDefence.isChecked());
             sg.setNumberOfPenalties(Integer.parseInt(editTextNumberPenalties.getText().toString()));
