@@ -33,6 +33,8 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
      */
     private CharSequence mTitle;
 
+    MainPreferenceFragment mpf = new MainPreferenceFragment();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +46,7 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
-        getFragmentManager().beginTransaction().replace(R.id.container, new MainPreferenceFragment()).commit();
+        getFragmentManager().beginTransaction().replace(R.id.container, mpf).commit();
     }
 
     public void restoreActionBar() {
@@ -98,16 +100,19 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
         args.putString(MatchOverviewFragment.ARG_EVENT_ID, eventId);
         matchOverviewFragment.setArguments(args);
         fragmentManager.beginTransaction().replace(R.id.container, matchOverviewFragment).commit();
+        getFragmentManager().beginTransaction().remove(mpf).commit();
     }
 
     @Override
     public void onMatchSelected(String matchId) {
         Toast.makeText(this, "Match "+matchId+" selected.", Toast.LENGTH_SHORT).show();
+        getFragmentManager().beginTransaction().remove(mpf).commit();
     }
 
     @Override
     public void onTeamSelected(String teamId) {
         Toast.makeText(this, "Team "+teamId+" selected.", Toast.LENGTH_SHORT).show();
+        getFragmentManager().beginTransaction().remove(mpf).commit();
     }
 
     private void downloadData(){
