@@ -1,6 +1,8 @@
 package org.gosparx.scouting.aerialassist;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -10,6 +12,7 @@ import android.view.MenuItem;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.Toast;
 
+import org.gosparx.scouting.aerialassist.fragments.MainPreferenceFragment;
 import org.gosparx.scouting.aerialassist.fragments.MatchOverviewFragment;
 import org.gosparx.scouting.aerialassist.fragments.NavigationDrawerFragment;
 import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
@@ -41,6 +44,7 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
+        getFragmentManager().beginTransaction().replace(R.id.container, new MainPreferenceFragment()).commit();
     }
 
     public void restoreActionBar() {
@@ -71,9 +75,7 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()){
             case R.id.action_download_data:
-                BlueAlliance ba = new BlueAlliance(this);
-                ba.loadEvents(2014);
-
+                downloadData();
                 break;
 
             case R.id.action_upload_data:
@@ -106,5 +108,30 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
     @Override
     public void onTeamSelected(String teamId) {
         Toast.makeText(this, "Team "+teamId+" selected.", Toast.LENGTH_SHORT).show();
+    }
+
+    private void downloadData(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.downloading_data);
+        builder.setMessage(R.string.please_wait_while_data_downloads);
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                BlueAlliance.getInstance(MainActivity.this).cancelAll();
+                dialogInterface.dismiss();
+            }
+        });
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+        BlueAlliance ba = BlueAlliance.getInstance(this);
+        ba.loadEvents(2014, new BlueAlliance.Callback(){
+            @Override
+            public void handleFinishDownload(boolean success) {
+                if(!success)
+                    Toast.makeText(MainActivity.this, "Did not successfully download data!", Toast.LENGTH_LONG).show();
+                dialog.dismiss();
+            }
+        });
+        SparxScouting ss = new SparxScouting(this);
     }
 }

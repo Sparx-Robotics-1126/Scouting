@@ -34,7 +34,7 @@ public class SparxScouting {
         ion.configure().setLogging(TAG, Log.DEBUG);
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
         ion.configure().setGson(gson);
-        dbHelper = new DatabaseHelper(context);
+        dbHelper = DatabaseHelper.getInstance(context);
     }
 
     public void postAllScouting() {

@@ -213,7 +213,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static SimpleDateFormat ISO6701_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     public static String getDateTime(){return ISO6701_FORMAT.format(new Date());}
 
-    public DatabaseHelper(Context context){
+    private static DatabaseHelper dbHelper;
+
+    public static synchronized DatabaseHelper getInstance(Context context){
+        if(dbHelper == null)
+            dbHelper = new DatabaseHelper(context);
+        return dbHelper;
+    }
+
+    private DatabaseHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -258,12 +266,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         boolean retVal = false;
         SQLiteDatabase db = getReadableDatabase();
 
-        Cursor c = db.query(TABLE_EVENTS, new String[]{TABLE_EVENTS_KEY},
+        Cursor c = db.query(TABLE_EVENTS, new String[]{"COUNT(*)"},
                 TABLE_EVENTS_KEY + " = ?", new String[]{event.getKey()}, null, null, null);
 
-        if(c != null && c.getCount() > 0)
-            retVal = true;
+        if(c != null && c.moveToNext())
+            retVal = c.getInt(0) > 0;
 
+        c.close();
         return retVal;
     }
 
@@ -302,6 +311,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         }
 
+        c.close();
         return event;
     }
 
@@ -335,12 +345,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         boolean retVal = false;
         SQLiteDatabase db = getReadableDatabase();
 
-        Cursor c = db.query(TABLE_TEAMS, new String[]{TABLE_TEAMS_KEY},
+        Cursor c = db.query(TABLE_TEAMS, new String[]{"COUNT(*)"},
                 TABLE_TEAMS_KEY + " = ?", new String[]{team.getKey()}, null, null, null);
 
-        if(c != null && c.getCount() >0)
-            return true;
+        if(c != null && c.moveToNext())
+            retVal = c.getInt(0) > 0;
 
+        c.close();
         return retVal;
     }
 
@@ -374,6 +385,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             team.getEvents().add(getEvent(c.getString(c.getColumnIndex(TABLE_E2T_EVENT))));
         }
 
+        c.close();
         return team;
     }
 
@@ -402,13 +414,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         boolean retVal = false;
 
-        Cursor c = db.query(TABLE_E2T, new String[]{"*"},
+        Cursor c = db.query(TABLE_E2T, new String[]{"COUNT(*)"},
                 TABLE_E2T_EVENT+" = ? AND "+TABLE_E2T_TEAM+" = ?",
                 new String[]{eventKey, teamKey}, null, null, null);
 
-        if(c != null && c.getCount() > 0)
-            retVal = true;
+        if(c != null && c.moveToNext())
+            retVal = c.getInt(0) > 0;
 
+        c.close();
         return retVal;
     }
 
@@ -443,12 +456,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         boolean retVal = false;
         SQLiteDatabase db = getReadableDatabase();
 
-        Cursor c = db.query(TABLE_MATCHES, new String[]{TABLE_MATCHES_KEY},
+        Cursor c = db.query(TABLE_MATCHES, new String[]{"COUNT(*)"},
                 TABLE_MATCHES_KEY+" = ?", new String[]{match.getKey()}, null, null, null);
 
-        if(c != null && c.getCount() > 0)
-            retVal = true;
+        if(c != null && c.moveToNext())
+            retVal = c.getInt(0) > 0;
 
+        c.close();
         return retVal;
     }
 
@@ -492,6 +506,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             red.getTeams().add(c.getString(c.getColumnIndex(TABLE_MATCHES_RED_THREE)));
         }
 
+        c.close();
         return match;
     }
 
@@ -520,6 +535,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if(c != null && c.moveToNext())
             retVal = c.getInt(0);
+
+        c.close();
 
         return retVal;
     }
@@ -590,15 +607,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
 
         Cursor c = db.query(TABLE_SCOUTING,
-                new String[]{TABLE_SCOUTING_TEAM_KEY, TABLE_SCOUTING_MATCH_KEY, TABLE_SCOUTING_NAME, TABLE_SCOUTING_EVENT_KEY},
+                new String[]{"COUNT(*)"},
                 TABLE_SCOUTING_TEAM_KEY + " = ? AND " + TABLE_SCOUTING_MATCH_KEY + " = ? AND "
                 + TABLE_SCOUTING_NAME +" = ? AND " + TABLE_SCOUTING_EVENT_KEY + " = ?",
                 new String[]{scouting.getTeamKey(), scouting.getMatchKey(), scouting.getNameOfScouter(), scouting.getEventKey()},
                 null, null, null);
 
-        if(c != null && c.getCount() > 0)
-            retVal = true;
+        if(c != null && c.moveToNext())
+            retVal = c.getInt(0) > 0;
 
+        c.close();
         return retVal;
     }
 
@@ -626,6 +644,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             scouting.add(mapScouting(c));
         }
 
+        c.close();
         return scouting;
     }
 
@@ -688,6 +707,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         while (c != null && c.moveToNext())
             retVal.add(mapScouting(c));
 
+        c.close();
         return retVal;
     }
 

@@ -56,7 +56,7 @@ public class MatchOverviewFragment extends Fragment implements View.OnClickListe
         String matchId = getArguments().getString(ARG_MATCH_ID);
         String scouterName = getArguments().getString(ARG_SCOUTER_NAME);
 
-        dbHelper = new DatabaseHelper(getActivity());
+        dbHelper = DatabaseHelper.getInstance(getActivity());
         List<Scouting> scoutingList = dbHelper.getScouting(
                 eventId,
                 teamId,
@@ -132,7 +132,7 @@ public class MatchOverviewFragment extends Fragment implements View.OnClickListe
     @Override
     public void onPause() {
         super.onPause();
-        DatabaseHelper dbHelper = new DatabaseHelper(getActivity());
+        DatabaseHelper dbHelper = DatabaseHelper.getInstance(getActivity());
         scouting.setAuto(autoFragment.getScoutingAuto());
         scouting.setTele(teleFragment.getScoutingTele());
         scouting.setGeneral(generalFragment.getScoutingGeneral());

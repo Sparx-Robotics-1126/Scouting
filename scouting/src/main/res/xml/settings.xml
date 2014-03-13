@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditTextPreference
+        android:key="Name of Scouter"
+        android:title="@string/name_of_scouter"
+        android:summary="@string/select_the_name_of_the_scouter" />
+
+</PreferenceScreen>

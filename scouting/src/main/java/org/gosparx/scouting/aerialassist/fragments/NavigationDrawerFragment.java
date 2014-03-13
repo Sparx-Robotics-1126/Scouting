@@ -85,8 +85,8 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        blueAlliance = new BlueAlliance(getActivity());
-        dbHelper = new DatabaseHelper(getActivity());
+        blueAlliance = BlueAlliance.getInstance(getActivity());
+        dbHelper = DatabaseHelper.getInstance(getActivity());
 
         // Read in the flag indicating whether or not the user has demonstrated awareness of the
         // drawer. See PREF_USER_LEARNED_DRAWER for details.

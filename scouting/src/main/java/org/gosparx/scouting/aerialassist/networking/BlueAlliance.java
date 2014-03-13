@@ -14,6 +14,8 @@ import org.gosparx.scouting.aerialassist.dto.Event;
 import org.gosparx.scouting.aerialassist.dto.Match;
 import org.gosparx.scouting.aerialassist.dto.Team;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,10 +34,18 @@ public class BlueAlliance {
     private String versionName;
     private DatabaseHelper dbHelper;
 
-    public BlueAlliance(Context context){
+    private static BlueAlliance blueAlliance;
+    public static synchronized BlueAlliance getInstance(Context c){
+        if(blueAlliance == null)
+            blueAlliance = new BlueAlliance(c);
+        return blueAlliance;
+    }
+
+    private BlueAlliance(Context context){
         this.context = context;
         ion = Ion.getInstance(context, TAG);
-        ion.configure().setLogging(TAG, Log.DEBUG);
+        ion.configure().setLogging(TAG, Log.INFO);
+        ion.getHttpClient().getSocketMiddleware().setMaxConnectionCount(5);
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
         ion.configure().setGson(gson);
         try {
@@ -44,58 +54,119 @@ public class BlueAlliance {
             Log.e(TAG, "Could not find version name.", e);
             versionName = "UNKNOWN";
         }
-        dbHelper = new DatabaseHelper(context);
+        dbHelper = DatabaseHelper.getInstance(context);
+    }
+
+    public interface Callback{
+        public void handleFinishDownload(boolean success);
+    }
+
+    public void cancelAll(){
+        ion.cancelAll();
     }
 
     public void loadEvents(final int year){
+        loadEvents(year, null);
+    }
+
+    public void loadEvents(final int year, final Callback callback){
         String request = (BASE_URL+GET_EVENT_LIST).replace("{YEAR}", Integer.toString(year));
         ion.build(context, request)
                 .addHeader("X-TBA-App-Id", "frc1126:scouting-app-2014:" + versionName)
                 .as(new TypeToken<List<String>>(){})
                 .setCallback(new FutureCallback<List<String>>() {
                     @Override
-                    public void onCompleted(Exception e, List<String> eventKeys) {
+                    public void onCompleted(Exception e, final List<String> eventKeys) {
                         if(e != null){
                             Log.e(TAG, "Issue getting event list", e);
+
+                            callback.handleFinishDownload(false);
                             return;
                         }
+                        Callback subBack = new Callback() {
+                            int numEvents = eventKeys.size();
+                            @Override
+                            public void handleFinishDownload(boolean success) {
+                                if(!success)
+                                    callback.handleFinishDownload(false);
+                                else
+                                    numEvents--;
+
+                                if(numEvents <= 0)
+                                    callback.handleFinishDownload(true);
+                            }
+                        };
                         for(String eventKey : eventKeys){
-                            loadEvent(eventKey);
+                            loadEvent(eventKey, subBack);
                         }
                     }
                 });
     }
 
-    public void loadEvent(final String eventCode){
+    public void loadEvent(final String eventKey){loadEvent(eventKey, null);}
+
+    private void loadEvent(final String eventCode, final Callback callback){
         String request = (BASE_URL+GET_EVENT).replace("{EVENT_KEY}", eventCode);
         ion.build(context, request)
                 .addHeader("X-TBA-App-Id", "frc1126:scouting-app-2014:" + versionName)
+                .setTimeout(10 * 60 * 1000)
                 .as(new TypeToken<Event>(){})
                 .setCallback(new FutureCallback<Event>() {
                     @Override
                     public void onCompleted(Exception e, Event event) {
                         if(e != null){
                             Log.e(TAG, "Issue getting event("+eventCode+")", e);
+
+                            if(callback != null)
+                                callback.handleFinishDownload(false);
                             return;
                         }
                         if(dbHelper.doesEventExist(event))
                             dbHelper.updateEvent(event);
                         else
                             dbHelper.createEvent(event);
+
+                        Callback subCallback = new Callback() {
+                            int leftToFinish = 2;
+                            @Override
+                            public void handleFinishDownload(boolean success) {
+                                if(!success)
+                                    callback.handleFinishDownload(false);
+                                else
+                                    leftToFinish--;
+
+                                if(callback != null && leftToFinish <= 0) {
+                                    Log.d(TAG, "Done getting everything from event("+eventCode+")");
+                                    callback.handleFinishDownload(true);
+                                }
+
+                            }
+                        };
+
+                        loadTeams(event, subCallback);
+                        loadMatches(event, subCallback);
+
                     }
                 });
     }
 
-    public void loadMatches(final Event event){
+    public void loadMatches(final Event event){loadMatches(event, null);}
+
+    private void loadMatches(final Event event, final Callback callback){
         String request = (BASE_URL+GET_MATCH_LIST).replace("{EVENT_KEY}", event.getKey());
         ion.build(context, request)
                 .addHeader("X-TBA-App-Id", "frc1126:scouting-app-2014:" + versionName)
+                .setTimeout(10 * 60 * 1000)
+                .noCache()
                 .as(new TypeToken<List<Match>>(){})
                 .setCallback(new FutureCallback<List<Match>>() {
                     @Override
                     public void onCompleted(Exception e, List<Match> result) {
                         if( e != null){
                             Log.e(TAG, "Issue getting matches from event("+event.getKey()+")", e);
+
+                            if(callback != null)
+                                callback.handleFinishDownload(false);
                             return;
                         }
                         for (Match match : result) {
@@ -104,20 +175,28 @@ public class BlueAlliance {
                             else
                                 dbHelper.createMatch(match);
                         }
+
+                        if(callback != null)
+                            callback.handleFinishDownload(true);
                     }
                 });
     }
 
-    public void loadTeams(final Event event){
+    public void loadTeams(final Event event){loadTeams(event, null);}
+    private void loadTeams(final Event event, final Callback callback){
         String request = (BASE_URL+GET_TEAM_LIST).replace("{EVENT_KEY}", event.getKey());
         ion.build(context, request)
                 .addHeader("X-TBA-App-Id", "frc1126:scouting-app-2014:" + versionName)
+                .setTimeout(10 * 60 * 1000)
                 .as(new TypeToken<List<Team>>(){})
                 .setCallback(new FutureCallback<List<Team>>() {
                     @Override
                     public void onCompleted(Exception e, List<Team> result) {
                         if(e != null || result == null){
                             Log.e(TAG, "Issue getting teams from event("+event.getKey()+")", e);
+
+                            if(callback != null)
+                                callback.handleFinishDownload(false);
                             return;
                         }
                         for(Team team : result){
@@ -129,6 +208,8 @@ public class BlueAlliance {
                             if(!dbHelper.doesE2TAssociationExist(event.getKey(), team.getKey()))
                                 dbHelper.createE2TAssociation(event.getKey(), team.getKey());
                         }
+                        if(callback != null)
+                            callback.handleFinishDownload(true);
                     }
                 });
     }

@@ -49,6 +49,11 @@
     <string name="scouting">Scouting</string>
     <string name="matches">Matches</string>
     <string name="teams">Teams</string>
+    <string name="win_loss_tie">Win / Loss / Tie</string>
+    <string name="select_the_name_of_the_scouter">Select the name of the scouter</string>
+    <string name="name_of_scouter">Name of Scouter</string>
+    <string name="downloading_data">Downloading Data</string>
+    <string name="please_wait_while_data_downloads">Please wait while data downloads.</string>
 
     <array name="tab_names">
         <item>@string/auto</item>
