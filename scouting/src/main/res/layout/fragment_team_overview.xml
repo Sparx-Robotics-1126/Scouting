@@ -24,7 +24,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             tools:text="Xerox Corporation &amp; Webster High Schools" />
 
-        <ImageView
+        <com.koushikdutta.ion.NetworkImageView
             android:id="@+id/networkImageViewRobot"
             android:layout_width="200dp"
             android:layout_height="200dp"

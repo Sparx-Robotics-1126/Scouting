@@ -632,8 +632,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         String selectStatement = "SELECT * FROM " + TABLE_SCOUTING
                 + " WHERE " + TABLE_SCOUTING_EVENT_KEY + " = ?"
-                + " AND " + TABLE_SCOUTING_MATCH_KEY + " = ?"
                 + " AND " + TABLE_SCOUTING_TEAM_KEY + " = ?"
+                + " AND " + TABLE_SCOUTING_MATCH_KEY + " = ?"
                 + " AND " + TABLE_SCOUTING_NAME + " = ?";
 
         Cursor c = db.rawQuery(selectStatement, new String[]{eventKey, matchKey, teamKey, scouterName});
