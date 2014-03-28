@@ -56,6 +56,8 @@
     <string name="please_wait_while_data_downloads">Please wait while data downloads.</string>
     <string name="image_of_robot">Image of Robot</string>
     <string name="started_with_a_ball">Started with a ball: </string>
+    <string name="minus">-</string>
+    <string name="plus">+</string>
 
     <array name="tab_names">
         <item>@string/auto</item>
