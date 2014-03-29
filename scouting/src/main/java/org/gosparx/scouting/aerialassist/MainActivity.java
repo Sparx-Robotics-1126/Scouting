@@ -97,8 +97,7 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
                 break;
 
             case R.id.action_upload_data:
-                SparxScouting sc = new SparxScouting(this);
-                sc.postAllScouting();
+                SparxScouting.getInstance(this).postAllScouting();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -155,7 +154,6 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
             };
             BlueAlliance.getInstance(this).loadTeams(event, subBack);
             BlueAlliance.getInstance(this).loadMatches(event, subBack);
-            SparxScouting ss = new SparxScouting(this);
         }else
             Toast.makeText(this, "No event selected!", Toast.LENGTH_LONG).show();
     }

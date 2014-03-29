@@ -165,8 +165,7 @@ public class BlueAlliance {
         String request = (BASE_URL+GET_TEAM_LIST).replace("{EVENT_KEY}", event.getKey());
         ion.build(context, request)
                 .addHeader("X-TBA-App-Id", "frc1126:scouting-app-2014:" + versionName)
-                .as(new TypeToken<List<Team>>() {
-                })
+                .as(new TypeToken<List<Team>>() {})
                 .setCallback(new FutureCallback<List<Team>>() {
                     @Override
                     public void onCompleted(Exception e, List<Team> result) {
