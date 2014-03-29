@@ -214,12 +214,7 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                String eventKey = null;
-                if(spinnerRegional != null && spinnerRegional.getSelectedView() != null){
-                    eventKey = (String) spinnerRegional.getSelectedView().getTag();
-                    updateDrawerData(dbHelper.getEvent(eventKey));
-                }else
-                    updateDrawerData(null);
+                updateDrawerData();
 
                 if (!isAdded()) {
                     return;
@@ -321,18 +316,23 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        //TODO: Update stuff based on selection
-        Event current = null;
-        if(spinnerRegional != null && spinnerRegional.getSelectedView() != null)
-            current= dbHelper.getEvent((String) spinnerRegional.getSelectedView().getTag());
+        Event current = getSelectedEvent();
         switch (parent.getId()) {
             case R.id.spinnerRegional:
                 if (current != null) {
-                    scoutingDrawerAdapter.changeCursor(dbHelper.createMatchCursor(current));
-                    teamsDrawerAdapter.changeCursor(dbHelper.createTeamCursor(current));
-                    blueAlliance.loadMatches(current);
-                    blueAlliance.loadTeams(current);
-                    updateDrawerData(current);
+                    updateDrawerData();
+                    blueAlliance.loadMatches(current, new BlueAlliance.Callback() {
+                        @Override
+                        public void handleFinishDownload(boolean success) {
+                            updateDrawerData();
+                        }
+                    });
+                    blueAlliance.loadTeams(current, new BlueAlliance.Callback() {
+                        @Override
+                        public void handleFinishDownload(boolean success) {
+                            updateDrawerData();
+                        }
+                    });
                 }
                 break;
 
@@ -349,15 +349,17 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
                     }else{
 
                     }
-                    updateDrawerData(current);
+                    updateDrawerData();
                 }
                 break;
         }
     }
 
-    private void updateDrawerData(Event currentEvent){
+    public void updateDrawerData(){
+        Event currentEvent;
         cursorAdapterRegionalNames.changeCursor(dbHelper.createEventNameCursor());
-        if(currentEvent != null) {
+        if(spinnerRegional != null && spinnerRegional.getSelectedView() != null){
+            currentEvent= dbHelper.getEvent((String) spinnerRegional.getSelectedView().getTag());
             scoutingDrawerAdapter.changeCursor(dbHelper.createMatchCursor(currentEvent));
             teamsDrawerAdapter.changeCursor(dbHelper.createTeamCursor(currentEvent));
         }
@@ -365,6 +367,13 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {}
+
+    public Event getSelectedEvent(){
+        Event current = null;
+        if(spinnerRegional != null && spinnerRegional.getSelectedView() != null)
+            current= dbHelper.getEvent((String) spinnerRegional.getSelectedView().getTag());
+        return current;
+    }
 
     /**
      * Callbacks interface that all activities using this fragment must implement.

@@ -5,7 +5,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_upload_data">Upload</string>
-    <string name="action_download_data">Download</string>
+    <string name="action_download_data">Download Event Data</string>
     <string name="auto">Auto</string>
     <string name="tele">Tele</string>
     <string name="general">General</string>

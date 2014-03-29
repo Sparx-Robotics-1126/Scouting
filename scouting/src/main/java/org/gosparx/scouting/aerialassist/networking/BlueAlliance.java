@@ -65,26 +65,21 @@ public class BlueAlliance {
         ion.cancelAll();
     }
 
-    public void loadEvents(final int year){
-        loadEvents(year, null);
-    }
-
-    public void loadEvents(final int year, final Callback callback){
+    public void loadEventList(final int year){loadEventList(year, null);}
+    public void loadEventList(final int year, final Callback callback){
         String request = (BASE_URL+GET_EVENT_LIST).replace("{YEAR}", Integer.toString(year));
         ion.build(context, request)
                 .addHeader("X-TBA-App-Id", "frc1126:scouting-app-2014:" + versionName)
                 .as(new TypeToken<List<String>>(){})
                 .setCallback(new FutureCallback<List<String>>() {
                     @Override
-                    public void onCompleted(Exception e, final List<String> eventKeys) {
+                    public void onCompleted(Exception e, final List<String> result) {
                         if(e != null){
                             Log.e(TAG, "Issue getting event list", e);
-
-                            callback.handleFinishDownload(false);
                             return;
                         }
                         Callback subBack = new Callback() {
-                            int numEvents = eventKeys.size();
+                            int numEvents = result.size();
                             @Override
                             public void handleFinishDownload(boolean success) {
                                 if(!success)
@@ -96,21 +91,23 @@ public class BlueAlliance {
                                     callback.handleFinishDownload(true);
                             }
                         };
-                        for(String eventKey : eventKeys){
-                            loadEvent(eventKey, subBack);
+                        for(String eventKey : result) {
+                            if (callback != null)
+                                loadEvent(eventKey, subBack);
+                            else
+                                loadEvent(eventKey);
                         }
                     }
                 });
     }
 
     public void loadEvent(final String eventKey){loadEvent(eventKey, null);}
-
-    private void loadEvent(final String eventCode, final Callback callback){
+    public void loadEvent(final String eventCode, final Callback callback){
         String request = (BASE_URL+GET_EVENT).replace("{EVENT_KEY}", eventCode);
         ion.build(context, request)
                 .addHeader("X-TBA-App-Id", "frc1126:scouting-app-2014:" + versionName)
-                .setTimeout(10 * 60 * 1000)
-                .as(new TypeToken<Event>(){})
+                .as(new TypeToken<Event>() {
+                })
                 .setCallback(new FutureCallback<Event>() {
                     @Override
                     public void onCompleted(Exception e, Event event) {
@@ -126,37 +123,18 @@ public class BlueAlliance {
                         else
                             dbHelper.createEvent(event);
 
-                        Callback subCallback = new Callback() {
-                            int leftToFinish = 2;
-                            @Override
-                            public void handleFinishDownload(boolean success) {
-                                if(!success)
-                                    callback.handleFinishDownload(false);
-                                else
-                                    leftToFinish--;
-
-                                if(callback != null && leftToFinish <= 0) {
-                                    Log.d(TAG, "Done getting everything from event("+eventCode+")");
-                                    callback.handleFinishDownload(true);
-                                }
-
-                            }
-                        };
-
-                        loadTeams(event, subCallback);
-                        loadMatches(event, subCallback);
-
+                        Log.d(TAG, "Done getting basic event("+eventCode+")");
+                        if(callback != null)
+                            callback.handleFinishDownload(true);
                     }
                 });
     }
 
     public void loadMatches(final Event event){loadMatches(event, null);}
-
-    private void loadMatches(final Event event, final Callback callback){
+    public void loadMatches(final Event event, final Callback callback){
         String request = (BASE_URL+GET_MATCH_LIST).replace("{EVENT_KEY}", event.getKey());
         ion.build(context, request)
                 .addHeader("X-TBA-App-Id", "frc1126:scouting-app-2014:" + versionName)
-                .setTimeout(10 * 60 * 1000)
                 .noCache()
                 .as(new TypeToken<List<Match>>(){})
                 .setCallback(new FutureCallback<List<Match>>() {
@@ -183,12 +161,12 @@ public class BlueAlliance {
     }
 
     public void loadTeams(final Event event){loadTeams(event, null);}
-    private void loadTeams(final Event event, final Callback callback){
+    public void loadTeams(final Event event, final Callback callback){
         String request = (BASE_URL+GET_TEAM_LIST).replace("{EVENT_KEY}", event.getKey());
         ion.build(context, request)
                 .addHeader("X-TBA-App-Id", "frc1126:scouting-app-2014:" + versionName)
-                .setTimeout(10 * 60 * 1000)
-                .as(new TypeToken<List<Team>>(){})
+                .as(new TypeToken<List<Team>>() {
+                })
                 .setCallback(new FutureCallback<List<Team>>() {
                     @Override
                     public void onCompleted(Exception e, List<Team> result) {
