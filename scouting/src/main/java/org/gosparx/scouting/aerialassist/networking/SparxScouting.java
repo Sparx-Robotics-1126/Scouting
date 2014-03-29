@@ -82,7 +82,7 @@ public class SparxScouting {
     }
 
     public void getScouting(Team team, Event event, Match match){
-        String request = (BASE_URL + GET_SCOUTING_BY_TEAM_EVENT)
+        String request = (BASE_URL + GET_SCOUTING_BY_TEAM_EVENT_MATCH)
                 .replace("{TEAM_KEY}", team.getKey())
                 .replace("{EVENT_KEY}", event.getKey())
                 .replace("{MATCH_KEY}", match.getKey());
