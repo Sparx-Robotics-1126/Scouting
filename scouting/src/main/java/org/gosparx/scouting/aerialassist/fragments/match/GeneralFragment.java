@@ -10,22 +10,21 @@ import android.widget.SeekBar;
 import android.widget.Switch;
 
 import org.gosparx.scouting.aerialassist.R;
+import org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker;
 import org.gosparx.scouting.aerialassist.dto.ScoutingGeneral;
 
 /**
  * Created by jbass on 2/20/14.
  */
-public class GeneralFragment extends Fragment implements SeekBar.OnSeekBarChangeListener {
+public class GeneralFragment extends Fragment{
 
     private Switch switchPlaysDefence;
 
-    private SeekBar seekBarNumberPenalties;
-    private EditText editTextNumberPenalties;
+    private HorizontalNumberPicker npPenalties;
     private EditText editTextPenaltyComments;
 
-    private SeekBar seekBarNumberTechnicalFouls;
-    private EditText editTextNumberTechnicalFouls;
-    private EditText editTextTechnicalFoulsComments;
+    private HorizontalNumberPicker npTechnicalFouls;
+    private EditText editTextTechnicalFoulComments;
 
     private EditText editTextGeneralComments;
 
@@ -37,45 +36,25 @@ public class GeneralFragment extends Fragment implements SeekBar.OnSeekBarChange
 
         switchPlaysDefence = (Switch) retVal.findViewById(R.id.switchPlaysDefense);
 
-        seekBarNumberPenalties = (SeekBar) retVal.findViewById(R.id.seekBarPenalties);
-        editTextNumberPenalties = (EditText) retVal.findViewById(R.id.editTextPenalties);
+        npPenalties = (HorizontalNumberPicker) retVal.findViewById(R.id.numberPickerPenalties);
         editTextPenaltyComments = (EditText) retVal.findViewById(R.id.editTextPenaltyComments);
-        seekBarNumberPenalties.setTag(editTextNumberPenalties);
-        seekBarNumberPenalties.setOnSeekBarChangeListener(this);
 
-
-        seekBarNumberTechnicalFouls = (SeekBar) retVal.findViewById(R.id.seekBarTechnicalFouls);
-        editTextNumberTechnicalFouls = (EditText) retVal.findViewById(R.id.editTextTechnicalFouls);
-        editTextTechnicalFoulsComments= (EditText) retVal.findViewById(R.id.editTextTechnicalFoulComments);
-        seekBarNumberTechnicalFouls.setTag(editTextNumberTechnicalFouls);
-        seekBarNumberTechnicalFouls.setOnSeekBarChangeListener(this);
+        npTechnicalFouls = (HorizontalNumberPicker) retVal.findViewById(R.id.numberPickerTechnicalFouls);
+        editTextTechnicalFoulComments = (EditText) retVal.findViewById(R.id.editTextTechnicalFoulComments);
 
         editTextGeneralComments = (EditText) retVal.findViewById(R.id.editTextGeneralComments);
 
         if(sg != null){
             switchPlaysDefence.setChecked(sg.isPlaysDefense());
-            seekBarNumberPenalties.setProgress(sg.getNumberOfPenalties());
+            npPenalties.setValue(sg.getNumberOfPenalties());
             editTextPenaltyComments.setText(sg.getCommentsOnPenalties());
-            seekBarNumberTechnicalFouls.setProgress(sg.getNumberOfTechnicalFouls());
-            editTextTechnicalFoulsComments.setText(sg.getCommentsOnTechnicalFouls());
+            npTechnicalFouls.setValue(sg.getNumberOfTechnicalFouls());
+            editTextTechnicalFoulComments.setText(sg.getCommentsOnTechnicalFouls());
             editTextGeneralComments.setText(sg.getGeneralComments());
         }
 
         return retVal;
     }
-
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        EditText et = (EditText) seekBar.getTag();
-        if(et != null)
-            et.setText(Integer.toString(progress));
-    }
-
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {}
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {}
 
     public void setScoutingGeneral(ScoutingGeneral sg){
         this.sg = sg;
@@ -87,10 +66,10 @@ public class GeneralFragment extends Fragment implements SeekBar.OnSeekBarChange
 
         if (switchPlaysDefence != null) {
             sg.setPlaysDefense(switchPlaysDefence.isChecked());
-            sg.setNumberOfPenalties(Integer.parseInt(editTextNumberPenalties.getText().toString()));
+            sg.setNumberOfPenalties(npPenalties.getValue());
             sg.setCommentsOnPenalties(editTextPenaltyComments.getText().toString());
-            sg.setNumberOfTechnicalFouls(Integer.parseInt(editTextNumberTechnicalFouls.getText().toString()));
-            sg.setCommentsOnTechnicalFouls(editTextTechnicalFoulsComments.getText().toString());
+            sg.setNumberOfTechnicalFouls(npTechnicalFouls.getValue());
+            sg.setCommentsOnTechnicalFouls(editTextTechnicalFoulComments.getText().toString());
             sg.setGeneralComments(editTextGeneralComments.getText().toString());
         }
         return sg;
