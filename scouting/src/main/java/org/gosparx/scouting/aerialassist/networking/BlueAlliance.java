@@ -14,8 +14,6 @@ import org.gosparx.scouting.aerialassist.dto.Event;
 import org.gosparx.scouting.aerialassist.dto.Match;
 import org.gosparx.scouting.aerialassist.dto.Team;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -57,16 +55,12 @@ public class BlueAlliance {
         dbHelper = DatabaseHelper.getInstance(context);
     }
 
-    public interface Callback{
-        public void handleFinishDownload(boolean success);
-    }
-
     public void cancelAll(){
         ion.cancelAll();
     }
 
     public void loadEventList(final int year){loadEventList(year, null);}
-    public void loadEventList(final int year, final Callback callback){
+    public void loadEventList(final int year, final NetworkCallback callback){
         String request = (BASE_URL+GET_EVENT_LIST).replace("{YEAR}", Integer.toString(year));
         ion.build(context, request)
                 .addHeader("X-TBA-App-Id", "frc1126:scouting-app-2014:" + versionName)
@@ -78,7 +72,7 @@ public class BlueAlliance {
                             Log.e(TAG, "Issue getting event list", e);
                             return;
                         }
-                        Callback subBack = new Callback() {
+                        NetworkCallback subBack = new NetworkCallback() {
                             int numEvents = result.size();
                             @Override
                             public void handleFinishDownload(boolean success) {
@@ -102,7 +96,7 @@ public class BlueAlliance {
     }
 
     public void loadEvent(final String eventKey){loadEvent(eventKey, null);}
-    public void loadEvent(final String eventCode, final Callback callback){
+    public void loadEvent(final String eventCode, final NetworkCallback callback){
         String request = (BASE_URL+GET_EVENT).replace("{EVENT_KEY}", eventCode);
         ion.build(context, request)
                 .addHeader("X-TBA-App-Id", "frc1126:scouting-app-2014:" + versionName)
@@ -131,7 +125,7 @@ public class BlueAlliance {
     }
 
     public void loadMatches(final Event event){loadMatches(event, null);}
-    public void loadMatches(final Event event, final Callback callback){
+    public void loadMatches(final Event event, final NetworkCallback callback){
         String request = (BASE_URL+GET_MATCH_LIST).replace("{EVENT_KEY}", event.getKey());
         ion.build(context, request)
                 .addHeader("X-TBA-App-Id", "frc1126:scouting-app-2014:" + versionName)
@@ -161,7 +155,7 @@ public class BlueAlliance {
     }
 
     public void loadTeams(final Event event){loadTeams(event, null);}
-    public void loadTeams(final Event event, final Callback callback){
+    public void loadTeams(final Event event, final NetworkCallback callback){
         String request = (BASE_URL+GET_TEAM_LIST).replace("{EVENT_KEY}", event.getKey());
         ion.build(context, request)
                 .addHeader("X-TBA-App-Id", "frc1126:scouting-app-2014:" + versionName)

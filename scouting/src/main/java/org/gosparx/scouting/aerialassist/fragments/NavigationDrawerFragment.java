@@ -31,6 +31,7 @@ import org.gosparx.scouting.aerialassist.DatabaseHelper;
 import org.gosparx.scouting.aerialassist.adapters.ScoutingDrawerAdapter;
 import org.gosparx.scouting.aerialassist.dto.Event;
 import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
+import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -321,13 +322,13 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
             case R.id.spinnerRegional:
                 if (current != null) {
                     updateDrawerData();
-                    blueAlliance.loadMatches(current, new BlueAlliance.Callback() {
+                    blueAlliance.loadMatches(current, new NetworkCallback() {
                         @Override
                         public void handleFinishDownload(boolean success) {
                             updateDrawerData();
                         }
                     });
-                    blueAlliance.loadTeams(current, new BlueAlliance.Callback() {
+                    blueAlliance.loadTeams(current, new NetworkCallback() {
                         @Override
                         public void handleFinishDownload(boolean success) {
                             updateDrawerData();

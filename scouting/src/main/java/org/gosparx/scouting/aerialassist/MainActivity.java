@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.Menu;
@@ -19,6 +18,7 @@ import org.gosparx.scouting.aerialassist.fragments.MainPreferenceFragment;
 import org.gosparx.scouting.aerialassist.fragments.MatchOverviewFragment;
 import org.gosparx.scouting.aerialassist.fragments.NavigationDrawerFragment;
 import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
+import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
 import org.gosparx.scouting.aerialassist.networking.SparxScouting;
 
 public class MainActivity extends FragmentActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -54,7 +54,7 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
         final Dialog alert = createDialog();
         alert.show();
         BlueAlliance ba = BlueAlliance.getInstance(this);
-        ba.loadEventList(2014, new BlueAlliance.Callback(){
+        ba.loadEventList(2014, new NetworkCallback(){
             @Override
             public void handleFinishDownload(boolean success) {
                 if(!success)
@@ -135,7 +135,7 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
         if(event != null) {
             final AlertDialog dialog = createDialog();
             dialog.show();
-            BlueAlliance.Callback subBack = new BlueAlliance.Callback() {
+            NetworkCallback subBack = new NetworkCallback() {
                 int numCalls = 2;
                 @Override
                 public void handleFinishDownload(boolean success) {
