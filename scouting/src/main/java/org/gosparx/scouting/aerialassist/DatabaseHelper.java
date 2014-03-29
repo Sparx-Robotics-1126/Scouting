@@ -624,7 +624,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
 
         db.update(TABLE_SCOUTING, mapScouting(scouting),
-                TABLE_SCOUTING_TEAM_KEY + " = ? AND " + TABLE_SCOUTING_MATCH_KEY + " = ? AND " + TABLE_SCOUTING_NAME +" = ?",
+                TABLE_SCOUTING_TEAM_KEY + " = ? AND "
+                        + TABLE_SCOUTING_MATCH_KEY + " = ? AND "
+                        + TABLE_SCOUTING_NAME +" = ?",
                 new String[]{scouting.getTeamKey(), scouting.getMatchKey(), scouting.getNameOfScouter()});
     }
 
@@ -660,7 +662,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         auto.setStartingLocation(new Point(
                 c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_STARTING_LOCATION_X)),
                 c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_STARTING_LOCATION_Y))));
-        auto.setStartedWithBall(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_STARTING_LOCATION_Y)) == 1);
+        auto.setStartedWithBall(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_STARTED_WITH_BALL)) == 1);
         auto.setBallsAcquired(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_ACQUIRED)));
         auto.setBallsShot(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_SHOT)));
         auto.setBallsScored(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_SCORED)));
@@ -675,9 +677,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ScoutingTele tele = new ScoutingTele();
         data.setTele(tele);
         tele.setBallsAcquiredFromFloor(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_ACQUIRED_FROM_FLOOR)));
-        tele.setBallsAcquiredFromFloor(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_COMPLETED_ASSISTS_FROM_FLOOR)));
-        tele.setBallsAcquiredFromFloor(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_ACQUIRED_FROM_HUMAN)));
-        tele.setBallsAcquiredFromFloor(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_COMPLETED_ASSISTS_FROM_HUMAN)));
+        tele.setCompletedAssistsFromFloor(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_COMPLETED_ASSISTS_FROM_FLOOR)));
+        tele.setBallsAcquiredFromHuman(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_ACQUIRED_FROM_HUMAN)));
+        tele.setCompletedAssistsFromHuman(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_COMPLETED_ASSISTS_FROM_HUMAN)));
         tele.setShotHigh(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_SHOT_HIGH)));
         tele.setScoredHigh(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_SCORED_HIGH)));
         tele.setShotLow(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_SHOT_LOW)));

@@ -37,176 +37,112 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/switchStartWithBall"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/number_of_balls_acquired" />
-    <EditText
-        android:id="@+id/editTextAutoNumBallsAcq"
+        android:text="@string/number_of_balls_acquired"
+        />
+    <org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker
+        android:id="@+id/numberPickerAutoNumBallsAcq"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/textViewAutoNumBallsAcq"
         android:layout_alignParentRight="true"
-        android:ems="3"
-        android:inputType="number"
-        android:text="@string/zero"/>
-    <SeekBar
-        android:id="@+id/seekBarAutoNumBallsAcq"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewAutoNumBallsAcq"
-        android:layout_toLeftOf="@id/editTextAutoNumBallsAcq"
-        android:max="3" />
-
+        />
 
     <TextView
         android:id="@+id/textViewAutoNumBallsShot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editTextAutoNumBallsAcq"
+        android:layout_below="@+id/numberPickerAutoNumBallsAcq"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/number_of_balls_shot" />
-    <EditText
-        android:id="@+id/editTextAutoNumBallsShot"
+    <org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker
+        android:id="@+id/numberPickerAutoNumBallsShot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/textViewAutoNumBallsShot"
         android:layout_alignParentRight="true"
-        android:ems="3"
-        android:inputType="number"
-        android:text="@string/zero"/>
-    <SeekBar
-        android:id="@+id/seekBarAutoNumBallsShot"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewAutoNumBallsShot"
-        android:layout_toLeftOf="@+id/editTextAutoNumBallsShot"
-        android:max="3" />
+        />
 
     <TextView
         android:id="@+id/textViewAutoNumBallsScored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editTextAutoNumBallsShot"
+        android:layout_below="@+id/numberPickerAutoNumBallsShot"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/number_of_balls_scored" />
-    <EditText
-        android:id="@+id/editTextAutoNumBallsScored"
+    <org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker
+        android:id="@+id/numberPickerAutoNumBallsScored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/textViewAutoNumBallsScored"
         android:layout_alignParentRight="true"
-        android:ems="3"
-        android:inputType="number"
-        android:text="@string/zero"/>
-    <SeekBar
-        android:id="@+id/seekBarAutoNumBallsScored"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewAutoNumBallsScored"
-        android:layout_toLeftOf="@+id/editTextAutoNumBallsScored"
-        android:max="3" />
+        />
 
 
     <TextView
         android:id="@+id/textViewAutoNumBallsHotHigh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editTextAutoNumBallsScored"
+        android:layout_below="@+id/numberPickerAutoNumBallsScored"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/number_of_balls_scored_in_hot_high" />
-    <EditText
-        android:id="@+id/editTextAutoNumBallsHotHigh"
+    <org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker
+        android:id="@+id/numberPickerAutoNumBallsHotHigh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/textViewAutoNumBallsHotHigh"
         android:layout_alignParentRight="true"
-        android:ems="3"
-        android:inputType="number"
-        android:text="@string/zero"/>
-    <SeekBar
-        android:id="@+id/seekBarAutoNumBallsHotHigh"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewAutoNumBallsHotHigh"
-        android:layout_toLeftOf="@+id/editTextAutoNumBallsHotHigh"
-        android:max="3" />
+        />
 
     <TextView
         android:id="@+id/textViewAutoNumBallsHotLow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editTextAutoNumBallsHotHigh"
+        android:layout_below="@+id/numberPickerAutoNumBallsHotHigh"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/number_of_balls_scored_in_hot_low" />
-    <EditText
-        android:id="@+id/editTextAutoNumBallsHotLow"
+    <org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker
+        android:id="@+id/numberPickerAutoNumBallsHotLow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/textViewAutoNumBallsHotLow"
         android:layout_alignParentRight="true"
-        android:ems="3"
-        android:inputType="number"
-        android:text="@string/zero"/>
-    <SeekBar
-        android:id="@+id/seekBarAutoNumBallsHotLow"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewAutoNumBallsHotLow"
-        android:layout_toLeftOf="@+id/editTextAutoNumBallsHotLow"
-        android:max="3" />
+        />
 
     <TextView
         android:id="@+id/textViewAutoNumBallsHigh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editTextAutoNumBallsHotLow"
+        android:layout_below="@id/numberPickerAutoNumBallsHotLow"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/number_of_balls_scored_in_high" />
-    <EditText
-        android:id="@+id/editTextAutoNumBallsHigh"
+    <org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker
+        android:id="@+id/numberPickerAutoNumBallsHigh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/textViewAutoNumBallsHigh"
         android:layout_alignParentRight="true"
-        android:ems="3"
-        android:inputType="number"
-        android:text="@string/zero"/>
-    <SeekBar
-        android:id="@+id/seekBarAutoNumBallsHigh"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewAutoNumBallsHigh"
-        android:layout_toLeftOf="@+id/editTextAutoNumBallsHigh"
-        android:max="3" />
-
+        />
 
     <TextView
-        android:id="@+id/AutoNumBallsLow"
+        android:id="@+id/textViewAutoNumBallsLow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editTextAutoNumBallsHigh"
+        android:layout_below="@id/numberPickerAutoNumBallsHigh"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/number_of_balls_scored_in_low" />
-    <EditText
-        android:id="@+id/editTextAutoNumBallsLow"
+    <org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker
+        android:id="@+id/numberPickerAutoNumBallsLow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/AutoNumBallsLow"
+        android:layout_below="@id/textViewAutoNumBallsLow"
         android:layout_alignParentRight="true"
-        android:ems="3"
-        android:inputType="number"
-        android:text="@string/zero"/>
-    <SeekBar
-        android:id="@+id/seekBarAutoNumBallsLow"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/AutoNumBallsLow"
-        android:layout_toLeftOf="@+id/editTextAutoNumBallsLow"
-        android:max="3" />
+        />
 
     <TextView
         android:id="@+id/textViewAutoEndLocationSelect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editTextAutoNumBallsLow"
+        android:layout_below="@+id/numberPickerAutoNumBallsLow"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/where_did_the_robot_end" />
     <Button
