@@ -58,6 +58,7 @@
     <string name="started_with_a_ball">Started with a ball: </string>
     <string name="minus">-</string>
     <string name="plus">+</string>
+    <string name="settings">Settings</string>
 
     <array name="tab_names">
         <item>@string/auto</item>

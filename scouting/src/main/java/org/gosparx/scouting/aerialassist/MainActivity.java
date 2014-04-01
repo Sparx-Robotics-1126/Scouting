@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -14,7 +15,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.widget.Toast;
 
 import org.gosparx.scouting.aerialassist.dto.Event;
-import org.gosparx.scouting.aerialassist.fragments.MainPreferenceFragment;
 import org.gosparx.scouting.aerialassist.fragments.MatchOverviewFragment;
 import org.gosparx.scouting.aerialassist.fragments.NavigationDrawerFragment;
 import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
@@ -95,6 +95,11 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
 
             case R.id.action_upload_data:
                 SparxScouting.getInstance(this).postAllScouting();
+                break;
+
+            case R.id.action_settings:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
                 break;
         }
         return super.onOptionsItemSelected(item);

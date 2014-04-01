@@ -2,10 +2,18 @@
     <item
         android:id="@+id/action_upload_data"
         android:title="@string/action_upload_data"
-        android:showAsAction="ifRoom"/>
+        android:orderInCategory="1"
+        android:showAsAction="ifRoom" />
 
-    <item android:id="@+id/action_download_data"
+    <item
+        android:id="@+id/action_download_data"
         android:title="@string/action_download_data"
-        android:orderInCategory="100"
+        android:orderInCategory="2"
+        android:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_settings"
+        android:title="@string/settings"
+        android:orderInCategory="3"
         android:showAsAction="never" />
 </menu>
