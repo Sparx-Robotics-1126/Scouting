@@ -49,6 +49,8 @@ public class GeneralFragment extends Fragment{
 
     @Override
     public void onResume(){
+        super.onResume();
+        
         if(sg != null){
             switchPlaysDefence.setChecked(sg.isPlaysDefense());
             npPenalties.setValue(sg.getNumberOfPenalties());
