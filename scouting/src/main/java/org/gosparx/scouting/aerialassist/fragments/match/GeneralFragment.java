@@ -44,6 +44,11 @@ public class GeneralFragment extends Fragment{
 
         editTextGeneralComments = (EditText) retVal.findViewById(R.id.editTextGeneralComments);
 
+        return retVal;
+    }
+
+    @Override
+    public void onResume(){
         if(sg != null){
             switchPlaysDefence.setChecked(sg.isPlaysDefense());
             npPenalties.setValue(sg.getNumberOfPenalties());
@@ -52,8 +57,6 @@ public class GeneralFragment extends Fragment{
             editTextTechnicalFoulComments.setText(sg.getCommentsOnTechnicalFouls());
             editTextGeneralComments.setText(sg.getGeneralComments());
         }
-
-        return retVal;
     }
 
     public void setScoutingGeneral(ScoutingGeneral sg){

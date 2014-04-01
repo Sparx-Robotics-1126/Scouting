@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +65,13 @@ public class AutoFragment extends Fragment implements View.OnClickListener {
         buttonSelectStartLocation.setOnClickListener(this);
         buttonSelectEndLocation.setOnClickListener(this);
 
+        return retVal;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
         if(sa != null){
             startingLocation = sa.getStartingLocation();
             npBallsAcq.setValue(sa.getBallsAcquired());
@@ -75,8 +83,6 @@ public class AutoFragment extends Fragment implements View.OnClickListener {
             npBallsScoredLow.setValue(sa.getBallsScoredLow());
             endingLocation = sa.getEndingLocation();
         }
-
-        return retVal;
     }
 
     @Override
@@ -108,6 +114,9 @@ public class AutoFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onActivityResult(int requestCode, int responseCode, Intent intent){
+        if(responseCode < 0) {
+            return;
+        }
         switch (requestCode){
             case START_REQUEST_CODE:
                 startingLocation = new Point(

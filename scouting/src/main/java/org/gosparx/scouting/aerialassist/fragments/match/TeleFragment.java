@@ -52,6 +52,13 @@ public class TeleFragment extends Fragment{
 
         spinnerZoneSpentMostTime = (Spinner) retVal.findViewById(R.id.spinnerZoneMostPlayed);
 
+        return retVal;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
         if(st != null){
             npBallsAcqFromFloor.setValue(st.getBallsAcquiredFromFloor());
             npCompletedAssistFromFloor.setValue(st.getCompletedAssistsFromFloor());
@@ -71,8 +78,6 @@ public class TeleFragment extends Fragment{
                 }
             }
         }
-
-        return retVal;
     }
 
     public void setScoutingTele(ScoutingTele st){
