@@ -357,13 +357,19 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
     }
 
     public void updateDrawerData(){
-        Event currentEvent;
-        cursorAdapterRegionalNames.changeCursor(dbHelper.createEventNameCursor());
-        if(spinnerRegional != null && spinnerRegional.getSelectedView() != null){
-            currentEvent= dbHelper.getEvent((String) spinnerRegional.getSelectedView().getTag());
-            scoutingDrawerAdapter.changeCursor(dbHelper.createMatchCursor(currentEvent));
-            teamsDrawerAdapter.changeCursor(dbHelper.createTeamCursor(currentEvent));
-        }
+        if(getActivity() == null)
+            return;
+        NavigationDrawerFragment.this.getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                cursorAdapterRegionalNames.changeCursor(dbHelper.createEventNameCursor());
+                if(spinnerRegional != null && spinnerRegional.getSelectedView() != null){
+                    Event currentEvent= dbHelper.getEvent((String) spinnerRegional.getSelectedView().getTag());
+                    scoutingDrawerAdapter.changeCursor(dbHelper.createMatchCursor(currentEvent));
+                    teamsDrawerAdapter.changeCursor(dbHelper.createTeamCursor(currentEvent));
+                }
+            }
+        });
     }
 
     @Override

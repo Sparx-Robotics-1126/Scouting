@@ -36,6 +36,8 @@ public class BlueAlliance {
     public static synchronized BlueAlliance getInstance(Context c){
         if(blueAlliance == null)
             blueAlliance = new BlueAlliance(c);
+        else
+            blueAlliance.context = c;
         return blueAlliance;
     }
 
@@ -43,7 +45,7 @@ public class BlueAlliance {
         this.context = context;
         ion = Ion.getInstance(context, TAG);
         ion.configure().setLogging(TAG, Log.INFO);
-        ion.getHttpClient().getSocketMiddleware().setMaxConnectionCount(5);
+        ion.getHttpClient().getSocketMiddleware().setMaxConnectionCount(25);
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
         ion.configure().setGson(gson);
         try {
@@ -70,6 +72,8 @@ public class BlueAlliance {
                     public void onCompleted(Exception e, final List<String> result) {
                         if(e != null){
                             Log.e(TAG, "Issue getting event list", e);
+                            if(callback != null)
+                                callback.handleFinishDownload(false);
                             return;
                         }
                         NetworkCallback subBack = new NetworkCallback() {

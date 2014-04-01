@@ -53,11 +53,16 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
         BlueAlliance ba = BlueAlliance.getInstance(this);
         ba.loadEventList(2014, new NetworkCallback(){
             @Override
-            public void handleFinishDownload(boolean success) {
-                if(!success)
-                    Toast.makeText(MainActivity.this, "Did not successfully download event list!", Toast.LENGTH_LONG).show();
-                alert.dismiss();
-                mNavigationDrawerFragment.updateDrawerData();
+            public void handleFinishDownload(final boolean success) {
+                MainActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(!success)
+                            Toast.makeText(MainActivity.this, "Did not successfully download event list!", Toast.LENGTH_LONG).show();
+                        alert.dismiss();
+                        mNavigationDrawerFragment.updateDrawerData();
+                    }
+                });
             }
         });
     }
