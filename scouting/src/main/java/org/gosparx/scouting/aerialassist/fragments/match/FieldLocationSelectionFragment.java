@@ -39,13 +39,27 @@ public class FieldLocationSelectionFragment extends DialogFragment implements Vi
 
         imageView = (ImageView) view.findViewById(R.id.imageViewLocationSelectionImage);
         imageView.setOnTouchListener(this);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(500);
+                }catch (InterruptedException e){}
 
-        if(getArguments() != null
-                && getArguments().containsKey(X_BUNDLE_KEY)
-                && getArguments().containsKey(Y_BUNDLE_KEY))
-            handleTouch(BitmapFactory.decodeResource(getResources(), R.drawable.field).copy(Bitmap.Config.RGB_565, true),
-                    getArguments().getInt(X_BUNDLE_KEY),
-                    getArguments().getInt(Y_BUNDLE_KEY));
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(getArguments() != null
+                                && getArguments().containsKey(X_BUNDLE_KEY)
+                                && getArguments().containsKey(Y_BUNDLE_KEY))
+                            handleTouch(BitmapFactory.decodeResource(getResources(), R.drawable.field).copy(Bitmap.Config.RGB_565, true),
+                                    getArguments().getDouble(X_BUNDLE_KEY) * imageView.getWidth(),
+                                    getArguments().getDouble(Y_BUNDLE_KEY) * imageView.getHeight());
+
+                    }
+                });
+            }
+        }).start();
 
         return new AlertDialog.Builder(getActivity())
                 .setView(view)
@@ -54,8 +68,8 @@ public class FieldLocationSelectionFragment extends DialogFragment implements Vi
                     public void onClick(DialogInterface dialog, int whichButton) {
                         if (selectedLocation != null) {
                             Intent data = new Intent();
-                            data.putExtra(X_BUNDLE_KEY, selectedLocation.x);
-                            data.putExtra(Y_BUNDLE_KEY, selectedLocation.y);
+                            data.putExtra(X_BUNDLE_KEY, (double)(selectedLocation.x) / imageView.getWidth());
+                            data.putExtra(Y_BUNDLE_KEY, (double)(selectedLocation.y) / imageView.getHeight());
                             getTargetFragment().onActivityResult(getTargetRequestCode(), 0, data);
                         } else {
                             getTargetFragment().onActivityResult(getTargetRequestCode(), -1, null);
@@ -76,19 +90,19 @@ public class FieldLocationSelectionFragment extends DialogFragment implements Vi
     public boolean onTouch(View view, MotionEvent motionEvent) {
         if(motionEvent.getAction() == MotionEvent.ACTION_UP){
             Bitmap tempBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.field).copy(Bitmap.Config.RGB_565, true);
-            handleTouch(tempBitmap,
-                    motionEvent.getX()*tempBitmap.getWidth()/imageView.getWidth(),
-                    motionEvent.getY()*tempBitmap.getHeight()/imageView.getHeight());
+            handleTouch(tempBitmap, motionEvent.getX(), motionEvent.getY());
         }
         return true;
     }
 
-    private void handleTouch(Bitmap tempBitmap, float x, float y) {
+    private void handleTouch(Bitmap tempBitmap, double x, double y) {
         selectedLocation = new Point((int) x, (int) y);
         Canvas c = new Canvas(tempBitmap);
         Paint paint = new Paint();
         paint.setColor(0xFF000000);
-        c.drawCircle(selectedLocation.x, selectedLocation.y, 50, paint);
+        c.drawCircle(
+                (float)(x*tempBitmap.getWidth()/imageView.getWidth()),
+                (float)(y*tempBitmap.getHeight()/imageView.getHeight()), 50, paint);
         imageView.setImageDrawable(new BitmapDrawable(getResources(), tempBitmap));
         imageView.invalidate();
     }

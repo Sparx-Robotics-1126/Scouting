@@ -7,7 +7,8 @@ import android.graphics.Point;
  */
 public class ScoutingAuto {
 
-    private Point startingLocation;
+    private double startingLocationX;
+    private double startingLocationY;
     private boolean startedWithBall;
     private int ballsAcquired;
     private int ballsShot;
@@ -16,14 +17,23 @@ public class ScoutingAuto {
     private int ballsScoredHotLow;
     private int ballsScoredHigh;
     private int ballsScoredLow;
-    private Point endingLocation;
+    private double endingLocationX;
+    private double endingLocationY;
 
-    public Point getStartingLocation() {
-        return startingLocation;
+    public double getStartingLocationX() {
+        return startingLocationX;
     }
 
-    public void setStartingLocation(Point startingLocation) {
-        this.startingLocation = startingLocation;
+    public void setStartingLocationX(double startingLocationX) {
+        this.startingLocationX = startingLocationX;
+    }
+
+    public double getStartingLocationY() {
+        return startingLocationY;
+    }
+
+    public void setStartingLocationY(double startingLocationY) {
+        this.startingLocationY = startingLocationY;
     }
 
     public boolean isStartedWithBall() {
@@ -90,11 +100,19 @@ public class ScoutingAuto {
         this.ballsScoredLow = ballsScoredLow;
     }
 
-    public Point getEndingLocation() {
-        return endingLocation;
+    public double getEndingLocationX() {
+        return endingLocationX;
     }
 
-    public void setEndingLocation(Point endingLocation) {
-        this.endingLocation = endingLocation;
+    public void setEndingLocationX(double endingLocationX) {
+        this.endingLocationX = endingLocationX;
+    }
+
+    public double getEndingLocationY() {
+        return endingLocationY;
+    }
+
+    public void setEndingLocationY(double endingLocationY) {
+        this.endingLocationY = endingLocationY;
     }
 }

@@ -1,10 +1,8 @@
 package org.gosparx.scouting.aerialassist.fragments.match;
 
 import android.content.Intent;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,9 +25,11 @@ public class AutoFragment extends Fragment implements View.OnClickListener {
     private FieldLocationSelectionFragment fieldLocationSelectionFragment;
 
     private Button buttonSelectStartLocation;
-    private Point startingLocation;
+    private double startingLocationX;
+    private double startingLocationY;
     private Button buttonSelectEndLocation;
-    private Point endingLocation;
+    private double endingLocationX;
+    private double endingLocationY;
     private Switch switchStartWithBall;
 
     private HorizontalNumberPicker npBallsAcq;
@@ -73,7 +73,8 @@ public class AutoFragment extends Fragment implements View.OnClickListener {
         super.onResume();
 
         if(sa != null){
-            startingLocation = sa.getStartingLocation();
+            startingLocationX = sa.getStartingLocationX();
+            startingLocationY = sa.getStartingLocationY();
             npBallsAcq.setValue(sa.getBallsAcquired());
             npBallsShot.setValue(sa.getBallsShot());
             npBallsScored.setValue(sa.getBallsScored());
@@ -81,7 +82,8 @@ public class AutoFragment extends Fragment implements View.OnClickListener {
             npBallsScoredHotLow.setValue(sa.getBallsScoredHotLow());
             npBallsScoredHigh.setValue(sa.getBallsScoredHigh());
             npBallsScoredLow.setValue(sa.getBallsScoredLow());
-            endingLocation = sa.getEndingLocation();
+            endingLocationX = sa.getEndingLocationX();
+            endingLocationY = sa.getEndingLocationY();
         }
     }
 
@@ -90,18 +92,18 @@ public class AutoFragment extends Fragment implements View.OnClickListener {
         Bundle args = new Bundle();
         switch (view.getId()){
             case R.id.buttonAutoStartLocationSelect:
-                if(startingLocation != null && startingLocation.x > 0 && startingLocation.y > 0){
-                    args.putInt(FieldLocationSelectionFragment.X_BUNDLE_KEY, startingLocation.x);
-                    args.putInt(FieldLocationSelectionFragment.Y_BUNDLE_KEY, startingLocation.y);
+                if(startingLocationX > 0 && startingLocationY > 0){
+                    args.putDouble(FieldLocationSelectionFragment.X_BUNDLE_KEY, startingLocationX);
+                    args.putDouble(FieldLocationSelectionFragment.Y_BUNDLE_KEY, startingLocationY);
                     fieldLocationSelectionFragment.setArguments(args);
                 }
                 fieldLocationSelectionFragment.setTargetFragment(this, START_REQUEST_CODE);
                 fieldLocationSelectionFragment.show(getFragmentManager(), "FieldLocationSelectionStart");
                 break;
             case R.id.buttonAutoEndLocationSelect:
-                if(endingLocation != null && endingLocation.x > 0 && endingLocation.y > 0){
-                    args.putInt(FieldLocationSelectionFragment.X_BUNDLE_KEY, endingLocation.x);
-                    args.putInt(FieldLocationSelectionFragment.Y_BUNDLE_KEY, endingLocation.y);
+                if(endingLocationX > 0 && endingLocationY > 0){
+                    args.putDouble(FieldLocationSelectionFragment.X_BUNDLE_KEY, endingLocationX);
+                    args.putDouble(FieldLocationSelectionFragment.Y_BUNDLE_KEY, endingLocationY);
                     fieldLocationSelectionFragment.setArguments(args);
                 }
                 fieldLocationSelectionFragment.setTargetFragment(this, END_REQUEST_CODE);
@@ -119,14 +121,12 @@ public class AutoFragment extends Fragment implements View.OnClickListener {
         }
         switch (requestCode){
             case START_REQUEST_CODE:
-                startingLocation = new Point(
-                        intent.getIntExtra(FieldLocationSelectionFragment.X_BUNDLE_KEY, -1),
-                        intent.getIntExtra(FieldLocationSelectionFragment.Y_BUNDLE_KEY, -1));
+                startingLocationX = intent.getDoubleExtra(FieldLocationSelectionFragment.X_BUNDLE_KEY, -1);
+                startingLocationY = intent.getDoubleExtra(FieldLocationSelectionFragment.Y_BUNDLE_KEY, -1);
                 break;
             case END_REQUEST_CODE:
-                endingLocation = new Point(
-                        intent.getIntExtra(FieldLocationSelectionFragment.X_BUNDLE_KEY, -1),
-                        intent.getIntExtra(FieldLocationSelectionFragment.Y_BUNDLE_KEY, -1));
+                endingLocationX = intent.getDoubleExtra(FieldLocationSelectionFragment.X_BUNDLE_KEY, -1);
+                endingLocationY = intent.getDoubleExtra(FieldLocationSelectionFragment.Y_BUNDLE_KEY, -1);
                 break;
         }
     }
@@ -140,7 +140,8 @@ public class AutoFragment extends Fragment implements View.OnClickListener {
             sa = new ScoutingAuto();
 
         if (npBallsAcq != null) {
-            sa.setStartingLocation(startingLocation);
+            sa.setStartingLocationX(startingLocationX);
+            sa.setStartingLocationY(startingLocationY);
             sa.setStartedWithBall(switchStartWithBall.isChecked());
             sa.setBallsAcquired(npBallsAcq.getValue());
             sa.setBallsShot(npBallsShot.getValue());
@@ -149,7 +150,8 @@ public class AutoFragment extends Fragment implements View.OnClickListener {
             sa.setBallsScoredHotLow(npBallsScoredHotLow.getValue());
             sa.setBallsScoredHigh(npBallsScoredHigh.getValue());
             sa.setBallsScoredLow(npBallsScoredLow.getValue());
-            sa.setEndingLocation(endingLocation);
+            sa.setEndingLocationX(endingLocationX);
+            sa.setEndingLocationY(endingLocationY);
         }
         return sa;
     }
