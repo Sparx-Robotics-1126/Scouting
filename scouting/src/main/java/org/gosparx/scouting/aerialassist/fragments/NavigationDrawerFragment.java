@@ -38,7 +38,7 @@ import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
  * design guidelines</a> for a complete explanation of the behaviors implemented here.
  */
-public class NavigationDrawerFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+public class NavigationDrawerFragment extends Fragment implements AdapterView.OnItemSelectedListener{
 
     /**
      * Remember the position of the selected item.
@@ -63,6 +63,7 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
 
     private ScoutingDrawerAdapter scoutingDrawerAdapter;
     private SimpleCursorAdapter teamsDrawerAdapter;
+    private SimpleCursorAdapter matchesDrawerAdapter;
 
     private DrawerLayout mDrawerLayout;
     private Spinner spinnerRegional;
@@ -118,6 +119,46 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
                 new String[]{"team_number", "nickname"},
                 new int[]{android.R.id.text1, android.R.id.text2},
                 0);
+        teamsDrawerAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+            @Override
+            public boolean setViewValue(View view, Cursor cursor, int i) {
+                view.setTag(R.id.team_key, cursor.getString(0));
+                return false;
+            }
+        });
+
+        matchesDrawerAdapter = new SimpleCursorAdapter(getActivity(),
+                android.R.layout.simple_list_item_1,
+                null,
+                new String[]{"key"},
+                new int[]{android.R.id.text1},
+                0);
+        matchesDrawerAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+            @Override
+            public boolean setViewValue(View view, Cursor cursor, int i) {
+                StringBuilder matchString = new StringBuilder();
+                String compLevel = cursor.getString(cursor.getColumnIndex("comp_level"));
+                int setNumber = cursor.getInt(cursor.getColumnIndex("set_number"));
+                if ("qm".equals(compLevel))
+                    matchString.append("Qual ");
+                else if ("qf".equals(compLevel)) {
+                    matchString.append("Q/F: ");
+                    matchString.append(setNumber);
+                } else if ("sf".equals(compLevel)) {
+                    matchString.append("S/F: ");
+                    matchString.append(setNumber);
+                } else if ("f".equals(compLevel)) {
+                    matchString.append("Final: ");
+                    matchString.append(setNumber);
+                }
+                matchString.append(" Match: ").append(cursor.getInt(cursor.getColumnIndex("match_number")));
+
+                ((TextView) view).setText(matchString.toString());
+                view.setTag(R.id.match_key, cursor.getString(cursor.getColumnIndex("key")));
+
+                return true;
+            }
+        });
 
         spinnerRegional = (Spinner) mainView.findViewById(R.id.spinnerRegional);
         cursorAdapterRegionalNames = new SimpleCursorAdapter(
@@ -167,6 +208,20 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
         });
 
         mDrawerListView = (ListView) mainView.findViewById(R.id.listViewDrawerContent);
+        mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                TextView tv = (TextView) view.findViewById(android.R.id.text1);
+                switch (spinnerTaskSelection.getSelectedItemPosition()){
+                    case 1: // Matches
+                        mCallbacks.onMatchSelected((String) tv.getTag(R.id.match_key));
+                        break;
+                    case 2: // Teams
+                        mCallbacks.onTeamSelected((String) tv.getTag(R.id.team_key));
+                        break;
+                }
+            }
+        });
 
         return mainView;
     }
@@ -347,8 +402,10 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
                         mDrawerExpandableListView.setVisibility(View.GONE);
                         mDrawerListView.setVisibility(View.VISIBLE);
                         mDrawerListView.setAdapter(teamsDrawerAdapter);
-                    }else{
-
+                    }else if(spinnerTaskSelection.getSelectedItem().equals(getString(R.string.matches))){
+                        mDrawerExpandableListView.setVisibility(View.GONE);
+                        mDrawerListView.setVisibility(View.VISIBLE);
+                        mDrawerListView.setAdapter(matchesDrawerAdapter);
                     }
                     updateDrawerData();
                 }
@@ -367,6 +424,7 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
                     Event currentEvent= dbHelper.getEvent((String) spinnerRegional.getSelectedView().getTag());
                     scoutingDrawerAdapter.changeCursor(dbHelper.createMatchCursor(currentEvent));
                     teamsDrawerAdapter.changeCursor(dbHelper.createTeamCursor(currentEvent));
+                    matchesDrawerAdapter.changeCursor(dbHelper.createMatchCursor(currentEvent));
                 }
             }
         });

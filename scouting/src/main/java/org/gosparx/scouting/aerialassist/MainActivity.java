@@ -143,7 +143,7 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
 
     private void downloadData(){
         if(!isNetworkAvailable(this)) {
-            Log.d(TAG, "Not connected to the network, not going to download data")
+            Log.d(TAG, "Not connected to the network, not going to download data");
             return;
         }
         Event event = mNavigationDrawerFragment.getSelectedEvent();
