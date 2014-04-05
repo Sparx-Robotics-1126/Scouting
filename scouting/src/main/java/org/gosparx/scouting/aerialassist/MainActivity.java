@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.widget.DrawerLayout;
@@ -19,10 +20,14 @@ import org.gosparx.scouting.aerialassist.fragments.MatchOverviewFragment;
 import org.gosparx.scouting.aerialassist.fragments.NavigationDrawerFragment;
 import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
 import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
+import org.gosparx.scouting.aerialassist.networking.NetworkHelper;
 import org.gosparx.scouting.aerialassist.networking.SparxScouting;
+
+import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.isNetworkAvailable;
 
 public class MainActivity extends FragmentActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
+    public static final String TAG = MainActivity.class.getSimpleName();
     public static final String PREFERENCE_KEY = "AerialAssist";
     public static final String NAME_PREFERENCE = "Name of Scouter";
 
@@ -48,23 +53,25 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        final Dialog alert = createDialog();
-        alert.show();
         BlueAlliance ba = BlueAlliance.getInstance(this);
-        ba.loadEventList(2014, new NetworkCallback(){
-            @Override
-            public void handleFinishDownload(final boolean success) {
-                MainActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(!success)
-                            Toast.makeText(MainActivity.this, "Did not successfully download event list!", Toast.LENGTH_LONG).show();
-                        alert.dismiss();
-                        mNavigationDrawerFragment.updateDrawerData();
-                    }
-                });
-            }
-        });
+        if(isNetworkAvailable(this) && NetworkHelper.needToLoadEventList(this)) {
+            final Dialog alert = createDialog();
+            alert.show();
+            ba.loadEventList(2014, new NetworkCallback() {
+                @Override
+                public void handleFinishDownload(final boolean success) {
+                    MainActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (!success)
+                                Toast.makeText(MainActivity.this, "Did not successfully download event list!", Toast.LENGTH_LONG).show();
+                            alert.dismiss();
+                            mNavigationDrawerFragment.updateDrawerData();
+                        }
+                    });
+                }
+            });
+        }
     }
 
     public void restoreActionBar() {
@@ -135,6 +142,10 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
     }
 
     private void downloadData(){
+        if(!isNetworkAvailable(this)) {
+            Log.d(TAG, "Not connected to the network, not going to download data")
+            return;
+        }
         Event event = mNavigationDrawerFragment.getSelectedEvent();
         if(event != null) {
             final AlertDialog dialog = createDialog();

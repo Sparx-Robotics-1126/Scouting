@@ -1,7 +1,5 @@
 package org.gosparx.scouting.aerialassist.dto;
 
-import android.graphics.Point;
-
 /**
  * Created by jbass on 3/1/14.
  */

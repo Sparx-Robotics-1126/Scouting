@@ -14,6 +14,7 @@ import org.gosparx.scouting.aerialassist.dto.Event;
 import org.gosparx.scouting.aerialassist.dto.Match;
 import org.gosparx.scouting.aerialassist.dto.Team;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -85,8 +86,10 @@ public class BlueAlliance {
                                 else
                                     numEvents--;
 
-                                if(numEvents <= 0)
+                                if(numEvents <= 0) {
+                                    NetworkHelper.setLoadedEventList(context);
                                     callback.handleFinishDownload(true);
+                                }
                             }
                         };
                         for(String eventKey : result) {
