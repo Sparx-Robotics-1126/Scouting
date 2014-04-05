@@ -5,11 +5,15 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
 import org.gosparx.scouting.aerialassist.DatabaseHelper;
+import org.gosparx.scouting.aerialassist.dto.Event;
+import org.gosparx.scouting.aerialassist.dto.Match;
 import org.gosparx.scouting.aerialassist.dto.Scouting;
+import org.gosparx.scouting.aerialassist.dto.Team;
 
 import java.util.List;
 
@@ -20,7 +24,7 @@ public class SparxScouting {
     private static final String TAG = "SparxScouting";
     private static final String BASE_URL = "http://sparx-scouting-service.appspot.com";
     private static final String POST_SCOUTING = "/api/2014/v1/ScoutingData";
-    private static final String GET_SCOUTING_BY_TEAM = "/api/2014/v1/ScoutingData/{TEAM_KEYs}";
+    private static final String GET_SCOUTING_BY_TEAM = "/api/2014/v1/ScoutingData/{TEAM_KEY}";
     private static final String GET_SCOUTING_BY_TEAM_EVENT = "/api/2014/v1/ScoutingData/{TEAM_KEY}/{EVENT_KEY}";
     private static final String GET_SCOUTING_BY_TEAM_EVENT_MATCH = "/api/2014/v1/ScoutingData/{TEAM_KEY}/{EVENT_KEY}/{MATCH_KEY}";
 
@@ -28,7 +32,14 @@ public class SparxScouting {
     private Ion ion;
     private DatabaseHelper dbHelper;
 
-    public SparxScouting(Context context){
+    public static SparxScouting sparxScouting;
+    public static synchronized SparxScouting getInstance(Context context){
+        if(sparxScouting == null)
+            sparxScouting = new SparxScouting(context);
+        return sparxScouting;
+    }
+
+    private SparxScouting(Context context){
         this.context = context;
         ion = Ion.getInstance(context, TAG);
         ion.configure().setLogging(TAG, Log.DEBUG);
@@ -44,16 +55,59 @@ public class SparxScouting {
         for (final Scouting scouting : scoutingList) {
             ion.build(context, request)
                     .setJsonObjectBody(scouting)
-                    .asString().setCallback(new FutureCallback<String>() {
-                @Override
-                public void onCompleted(Exception e, String result) {
-                    if (e != null) {
-                        Log.e(TAG, "Issue saving to Server!", e);
-                    }else {
-                        dbHelper.setDoneSyncing(scouting);
-                    }
-                }
-            });
+                    .asString()
+                    .setCallback(new FutureCallback<String>() {
+                        @Override
+                        public void onCompleted(Exception e, String result) {
+                            if (e != null) {
+                                Log.e(TAG, "Issue saving to Server!", e);
+                            } else {
+                                dbHelper.setDoneSyncing(scouting);
+                            }
+                        }
+                    });
         }
+    }
+
+    public void getScouting(Team team){
+        String request = (BASE_URL + GET_SCOUTING_BY_TEAM).replace("{TEAM_KEY}", team.getKey());
+        getScouting(request);
+    }
+
+    public void getScouting(Team team, Event event){
+        String request = (BASE_URL + GET_SCOUTING_BY_TEAM_EVENT)
+                .replace("{TEAM_KEY}", team.getKey())
+                .replace("{EVENT_KEY}", event.getKey());
+        getScouting(request);
+    }
+
+    public void getScouting(Team team, Event event, Match match){
+        String request = (BASE_URL + GET_SCOUTING_BY_TEAM_EVENT_MATCH)
+                .replace("{TEAM_KEY}", team.getKey())
+                .replace("{EVENT_KEY}", event.getKey())
+                .replace("{MATCH_KEY}", match.getKey());
+        getScouting(request);
+    }
+
+    private void getScouting(String request){
+        ion.build(context, request)
+        .as(new TypeToken<List<Scouting>>(){})
+        .setCallback(new FutureCallback<List<Scouting>>() {
+            @Override
+            public void onCompleted(Exception e, List<Scouting> result) {
+                if (e != null) {
+                    Log.e(TAG, "Issue getting scouting data.", e);
+                    return;
+                }
+
+                for (Scouting sd : result) {
+                    if (dbHelper.doesScoutingExist(sd))
+                        dbHelper.updateScouting(sd);
+                    else
+                        dbHelper.createScouting(sd);
+                }
+
+            }
+        });
     }
 }

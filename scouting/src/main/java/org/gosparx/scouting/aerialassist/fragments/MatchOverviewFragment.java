@@ -63,14 +63,15 @@ public class MatchOverviewFragment extends Fragment implements View.OnClickListe
                 matchId,
                 scouterName);
 
-        if (scoutingList.size() > 1) {
+        if (scoutingList.size() > 1)
             Log.w(TAG, "Multiple sets of scouting data by same scouter!");
-        }
+
         // Grab the last element, should be latest
         if (scoutingList != null && !scoutingList.isEmpty())
             scouting = scoutingList.get(scoutingList.size() - 1);
 
         if(scouting == null){
+            Log.d(TAG, "Creating new scouting data.");
             scouting = new Scouting();
             scouting.setMatchKey(matchId);
             scouting.setTeamKey(teamId);
@@ -126,20 +127,30 @@ public class MatchOverviewFragment extends Fragment implements View.OnClickListe
             default:
                 throw new RuntimeException("Invalid button handle!");
         }
+        saveData();
+
         fragmentTransaction.commit();
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        saveData();
+    }
+
+    private void saveData(){
         DatabaseHelper dbHelper = DatabaseHelper.getInstance(getActivity());
         scouting.setAuto(autoFragment.getScoutingAuto());
         scouting.setTele(teleFragment.getScoutingTele());
         scouting.setGeneral(generalFragment.getScoutingGeneral());
 
-        if(dbHelper.doesScoutingExist(scouting))
+        if(dbHelper.doesScoutingExist(scouting)) {
             dbHelper.updateScouting(scouting);
-        else
+            Log.d(TAG, "Updating scouting data.  Team("+scouting.getTeamKey()+") Match("+scouting.getMatchKey()+")");
+        }
+        else {
             dbHelper.createScouting(scouting);
+            Log.d(TAG, "Saving scouting data.  Team("+scouting.getTeamKey()+") Match("+scouting.getMatchKey()+")");
+        }
     }
 }

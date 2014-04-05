@@ -20,29 +20,19 @@
         android:layout_below="@+id/switchPlaysDefense"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/number_of_penalties" />
-    <EditText
-        android:id="@+id/editTextPenalties"
+    <org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker
+        android:id="@+id/numberPickerPenalties"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="number"
-        android:layout_below="@+id/textViewPenalties"
         android:layout_alignParentRight="true"
-        android:ems="3"
-        android:text="@string/zero" />
-    <SeekBar
-        android:id="@+id/seekBarPenalties"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewPenalties"
-        android:layout_toLeftOf="@+id/editTextPenalties"
-        android:max="10"/>
+        android:layout_below="@id/textViewPenalties"/>
 
 
     <TextView
         android:id="@+id/textViewPenaltyComments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editTextPenalties"
+        android:layout_below="@+id/numberPickerPenalties"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/comments_on_penalties" />
     <EditText
@@ -60,29 +50,19 @@
         android:layout_below="@+id/editTextPenaltyComments"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/number_of_technical_fouls" />
-    <EditText
-        android:id="@+id/editTextTechnicalFouls"
+    <org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker
+        android:id="@+id/numberPickerTechnicalFouls"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="number"
-        android:layout_below="@+id/textViewTechnicalFouls"
         android:layout_alignParentRight="true"
-        android:ems="3"
-        android:text="@string/zero" />
-    <SeekBar
-        android:id="@+id/seekBarTechnicalFouls"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewTechnicalFouls"
-        android:layout_toLeftOf="@+id/editTextTechnicalFouls"
-        android:max="10"/>
+        android:layout_below="@id/textViewTechnicalFouls"/>
 
 
     <TextView
         android:id="@+id/textViewTechnicalFoulComments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editTextTechnicalFouls"
+        android:layout_below="@+id/numberPickerTechnicalFouls"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/comments_on_technical_fouls" />
     <EditText

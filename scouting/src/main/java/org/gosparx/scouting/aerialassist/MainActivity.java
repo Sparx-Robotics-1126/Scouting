@@ -2,24 +2,32 @@ package org.gosparx.scouting.aerialassist;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.Toast;
 
-import org.gosparx.scouting.aerialassist.fragments.MainPreferenceFragment;
+import org.gosparx.scouting.aerialassist.dto.Event;
 import org.gosparx.scouting.aerialassist.fragments.MatchOverviewFragment;
 import org.gosparx.scouting.aerialassist.fragments.NavigationDrawerFragment;
 import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
+import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
+import org.gosparx.scouting.aerialassist.networking.NetworkHelper;
 import org.gosparx.scouting.aerialassist.networking.SparxScouting;
+
+import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.isNetworkAvailable;
 
 public class MainActivity extends FragmentActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
+    public static final String TAG = MainActivity.class.getSimpleName();
     public static final String PREFERENCE_KEY = "AerialAssist";
     public static final String NAME_PREFERENCE = "Name of Scouter";
 
@@ -33,8 +41,6 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
      */
     private CharSequence mTitle;
 
-    MainPreferenceFragment mpf = new MainPreferenceFragment();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +52,26 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
-        getFragmentManager().beginTransaction().replace(R.id.container, mpf).commit();
+
+        BlueAlliance ba = BlueAlliance.getInstance(this);
+        if(isNetworkAvailable(this) && NetworkHelper.needToLoadEventList(this)) {
+            final Dialog alert = createDialog();
+            alert.show();
+            ba.loadEventList(2014, new NetworkCallback() {
+                @Override
+                public void handleFinishDownload(final boolean success) {
+                    MainActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (!success)
+                                Toast.makeText(MainActivity.this, "Did not successfully download event list!", Toast.LENGTH_LONG).show();
+                            alert.dismiss();
+                            mNavigationDrawerFragment.updateDrawerData();
+                        }
+                    });
+                }
+            });
+        }
     }
 
     public void restoreActionBar() {
@@ -81,8 +106,12 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
                 break;
 
             case R.id.action_upload_data:
-                SparxScouting sc = new SparxScouting(this);
-                sc.postAllScouting();
+                SparxScouting.getInstance(this).postAllScouting();
+                break;
+
+            case R.id.action_settings:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -100,22 +129,51 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
         args.putString(MatchOverviewFragment.ARG_EVENT_ID, eventId);
         matchOverviewFragment.setArguments(args);
         fragmentManager.beginTransaction().replace(R.id.container, matchOverviewFragment).commit();
-        getFragmentManager().beginTransaction().remove(mpf).commit();
     }
 
     @Override
     public void onMatchSelected(String matchId) {
         Toast.makeText(this, "Match "+matchId+" selected.", Toast.LENGTH_SHORT).show();
-        getFragmentManager().beginTransaction().remove(mpf).commit();
     }
 
     @Override
     public void onTeamSelected(String teamId) {
         Toast.makeText(this, "Team "+teamId+" selected.", Toast.LENGTH_SHORT).show();
-        getFragmentManager().beginTransaction().remove(mpf).commit();
     }
 
     private void downloadData(){
+        if(!isNetworkAvailable(this)) {
+            Log.d(TAG, "Not connected to the network, not going to download data");
+            return;
+        }
+        Event event = mNavigationDrawerFragment.getSelectedEvent();
+        if(event != null) {
+            final AlertDialog dialog = createDialog();
+            dialog.show();
+            NetworkCallback subBack = new NetworkCallback() {
+                int numCalls = 2;
+                @Override
+                public void handleFinishDownload(boolean success) {
+                    if(!success) {
+                        Toast.makeText(MainActivity.this, "Issue downloading data", Toast.LENGTH_LONG).show();
+                        dialog.dismiss();
+                    }
+                    else
+                        numCalls--;
+
+                    if(numCalls <= 0) {
+                        dialog.dismiss();
+                        mNavigationDrawerFragment.updateDrawerData();
+                    }
+                }
+            };
+            BlueAlliance.getInstance(this).loadTeams(event, subBack);
+            BlueAlliance.getInstance(this).loadMatches(event, subBack);
+        }else
+            Toast.makeText(this, "No event selected!", Toast.LENGTH_LONG).show();
+    }
+
+    private AlertDialog createDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.downloading_data);
         builder.setMessage(R.string.please_wait_while_data_downloads);
@@ -126,17 +184,6 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
                 dialogInterface.dismiss();
             }
         });
-        final AlertDialog dialog = builder.create();
-        dialog.show();
-        BlueAlliance ba = BlueAlliance.getInstance(this);
-        ba.loadEvents(2014, new BlueAlliance.Callback(){
-            @Override
-            public void handleFinishDownload(boolean success) {
-                if(!success)
-                    Toast.makeText(MainActivity.this, "Did not successfully download data!", Toast.LENGTH_LONG).show();
-                dialog.dismiss();
-            }
-        });
-        SparxScouting ss = new SparxScouting(this);
+        return builder.create();
     }
 }

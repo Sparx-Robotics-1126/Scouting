@@ -554,10 +554,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(TABLE_SCOUTING_NAME, scouting.getNameOfScouter());
 
         if (scoutingAuto != null) {
-            if (scoutingAuto.getStartingLocation() != null) {
-                values.put(TABLE_SCOUTING_AUTO_STARTING_LOCATION_X, scoutingAuto.getStartingLocation().x);
-                values.put(TABLE_SCOUTING_AUTO_STARTING_LOCATION_Y, scoutingAuto.getStartingLocation().y);
-            }
+            values.put(TABLE_SCOUTING_AUTO_STARTING_LOCATION_X, scoutingAuto.getStartingLocationX());
+            values.put(TABLE_SCOUTING_AUTO_STARTING_LOCATION_Y, scoutingAuto.getStartingLocationY());
             values.put(TABLE_SCOUTING_AUTO_BALLS_ACQUIRED, scoutingAuto.getBallsAcquired());
             values.put(TABLE_SCOUTING_AUTO_STARTED_WITH_BALL, scoutingAuto.isStartedWithBall());
             values.put(TABLE_SCOUTING_AUTO_BALLS_SHOT, scoutingAuto.getBallsShot());
@@ -566,10 +564,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             values.put(TABLE_SCOUTING_AUTO_BALLS_SCORED_HOT_LOW, scoutingAuto.getBallsScoredHotLow());
             values.put(TABLE_SCOUTING_AUTO_BALLS_SCORED_HIGH, scoutingAuto.getBallsScoredHigh());
             values.put(TABLE_SCOUTING_AUTO_BALLS_SCORED_LOW, scoutingAuto.getBallsScoredLow());
-            if (scoutingAuto.getEndingLocation() != null) {
-                values.put(TABLE_SCOUTING_AUTO_ENDING_LOCATION_X, scoutingAuto.getEndingLocation().x);
-                values.put(TABLE_SCOUTING_AUTO_ENDING_LOCATION_Y, scoutingAuto.getEndingLocation().y);
-            }
+            values.put(TABLE_SCOUTING_AUTO_ENDING_LOCATION_X, scoutingAuto.getEndingLocationX());
+            values.put(TABLE_SCOUTING_AUTO_ENDING_LOCATION_Y, scoutingAuto.getEndingLocationY());
         }
         if (scoutingTele != null) {
             values.put(TABLE_SCOUTING_TELE_ACQUIRED_FROM_FLOOR, scoutingTele.getBallsAcquiredFromFloor());
@@ -624,7 +620,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
 
         db.update(TABLE_SCOUTING, mapScouting(scouting),
-                TABLE_SCOUTING_TEAM_KEY + " = ? AND " + TABLE_SCOUTING_MATCH_KEY + " = ? AND " + TABLE_SCOUTING_NAME +" = ?",
+                TABLE_SCOUTING_TEAM_KEY + " = ? AND "
+                        + TABLE_SCOUTING_MATCH_KEY + " = ? AND "
+                        + TABLE_SCOUTING_NAME +" = ?",
                 new String[]{scouting.getTeamKey(), scouting.getMatchKey(), scouting.getNameOfScouter()});
     }
 
@@ -657,10 +655,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         ScoutingAuto auto = new ScoutingAuto();
         data.setAuto(auto);
-        auto.setStartingLocation(new Point(
-                c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_STARTING_LOCATION_X)),
-                c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_STARTING_LOCATION_Y))));
-        auto.setStartedWithBall(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_STARTING_LOCATION_Y)) == 1);
+        auto.setStartingLocationX(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_STARTING_LOCATION_X)));
+        auto.setStartingLocationY(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_STARTING_LOCATION_Y)));
+        auto.setStartedWithBall(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_STARTED_WITH_BALL)) == 1);
         auto.setBallsAcquired(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_ACQUIRED)));
         auto.setBallsShot(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_SHOT)));
         auto.setBallsScored(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_SCORED)));
@@ -668,16 +665,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         auto.setBallsScoredHotLow(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_SCORED_HOT_LOW)));
         auto.setBallsScoredHigh(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_SCORED_HIGH)));
         auto.setBallsScoredLow(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_SCORED_LOW)));
-        auto.setEndingLocation(new Point(
-                c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_ENDING_LOCATION_X)),
-                c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_ENDING_LOCATION_Y))));
+        auto.setEndingLocationX(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_ENDING_LOCATION_X)));
+        auto.setEndingLocationY(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_ENDING_LOCATION_Y)));
 
         ScoutingTele tele = new ScoutingTele();
         data.setTele(tele);
         tele.setBallsAcquiredFromFloor(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_ACQUIRED_FROM_FLOOR)));
-        tele.setBallsAcquiredFromFloor(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_COMPLETED_ASSISTS_FROM_FLOOR)));
-        tele.setBallsAcquiredFromFloor(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_ACQUIRED_FROM_HUMAN)));
-        tele.setBallsAcquiredFromFloor(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_COMPLETED_ASSISTS_FROM_HUMAN)));
+        tele.setCompletedAssistsFromFloor(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_COMPLETED_ASSISTS_FROM_FLOOR)));
+        tele.setBallsAcquiredFromHuman(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_ACQUIRED_FROM_HUMAN)));
+        tele.setCompletedAssistsFromHuman(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_COMPLETED_ASSISTS_FROM_HUMAN)));
         tele.setShotHigh(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_SHOT_HIGH)));
         tele.setScoredHigh(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_SCORED_HIGH)));
         tele.setShotLow(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_SHOT_LOW)));
