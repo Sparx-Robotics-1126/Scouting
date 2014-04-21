@@ -217,7 +217,7 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
                         mCallbacks.onMatchSelected((String) tv.getTag(R.id.match_key));
                         break;
                     case 2: // Teams
-                        mCallbacks.onTeamSelected((String) tv.getTag(R.id.team_key));
+                        mCallbacks.onTeamSelected(getSelectedEvent().getKey(), (String) tv.getTag(R.id.team_key));
                         break;
                 }
             }
@@ -449,6 +449,6 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
 
         public void onMatchSelected(String matchId);
 
-        public void onTeamSelected(String teamId);
+        public void onTeamSelected(String eventId, String teamId);
     }
 }
