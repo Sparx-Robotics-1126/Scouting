@@ -47,7 +47,7 @@ public class BlueAlliance {
         ion = Ion.getInstance(context, TAG);
         ion.configure().setLogging(TAG, Log.INFO);
         ion.getHttpClient().getSocketMiddleware().setMaxConnectionCount(25);
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         ion.configure().setGson(gson);
         try {
             versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
@@ -79,10 +79,13 @@ public class BlueAlliance {
                         }
                         NetworkCallback subBack = new NetworkCallback() {
                             int numEvents = result.size();
+                            boolean hasFailed = false;
                             @Override
                             public void handleFinishDownload(boolean success) {
-                                if(!success)
+                                if(!success && !hasFailed) {
                                     callback.handleFinishDownload(false);
+                                    hasFailed = true;
+                                }
                                 else
                                     numEvents--;
 
