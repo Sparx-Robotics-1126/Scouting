@@ -125,7 +125,7 @@ public class TeamOverviewFragment extends Fragment {
         textViewTeamName.setText(team.getName());
         textViewTeamNickname.setText(team.getNickname());
         Ion.with(imageViewRobot)
-                .placeholder(R.drawable.ic_launcher)
+                .placeholder(R.drawable.icon_launcher)
                 .load("http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2009/12/2/1259769084987/Pingpong-playing-robot--i-001.jpg");
 
         Map<String, List<Scouting>> scoutingData = createScoutingMap(dbHelper.getScouting(eventKey, teamKey));
