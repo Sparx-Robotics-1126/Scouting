@@ -77,24 +77,7 @@ public class BlueAlliance {
                                 callback.handleFinishDownload(false);
                             return;
                         }
-                        NetworkCallback subBack = new NetworkCallback() {
-                            int numEvents = result.size();
-                            boolean hasFailed = false;
-                            @Override
-                            public void handleFinishDownload(boolean success) {
-                                if(!success && !hasFailed) {
-                                    callback.handleFinishDownload(false);
-                                    hasFailed = true;
-                                }
-                                else
-                                    numEvents--;
 
-                                if(numEvents <= 0) {
-                                    NetworkHelper.setLoadedEventList(context);
-                                    callback.handleFinishDownload(true);
-                                }
-                            }
-                        };
                         for(Event event : result) {
                             if(dbHelper.doesEventExist(event))
                                 dbHelper.updateEvent(event);
@@ -105,6 +88,8 @@ public class BlueAlliance {
                         }
                         if(callback != null)
                             callback.handleFinishDownload(true);
+
+                        NetworkHelper.setLoadedEventList(context);
                     }
                 });
     }

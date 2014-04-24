@@ -69,16 +69,16 @@ public class SparxScouting {
         }
     }
 
-    public void getScouting(Team team){
+    public void getScouting(Team team, NetworkCallback callback){
         String request = (BASE_URL + GET_SCOUTING_BY_TEAM).replace("{TEAM_KEY}", team.getKey());
-        getScouting(request);
+        getScouting(request, callback);
     }
 
     public void getScouting(Team team, Event event){
         String request = (BASE_URL + GET_SCOUTING_BY_TEAM_EVENT)
                 .replace("{TEAM_KEY}", team.getKey())
                 .replace("{EVENT_KEY}", event.getKey());
-        getScouting(request);
+        getScouting(request, null);
     }
 
     public void getScouting(Team team, Event event, Match match){
@@ -86,10 +86,10 @@ public class SparxScouting {
                 .replace("{TEAM_KEY}", team.getKey())
                 .replace("{EVENT_KEY}", event.getKey())
                 .replace("{MATCH_KEY}", match.getKey());
-        getScouting(request);
+        getScouting(request, null);
     }
 
-    private void getScouting(String request){
+    private void getScouting(String request, final NetworkCallback callback){
         ion.build(context, request)
         .as(new TypeToken<List<Scouting>>(){})
         .setCallback(new FutureCallback<List<Scouting>>() {
@@ -97,6 +97,7 @@ public class SparxScouting {
             public void onCompleted(Exception e, List<Scouting> result) {
                 if (e != null) {
                     Log.e(TAG, "Issue getting scouting data.", e);
+                    callback.handleFinishDownload(false);
                     return;
                 }
 
@@ -106,7 +107,7 @@ public class SparxScouting {
                     else
                         dbHelper.createScouting(sd);
                 }
-
+                callback.handleFinishDownload(true);
             }
         });
     }
