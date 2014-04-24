@@ -67,10 +67,10 @@ public class BlueAlliance {
         String request = (BASE_URL+GET_EVENT_LIST).replace("{YEAR}", Integer.toString(year));
         ion.build(context, request)
                 .addHeader("X-TBA-App-Id", "frc1126:scouting-app-2014:" + versionName)
-                .as(new TypeToken<List<String>>(){})
-                .setCallback(new FutureCallback<List<String>>() {
+                .as(new TypeToken<List<Event>>(){})
+                .setCallback(new FutureCallback<List<Event>>() {
                     @Override
-                    public void onCompleted(Exception e, final List<String> result) {
+                    public void onCompleted(Exception e, final List<Event> result) {
                         if(e != null){
                             Log.e(TAG, "Issue getting event list", e);
                             if(callback != null)
@@ -95,12 +95,16 @@ public class BlueAlliance {
                                 }
                             }
                         };
-                        for(String eventKey : result) {
-                            if (callback != null)
-                                loadEvent(eventKey, subBack);
+                        for(Event event : result) {
+                            if(dbHelper.doesEventExist(event))
+                                dbHelper.updateEvent(event);
                             else
-                                loadEvent(eventKey);
+                                dbHelper.createEvent(event);
+
+                            Log.d(TAG, "Done getting basic event("+event.getEventCode()+")");
                         }
+                        if(callback != null)
+                            callback.handleFinishDownload(true);
                     }
                 });
     }

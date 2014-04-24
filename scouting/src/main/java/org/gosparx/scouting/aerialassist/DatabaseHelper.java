@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Point;
 import android.util.Log;
 
 import org.gosparx.scouting.aerialassist.dto.Alliance;
@@ -22,7 +21,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -626,15 +624,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[]{scouting.getTeamKey(), scouting.getMatchKey(), scouting.getNameOfScouter()});
     }
 
+    public List<Scouting> getScouting(String eventKey, String teamKey){
+        SQLiteDatabase db = getReadableDatabase();
+        String selectStatement = "SELECT * FROM " + TABLE_SCOUTING
+                + " WHERE " + TABLE_SCOUTING_EVENT_KEY + " = ?"
+                + " AND " + TABLE_SCOUTING_TEAM_KEY + " = ?";
+
+        Cursor c = db.rawQuery(selectStatement, new String[]{eventKey, teamKey});
+
+        List<Scouting> scouting = new ArrayList<Scouting>();
+
+        while (c != null && c.moveToNext()){
+            scouting.add(mapScouting(c));
+        }
+
+        c.close();
+        return scouting;
+    }
+
     public List<Scouting> getScouting(String eventKey, String teamKey, String matchKey, String scouterName){
         SQLiteDatabase db = getReadableDatabase();
         String selectStatement = "SELECT * FROM " + TABLE_SCOUTING
                 + " WHERE " + TABLE_SCOUTING_EVENT_KEY + " = ?"
-                + " AND " + TABLE_SCOUTING_MATCH_KEY + " = ?"
                 + " AND " + TABLE_SCOUTING_TEAM_KEY + " = ?"
+                + " AND " + TABLE_SCOUTING_MATCH_KEY + " = ?"
                 + " AND " + TABLE_SCOUTING_NAME + " = ?";
 
-        Cursor c = db.rawQuery(selectStatement, new String[]{eventKey, matchKey, teamKey, scouterName});
+        Cursor c = db.rawQuery(selectStatement, new String[]{eventKey, teamKey, matchKey, scouterName});
 
         List<Scouting> scouting = new ArrayList<Scouting>();
 

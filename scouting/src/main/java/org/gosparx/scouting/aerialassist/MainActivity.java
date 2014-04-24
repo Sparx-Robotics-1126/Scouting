@@ -18,6 +18,7 @@ import android.widget.Toast;
 import org.gosparx.scouting.aerialassist.dto.Event;
 import org.gosparx.scouting.aerialassist.fragments.MatchOverviewFragment;
 import org.gosparx.scouting.aerialassist.fragments.NavigationDrawerFragment;
+import org.gosparx.scouting.aerialassist.fragments.TeamOverviewFragment;
 import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
 import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
 import org.gosparx.scouting.aerialassist.networking.NetworkHelper;
@@ -137,8 +138,16 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
     }
 
     @Override
-    public void onTeamSelected(String teamId) {
+    public void onTeamSelected(String eventId, String teamId) {
         Toast.makeText(this, "Team "+teamId+" selected.", Toast.LENGTH_SHORT).show();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        TeamOverviewFragment tof = new TeamOverviewFragment();
+        SharedPreferences sp = getSharedPreferences(PREFERENCE_KEY, MODE_PRIVATE);
+        Bundle args = new Bundle();
+        args.putString(TeamOverviewFragment.ARG_EVENT_KEY, eventId);
+        args.putString(TeamOverviewFragment.ARG_TEAM_KEY, teamId);
+        tof.setArguments(args);
+        fragmentManager.beginTransaction().replace(R.id.container, tof).commit();
     }
 
     private void downloadData(){
