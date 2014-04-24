@@ -220,6 +220,7 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
                         mCallbacks.onTeamSelected(getSelectedEvent().getKey(), (String) tv.getTag(R.id.team_key));
                         break;
                 }
+                mDrawerLayout.closeDrawers();
             }
         });
 
