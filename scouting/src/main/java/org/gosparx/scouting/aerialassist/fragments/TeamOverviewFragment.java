@@ -15,6 +15,8 @@ import org.gosparx.scouting.aerialassist.DatabaseHelper;
 import org.gosparx.scouting.aerialassist.R;
 import org.gosparx.scouting.aerialassist.dto.Scouting;
 import org.gosparx.scouting.aerialassist.dto.Team;
+import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
+import org.gosparx.scouting.aerialassist.networking.SparxScouting;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -112,8 +114,20 @@ public class TeamOverviewFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        if(getArguments() != null)
+        if(getArguments() != null) {
             loadData();
+            SparxScouting.getInstance(getActivity()).getScouting(dbHelper.getTeam(getArguments().getString(ARG_TEAM_KEY)), new NetworkCallback() {
+                @Override
+                public void handleFinishDownload(boolean success) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadData();
+                        }
+                    });
+                }
+            });
+        }
     }
 
     private void loadData(){
