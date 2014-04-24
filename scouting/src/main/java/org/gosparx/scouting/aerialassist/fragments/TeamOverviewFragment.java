@@ -105,10 +105,15 @@ public class TeamOverviewFragment extends Fragment {
         editTextTechnicalFoulsComments = (EditText) retVal.findViewById(R.id.editTextTechnicalFoulComments);
         editTextGeneralComments = (EditText) retVal.findViewById(R.id.editTextGeneralComments);
 
+        return retVal;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
         if(getArguments() != null)
             loadData();
-
-        return retVal;
     }
 
     private void loadData(){
