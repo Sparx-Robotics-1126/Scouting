@@ -8,13 +8,13 @@ public class ScoutingAuto {
     private double startingLocationX;
     private double startingLocationY;
     private boolean startedWithBall;
-    private int ballsAcquired;
-    private int ballsShot;
-    private int ballsScored;
-    private int ballsScoredHotHigh;
-    private int ballsScoredHotLow;
-    private int ballsScoredHigh;
-    private int ballsScoredLow;
+    private int ballsAcquired = -1;
+    private int ballsShot = -1;
+    private int ballsScored = -1;
+    private int ballsScoredHotHigh = -1;
+    private int ballsScoredHotLow = -1;
+    private int ballsScoredHigh = -1;
+    private int ballsScoredLow = -1;
     private double endingLocationX;
     private double endingLocationY;
 

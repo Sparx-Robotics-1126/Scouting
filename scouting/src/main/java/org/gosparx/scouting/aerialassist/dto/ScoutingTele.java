@@ -5,16 +5,16 @@ package org.gosparx.scouting.aerialassist.dto;
  */
 public class ScoutingTele {
 
-    private int ballsAcquiredFromFloor;
-    private int completedAssistsFromFloor;
-    private int ballsAcquiredFromHuman;
-    private int completedAssistsFromHuman;
-    private int shotHigh;
-    private int scoredHigh;
-    private int shotLow;
-    private int scoredLow;
-    private int ballsCaughtOverTruss;
-    private int ballsThrownOverTruss;
+    private int ballsAcquiredFromFloor = -1;
+    private int completedAssistsFromFloor = -1;
+    private int ballsAcquiredFromHuman = -1;
+    private int completedAssistsFromHuman = -1;
+    private int shotHigh = -1;
+    private int scoredHigh = -1;
+    private int shotLow = -1;
+    private int scoredLow = -1;
+    private int ballsCaughtOverTruss = -1;
+    private int ballsThrownOverTruss = -1;
     private String stayedInZone;
 
     public int getBallsAcquiredFromFloor() {
