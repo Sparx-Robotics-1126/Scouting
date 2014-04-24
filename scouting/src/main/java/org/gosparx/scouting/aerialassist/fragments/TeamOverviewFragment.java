@@ -119,11 +119,11 @@ public class TeamOverviewFragment extends Fragment {
             SparxScouting.getInstance(getActivity()).getScouting(dbHelper.getTeam(getArguments().getString(ARG_TEAM_KEY)), new NetworkCallback() {
                 @Override
                 public void handleFinishDownload(boolean success) {
+                    if(!success)
+                        return;
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
-                        public void run() {
-                            loadData();
-                        }
+                        public void run() { loadData();}
                     });
                 }
             });
