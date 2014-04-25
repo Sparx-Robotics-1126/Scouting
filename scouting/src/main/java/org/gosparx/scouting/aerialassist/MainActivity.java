@@ -107,7 +107,14 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
                 break;
 
             case R.id.action_upload_data:
-                SparxScouting.getInstance(this).postAllScouting();
+                final AlertDialog dialog = createDialog();
+                dialog.show();
+                SparxScouting.getInstance(this).postAllScouting(new NetworkCallback() {
+                    @Override
+                    public void handleFinishDownload(boolean success) {
+                        dialog.dismiss();
+                    }
+                });
                 break;
 
             case R.id.action_settings:

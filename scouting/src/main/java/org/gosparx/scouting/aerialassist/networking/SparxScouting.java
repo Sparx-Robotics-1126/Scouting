@@ -48,9 +48,12 @@ public class SparxScouting {
         dbHelper = DatabaseHelper.getInstance(context);
     }
 
-    public void postAllScouting() {
+    public void postAllScouting(final NetworkCallback callback) {
         List<Scouting> scoutingList = dbHelper.getAllScoutingNeedingSyncing();
         String request = (BASE_URL + POST_SCOUTING);
+
+        if(scoutingList.isEmpty())
+            callback.handleFinishDownload(true);
 
         for (final Scouting scouting : scoutingList) {
             ion.build(context, request)
@@ -61,8 +64,10 @@ public class SparxScouting {
                         public void onCompleted(Exception e, String result) {
                             if (e != null) {
                                 Log.e(TAG, "Issue saving to Server!", e);
+                                if(callback!=null)callback.handleFinishDownload(false);
                             } else {
                                 dbHelper.setDoneSyncing(scouting);
+                                if(callback!=null)callback.handleFinishDownload(true);
                             }
                         }
                     });
