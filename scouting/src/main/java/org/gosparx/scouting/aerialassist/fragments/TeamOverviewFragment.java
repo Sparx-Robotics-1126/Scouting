@@ -18,6 +18,7 @@ import org.gosparx.scouting.aerialassist.dto.Team;
 import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
 import org.gosparx.scouting.aerialassist.networking.SparxScouting;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -119,11 +120,11 @@ public class TeamOverviewFragment extends Fragment {
             SparxScouting.getInstance(getActivity()).getScouting(dbHelper.getTeam(getArguments().getString(ARG_TEAM_KEY)), new NetworkCallback() {
                 @Override
                 public void handleFinishDownload(boolean success) {
+                    if(!success)
+                        return;
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
-                        public void run() {
-                            loadData();
-                        }
+                        public void run() { loadData();}
                     });
                 }
             });
@@ -281,45 +282,48 @@ public class TeamOverviewFragment extends Fragment {
         }
 
 
+        DecimalFormat df = new DecimalFormat();
+        df.setMinimumFractionDigits(2);
+        df.setMaximumFractionDigits(2);
         double tempDouble = average(startWithBall);
-        int tempInt = ((int) tempDouble * startWithBall.size());
-        textViewStartWithBall.setText(tempInt + " of " + startWithBall.size() + " (" + tempDouble + ")");
-        textViewNumberOfBallsAcquired.setText(Double.toString(average(numberOfBallsAcquired)));
-        textViewNumberOfBallsShot.setText(Double.toString(average(numberOfBallsShot)));
-        textViewNumberOfBallsScored.setText(Double.toString(average(numberOfBallsScored)));
-        textViewNumberOfBallsScoredHotHigh.setText(Double.toString(average(numberOfBallsScoredHotHigh)));
-        textViewNumberOfBallsScoredHotLow.setText(Double.toString(average(numberOfBallsScoredHotLow)));
-        textViewNumberOfBallsScoredHigh.setText(Double.toString(average(numberOfBallsScoredHigh)));
-        textViewNumberOfBallsScoredLow.setText(Double.toString(average(numberOfBallsScoredLow)));
-        textViewNumberBallsAcquiredFloor.setText(Double.toString(average(numberOfBallsAcquiredFloor)));
-        textViewNumberCompletionFloor.setText(Double.toString(average(numberOfBallsCompletionFloor)));
-        textViewNumberBallsAcquiredHuman.setText(Double.toString(average(numberOfBallsAcquiredHuman)));
-        textViewNumberCompletionHuman.setText(Double.toString(average(numberOfBallsCompletionHuman)));
-        textViewShotHigh.setText(Double.toString(average(shotHigh)));
-        textViewScoredHigh.setText(Double.toString(average(scoredHigh)));
-        textViewShotLow.setText(Double.toString(average(shotLow)));
-        textViewScoredLow.setText(Double.toString(average(scoredLow)));
-        textViewCaughtOverTruss.setText(Double.toString(average(caughtOverTruss)));
-        textViewThrownOverTruss.setText(Double.toString(average(thrownOverTruss)));
+        int tempInt = (int) (tempDouble * startWithBall.size());
+        textViewStartWithBall.setText(tempInt + " of " + startWithBall.size() + " (" + (int)(tempDouble*100) + ")");
+        textViewNumberOfBallsAcquired.setText(df.format(average(numberOfBallsAcquired)));
+        textViewNumberOfBallsShot.setText(df.format(average(numberOfBallsShot)));
+        textViewNumberOfBallsScored.setText(df.format(average(numberOfBallsScored)));
+        textViewNumberOfBallsScoredHotHigh.setText(df.format(average(numberOfBallsScoredHotHigh)));
+        textViewNumberOfBallsScoredHotLow.setText(df.format(average(numberOfBallsScoredHotLow)));
+        textViewNumberOfBallsScoredHigh.setText(df.format(average(numberOfBallsScoredHigh)));
+        textViewNumberOfBallsScoredLow.setText(df.format(average(numberOfBallsScoredLow)));
+        textViewNumberBallsAcquiredFloor.setText(df.format(average(numberOfBallsAcquiredFloor)));
+        textViewNumberCompletionFloor.setText(df.format(average(numberOfBallsCompletionFloor)));
+        textViewNumberBallsAcquiredHuman.setText(df.format(average(numberOfBallsAcquiredHuman)));
+        textViewNumberCompletionHuman.setText(df.format(average(numberOfBallsCompletionHuman)));
+        textViewShotHigh.setText(df.format(average(shotHigh)));
+        textViewScoredHigh.setText(df.format(average(scoredHigh)));
+        textViewShotLow.setText(df.format(average(shotLow)));
+        textViewScoredLow.setText(df.format(average(scoredLow)));
+        textViewCaughtOverTruss.setText(df.format(average(caughtOverTruss)));
+        textViewThrownOverTruss.setText(df.format(average(thrownOverTruss)));
         tempDouble = average(allianceZone);
-        tempInt = ((int) tempDouble * allianceZone.size());
-        textViewAllianceZone.setText(tempInt + " of " + allianceZone.size() + " (" + tempDouble + ")");
+        tempInt = (int) (tempDouble * allianceZone.size());
+        textViewAllianceZone.setText(tempInt + " of " + allianceZone.size() + " (" + (int)(tempDouble*100) + ")");
         tempDouble = average(middleZone);
-        tempInt = ((int) tempDouble * middleZone.size());
-        textViewMiddleZone.setText(tempInt + " of " + middleZone.size() + " (" + tempDouble + ")");
+        tempInt = (int) (tempDouble * middleZone.size());
+        textViewMiddleZone.setText(tempInt + " of " + middleZone.size() + " (" + (int)(tempDouble*100) + ")");
         tempDouble = average(opponentZone);
-        tempInt = ((int) tempDouble * opponentZone.size());
-        textViewOpponentZone.setText(tempInt + " of " + opponentZone.size() + " (" + tempDouble + ")");
+        tempInt = (int) (tempDouble * opponentZone.size());
+        textViewOpponentZone.setText(tempInt + " of " + opponentZone.size() + " (" + (int)(tempDouble*100) + ")");
         tempDouble = average(playsDefence);
-        tempInt = ((int) tempDouble * playsDefence.size());
-        textViewPlaysDefense.setText(tempInt + " of " + playsDefence.size() + " (" + tempDouble + ")");
-        textViewNumberPenalties.setText(Double.toString(average(numberPenalties)));
+        tempInt = (int) (tempDouble * playsDefence.size());
+        textViewPlaysDefense.setText(tempInt + " of " + playsDefence.size() + " (" + (int)(tempDouble*100) + ")");
+        textViewNumberPenalties.setText(df.format(average(numberPenalties)));
         StringBuilder sb = new StringBuilder();
         for(String comment : penaltiesComments){
             sb.append(comment).append("\n");
         }
         editTextPenaltyComments.setText(sb.toString());
-        textViewNumberTechnicalFouls.setText(Double.toString(average(numberTechnicalFouls)));
+        textViewNumberTechnicalFouls.setText(df.format(average(numberTechnicalFouls)));
         sb = new StringBuilder();
         for(String comment : technicalFoulComment){
             sb.append(comment).append("\n");

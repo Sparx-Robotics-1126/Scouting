@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -29,7 +30,6 @@ import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.isNetwo
 public class MainActivity extends FragmentActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     public static final String TAG = MainActivity.class.getSimpleName();
-    public static final String PREFERENCE_KEY = "AerialAssist";
     public static final String NAME_PREFERENCE = "Name of Scouter";
 
     /**
@@ -107,7 +107,14 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
                 break;
 
             case R.id.action_upload_data:
-                SparxScouting.getInstance(this).postAllScouting();
+                final AlertDialog dialog = createDialog();
+                dialog.show();
+                SparxScouting.getInstance(this).postAllScouting(new NetworkCallback() {
+                    @Override
+                    public void handleFinishDownload(boolean success) {
+                        dialog.dismiss();
+                    }
+                });
                 break;
 
             case R.id.action_settings:
@@ -122,7 +129,7 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
     public void onScoutingTeamSelected(String eventId, String teamId, String matchId) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         MatchOverviewFragment matchOverviewFragment = new MatchOverviewFragment();
-        SharedPreferences sp = getSharedPreferences(PREFERENCE_KEY, MODE_PRIVATE);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         Bundle args = new Bundle();
         args.putString(MatchOverviewFragment.ARG_SCOUTER_NAME, sp.getString(NAME_PREFERENCE, "Unknown"));
         args.putString(MatchOverviewFragment.ARG_MATCH_ID, matchId);
@@ -139,10 +146,8 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
 
     @Override
     public void onTeamSelected(String eventId, String teamId) {
-        Toast.makeText(this, "Team "+teamId+" selected.", Toast.LENGTH_SHORT).show();
         FragmentManager fragmentManager = getSupportFragmentManager();
         TeamOverviewFragment tof = new TeamOverviewFragment();
-        SharedPreferences sp = getSharedPreferences(PREFERENCE_KEY, MODE_PRIVATE);
         Bundle args = new Bundle();
         args.putString(TeamOverviewFragment.ARG_EVENT_KEY, eventId);
         args.putString(TeamOverviewFragment.ARG_TEAM_KEY, teamId);
