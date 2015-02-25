@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Aerial Assist</string>
+    <string name="app_name">Recycle Rush</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_upload_data">Upload</string>
@@ -9,42 +9,51 @@
     <string name="auto">Auto</string>
     <string name="tele">Tele</string>
     <string name="general">General</string>
+
+    <string name="number_of_yellow_totes_moved_to_auto_zone">Number of yellow totes moved to auto zone: </string>
+    <string name="number_of_RC_moved_to_auto_zone">Number of RC moved to auto zone: </string>
+    <string name="number_of_RC_taken_from_the_step_auto">Number of RC taken from the step: </string>
+    <string name="robot_fully_contained_in_auto_zone">Robot fully contained in auto zone: </string>
+    <string name="created_a_stacked_tote_set">Created a stacked tote set: </string>
+
+    <string name="number_of_yellow_totes_placed_on_step"># of yellow totes placed on step: </string>
+    <string name="placed_on_top_of_how_many_yellow_totes">Placed on top how how many yellow totes? </string>
+    <string name="number_of_fouls">Number of fouls )=: </string>
+    <string name="number_of_stacks_tipped_over_by_accident">Number of stacks tipped over by accident: </string>
+    <string name="number_of_failed_attempts_to_put_a_RC_on_top_of_a_stack">Number of failed attempts to put a RC on top of a stack: </string>
+    <string name="number_of_RC_taken_from_the_step_tele">Number of RC taken from the step: </string>
+    <string name="dead_disabled">Dead/Disabled x|: </string>
+    <string name="tipped_over_own_robot">Robot committed suicide: </string>
+    <string name="number_of_totes_acquired_from_HP">Number of totes acquired from the HP: </string>
+    <string name="number_of_totes_attempted_from_HP">Number of totes attempted to get from HP: </string>
+    <string name="number_of_totes_acquired_from_landfill">Number of totes acquired from landfill: </string>
+
+    <string name="number_of_totes_stacked"># of totes stacked: </string>
+    <string name="number_of_RC_Stacked"># of RC stacked: </string>
+    <string name="litter">Litter: </string>
+    <string name= "rc_on_partner_stack">RC on partner_stack</string>
+    <string name="litter_on_partners_stack">Litter on partners stack:</string>
+    <string name="first">1st</string>
+    <string name="second">2st</string>
+    <string name="third">3st</string>
+    <string name="fourth">4st</string>
+    <string name="fifth">5st</string>
+    <string name="sixth">6st</string>
+
     <string name="select_robot_location">Select the robots location: </string>
     <string name="where_did_the_robot_start">Where did the robot start? </string>
     <string name="where_did_the_robot_end">Where did the robot end? </string>
     <string name="select">Select</string>
-    <string name="did_the_team_start_with_a_ball">Did the team start with a ball? </string>
+
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
-    <string name="number_of_balls_acquired">Number of balls acquired: </string>
-    <string name="number_of_balls_shot">Number of balls shot: </string>
-    <string name="number_of_balls_scored">Number of balls scored: </string>
-    <string name="number_of_balls_scored_in_hot_high">Number of balls scored in Hot High: </string>
-    <string name="number_of_balls_scored_in_hot_low">Number of balls scored in Hot Low: </string>
-    <string name="number_of_balls_scored_in_high">Number of balls scored in High: </string>
-    <string name="number_of_balls_scored_in_low">Number of balls scored in Low: </string>
-    <string name="zero">0</string>
-    <string name="number_of_balls_acq_from_floor">Number of balls acquired from floor: </string>
-    <string name="completed_assist_from_floor">Completed assist from floor: </string>
-    <string name="number_of_balls_acq_from_human">Number of balls acquired from human: </string>
-    <string name="complete_assist_from_human">Completed Assist from Human: </string>
-    <string name="shot_high">Shot high: </string>
-    <string name="shot_low">Shot low: </string>
-    <string name="scored_high">Scored High: </string>
-    <string name="scored_low">Scored low: </string>
-    <string name="balls_caught_over_truss">Balls caught over the truss: </string>
-    <string name="balls_thrown_over_truss">Balls thrown over the truss: </string>
-    <string name="robot_stayed_in_what_zone_most">Robot stayed in what zone most? </string>
-    <string name="alliance">Alliance</string>
-    <string name="middle">Middle</string>
-    <string name="opponent">Opponent</string>
-    <string name="plays_defense">Plays Defence? </string>
+    <string name="zero">zero</string>
+
     <string name="number_of_penalties">Number of Penalties: </string>
     <string name="comments_on_penalties">Comments on Penalties: </string>
-    <string name="number_of_technical_fouls">Number of Technical Fouls? </string>
-    <string name="comments_on_technical_fouls">Comments on Technical Fouls: </string>
+
     <string name="general_comments">General Comments: </string>
     <string name="scouting">Scouting</string>
     <string name="matches">Matches</string>
@@ -64,11 +73,6 @@
         <item>@string/auto</item>
         <item>@string/tele</item>
         <item>@string/general</item>
-    </array>
-    <array name="zones">
-        <item>@string/alliance</item>
-        <item>@string/middle</item>
-        <item>@string/opponent</item>
     </array>
     <array name="task_selection">
         <item>@string/scouting</item>

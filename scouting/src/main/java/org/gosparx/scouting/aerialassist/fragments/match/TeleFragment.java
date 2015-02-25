@@ -19,17 +19,10 @@ import org.gosparx.scouting.aerialassist.dto.ScoutingTele;
  */
 public class TeleFragment extends Fragment{
 
-    private HorizontalNumberPicker npBallsAcqFromFloor;
-    private HorizontalNumberPicker npCompletedAssistFromFloor;
-    private HorizontalNumberPicker npBallsAcqFromHuman;;
-    private HorizontalNumberPicker npCompletedAssistFromHuman;
-    private HorizontalNumberPicker npShotHigh;
-    private HorizontalNumberPicker npScoredHigh;
-    private HorizontalNumberPicker npShotLow;
-    private HorizontalNumberPicker npScoredLow;
-    private HorizontalNumberPicker npBallCaughtOverTruss;
-    private HorizontalNumberPicker npBallThrownOverTruss;
-    private Spinner spinnerZoneSpentMostTime;
+    private HorizontalNumberPicker npTotesStacked1;
+    private HorizontalNumberPicker npTotesStacked2;
+    private HorizontalNumberPicker npTotesStacked3;
+    private HorizontalNumberPicker npTotesStacked4;
 
     private ScoutingTele st;
 
@@ -39,18 +32,10 @@ public class TeleFragment extends Fragment{
 
         if(retVal == null) throw new ExceptionInInitializerError("Could not inflate a view.");
 
-        npBallsAcqFromFloor = (HorizontalNumberPicker) retVal.findViewById(R.id.numberPickerBallsAcqFromFloor);
-        npCompletedAssistFromFloor = (HorizontalNumberPicker) retVal.findViewById(R.id.numberPickerAssistCompletedFromFloor);
-        npBallsAcqFromHuman = (HorizontalNumberPicker) retVal.findViewById(R.id.numberPickerBallsAcqFromHuman);
-        npCompletedAssistFromHuman = (HorizontalNumberPicker) retVal.findViewById(R.id.numberPickerAssistCompletedFromHuman);
-        npShotHigh = (HorizontalNumberPicker) retVal.findViewById(R.id.numberPickerShotHigh);
-        npScoredHigh = (HorizontalNumberPicker) retVal.findViewById(R.id.numberPickerScoredHigh);
-        npShotLow = (HorizontalNumberPicker) retVal.findViewById(R.id.numberPickerShotLow);
-        npScoredLow = (HorizontalNumberPicker) retVal.findViewById(R.id.numberPickerScoredLow);
-        npBallCaughtOverTruss = (HorizontalNumberPicker) retVal.findViewById(R.id.numberPickerCaughtOverTruss);
-        npBallThrownOverTruss = (HorizontalNumberPicker) retVal.findViewById(R.id.numberPickerThrownOverTruss);
-
-        spinnerZoneSpentMostTime = (Spinner) retVal.findViewById(R.id.spinnerZoneMostPlayed);
+        npTotesStacked1 = (HorizontalNumberPicker)retVal.findViewById(R.id.totesStacked1);
+        npTotesStacked2 = (HorizontalNumberPicker)retVal.findViewById(R.id.totesStacked2);
+        npTotesStacked3 = (HorizontalNumberPicker)retVal.findViewById(R.id.totesStacked3);
+        npTotesStacked4 = (HorizontalNumberPicker)retVal.findViewById(R.id.totesStacked4);
 
         return retVal;
     }
@@ -60,23 +45,10 @@ public class TeleFragment extends Fragment{
         super.onResume();
 
         if(st != null){
-            npBallsAcqFromFloor.setValue(st.getBallsAcquiredFromFloor());
-            npCompletedAssistFromFloor.setValue(st.getCompletedAssistsFromFloor());
-            npBallsAcqFromHuman.setValue(st.getBallsAcquiredFromHuman());
-            npCompletedAssistFromHuman.setValue(st.getCompletedAssistsFromHuman());
-            npShotHigh.setValue(st.getShotHigh());
-            npScoredHigh.setValue(st.getScoredHigh());
-            npShotLow.setValue(st.getShotLow());
-            npScoredLow.setValue(st.getScoredLow());
-            npBallCaughtOverTruss.setValue(st.getBallsCaughtOverTruss());
-            npBallThrownOverTruss.setValue(st.getBallsThrownOverTruss());
-            String[] zones = getResources().getStringArray(R.array.zones);
-            for (int i = 0; i < zones.length; i++) {
-                if (zones[i].equals(st.getStayedInZone())) {
-                    spinnerZoneSpentMostTime.setSelection(i);
-                    break;
-                }
-            }
+            npTotesStacked1.setValue(st.getTotesStacked1());
+            npTotesStacked2.setValue(st.getTotesStacked2());
+            npTotesStacked3.setValue(st.getTotesStacked3());
+            npTotesStacked4.setValue(st.getTotesStacked4());
         }
     }
 
@@ -88,19 +60,11 @@ public class TeleFragment extends Fragment{
         if(st == null)
             st = new ScoutingTele();
 
-        if (npBallsAcqFromFloor != null) {
-            st.setBallsAcquiredFromFloor(npBallsAcqFromFloor.getValue());
-            st.setCompletedAssistsFromFloor(npCompletedAssistFromFloor.getValue());
-            st.setBallsAcquiredFromHuman(npBallsAcqFromHuman.getValue());
-            st.setCompletedAssistsFromHuman(npCompletedAssistFromHuman.getValue());
-            st.setShotHigh(npShotHigh.getValue());
-            st.setScoredHigh(npScoredHigh.getValue());
-            st.setShotLow(npShotLow.getValue());
-            st.setScoredLow(npScoredLow.getValue());
-            st.setBallsCaughtOverTruss(npBallCaughtOverTruss.getValue());
-            st.setBallsThrownOverTruss(npBallThrownOverTruss.getValue());
-            if(spinnerZoneSpentMostTime != null && spinnerZoneSpentMostTime.getSelectedItem() != null)
-                st.setStayedInZone(spinnerZoneSpentMostTime.getSelectedItem().toString());
+        if (npTotesStacked1 != null) {
+            st.setTotesStacked1(npTotesStacked1.getValue());
+            st.setTotesStacked2(npTotesStacked2.getValue());
+            st.setTotesStacked3(npTotesStacked3.getValue());
+            st.setTotesStacked4(npTotesStacked4.getValue());
         }
         return st;
     }

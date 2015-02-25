@@ -58,7 +58,7 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
         if(isNetworkAvailable(this) && NetworkHelper.needToLoadEventList(this)) {
             final Dialog alert = createDialog();
             alert.show();
-            ba.loadEventList(2014, new NetworkCallback() {
+            ba.loadEventList(2015, new NetworkCallback() {
                 @Override
                 public void handleFinishDownload(final boolean success) {
                     MainActivity.this.runOnUiThread(new Runnable() {

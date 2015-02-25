@@ -17,6 +17,32 @@ public class ScoutingTele {
     private int ballsThrownOverTruss = -1;
     private String stayedInZone;
 
+    private int totesStacked1 = -1;
+    private int totesStacked2 = -1;
+    private int totesStacked3 = -1;
+    private int totesStacked4 = -1;
+
+    public void setTotesStacked1(int stacked){
+        totesStacked1 = stacked;
+    }
+    public int getTotesStacked1(){return totesStacked1;}
+
+    public void setTotesStacked2(int stacked){
+        totesStacked2 = stacked;
+    }
+    public int getTotesStacked2(){return totesStacked2;}
+
+    public void setTotesStacked3(int stacked){
+        totesStacked3 = stacked;
+    }
+    public int getTotesStacked3(){return totesStacked3;}
+
+    public void setTotesStacked4(int stacked){
+        totesStacked4 = stacked;
+    }
+
+    public int getTotesStacked4(){return totesStacked4;}
+
     public int getBallsAcquiredFromFloor() {
         return ballsAcquiredFromFloor;
     }

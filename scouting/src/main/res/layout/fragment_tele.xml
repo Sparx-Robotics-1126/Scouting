@@ -1,175 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textViewBallsAcqFromFloor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/number_of_balls_acq_from_floor"
-        />
-    <org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker
-        android:id="@+id/numberPickerBallsAcqFromFloor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/textViewBallsAcqFromFloor"/>
-
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/number_of_totes_stacked"
+        android:id="@+id/textView9"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="90dp" />
 
     <TextView
-        android:id="@+id/textViewAssistCompletedFromFloor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/numberPickerBallsAcqFromFloor"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/completed_assist_from_floor"
-        />
-    <org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker
-        android:id="@+id/numberPickerAssistCompletedFromFloor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/textViewAssistCompletedFromFloor"/>
-
+        android:text="@string/second"
+        android:id="@+id/textView11"
+        android:layout_marginLeft="170dp"
+        android:layout_marginStart="170dp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/textView10"
+        android:layout_toEndOf="@+id/textView10" />
 
     <TextView
-        android:id="@+id/textViewBallsAcqFromHuman"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/numberPickerAssistCompletedFromFloor"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/number_of_balls_acq_from_human"
-        />
-    <org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker
-        android:id="@+id/numberPickerBallsAcqFromHuman"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/textViewBallsAcqFromHuman"/>
-
+        android:text="@string/first"
+        android:id="@+id/textView10"
+        android:layout_marginLeft="70dp"
+        android:layout_marginStart="70dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/totesStacked1"
+        android:layout_alignStart="@+id/totesStacked1" />
 
     <TextView
-        android:id="@+id/textViewAssistCompletedFromHuman"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/numberPickerBallsAcqFromHuman"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/complete_assist_from_human"
-        />
-    <org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker
-        android:id="@+id/numberPickerAssistCompletedFromHuman"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/textViewAssistCompletedFromHuman"/>
-
+        android:text="@string/third"
+        android:id="@+id/textView12"
+        android:layout_marginLeft="170dp"
+        android:layout_marginStart="170dp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/textView11"
+        android:layout_toEndOf="@+id/textView11" />
 
     <TextView
-        android:id="@+id/textViewShotHigh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/numberPickerAssistCompletedFromHuman"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/shot_high"
-        />
-    <org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker
-        android:id="@+id/numberPickerShotHigh"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/textViewShotHigh"/>
+        android:text="@string/fourth"
+        android:id="@+id/textView13"
+        android:layout_marginLeft="170dp"
+        android:layout_marginStart="170dp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/textView12"
+        android:layout_toEndOf="@+id/textView12" />
 
+    <view
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        class="org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker"
+        android:id="@+id/totesStacked1"
+        android:layout_alignTop="@+id/textView9"
+        android:layout_toRightOf="@+id/textView9"
+        android:layout_toEndOf="@+id/textView9"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp" />
 
-    <TextView
-        android:id="@+id/textViewScoredHigh"
+    <view
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/numberPickerShotHigh"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/scored_high" />
-    <org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker
-        android:id="@+id/numberPickerScoredHigh"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/textViewScoredHigh"/>
+        class="org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker"
+        android:id="@+id/totesStacked2"
+        android:layout_alignTop="@+id/totesStacked1"
+        android:layout_toRightOf="@+id/totesStacked1"
+        android:layout_toEndOf="@+id/totesStacked1"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp" />
 
+    <view
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        class="org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker"
+        android:id="@+id/totesStacked3"
+        android:layout_alignTop="@+id/totesStacked2"
+        android:layout_toRightOf="@+id/totesStacked2"
+        android:layout_toEndOf="@+id/totesStacked2"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp" />
 
-    <TextView
-        android:id="@+id/textViewShotLow"
+    <view
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/numberPickerScoredHigh"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/shot_low" />
-    <org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker
-        android:id="@+id/numberPickerShotLow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/textViewShotLow"/>
+        class="org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker"
+        android:id="@+id/totesStacked4"
+        android:layout_alignTop="@+id/totesStacked3"
+        android:layout_toRightOf="@+id/totesStacked3"
+        android:layout_toEndOf="@+id/totesStacked3"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp" />
 
-
-    <TextView
-        android:id="@+id/textViewScoredLow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/numberPickerShotLow"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/scored_low" />
-    <org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker
-        android:id="@+id/numberPickerScoredLow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/textViewScoredLow"/>
-
-
-    <TextView
-        android:id="@+id/textViewCaughtOverTruss"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/numberPickerScoredLow"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/balls_caught_over_truss" />
-    <org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker
-        android:id="@+id/numberPickerCaughtOverTruss"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/textViewCaughtOverTruss"/>
-
-
-    <TextView
-        android:id="@+id/textViewThrownOverTruss"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/numberPickerCaughtOverTruss"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/balls_thrown_over_truss" />
-    <org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker
-        android:id="@+id/numberPickerThrownOverTruss"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/textViewThrownOverTruss"/>
-
-
-    <TextView
-        android:id="@+id/textViewZoneMostPlayed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/numberPickerThrownOverTruss"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/robot_stayed_in_what_zone_most"/>
-    <Spinner
-        android:id="@+id/spinnerZoneMostPlayed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textViewZoneMostPlayed"
-        android:layout_alignParentRight="true"
-        android:entries="@array/zones"/>
 </RelativeLayout>

@@ -30,15 +30,12 @@ public class AutoFragment extends Fragment implements View.OnClickListener {
     private Button buttonSelectEndLocation;
     private double endingLocationX;
     private double endingLocationY;
-    private Switch switchStartWithBall;
 
-    private HorizontalNumberPicker npBallsAcq;
-    private HorizontalNumberPicker npBallsShot;
-    private HorizontalNumberPicker npBallsScored;
-    private HorizontalNumberPicker npBallsScoredHotHigh;
-    private HorizontalNumberPicker npBallsScoredHotLow;
-    private HorizontalNumberPicker npBallsScoredHigh;
-    private HorizontalNumberPicker npBallsScoredLow;
+    private Switch switchInAutoZone;
+    private Switch switchCreatedStack;
+    private HorizontalNumberPicker npTotesMovedToAutoZone;
+    private HorizontalNumberPicker npRCMovedToAutoZone;
+    private HorizontalNumberPicker npRCTakenFromStep;
 
     private ScoutingAuto sa;
 
@@ -52,15 +49,12 @@ public class AutoFragment extends Fragment implements View.OnClickListener {
 
         buttonSelectStartLocation = (Button) retVal.findViewById(R.id.buttonAutoStartLocationSelect);
         buttonSelectEndLocation =   (Button) retVal.findViewById(R.id.buttonAutoEndLocationSelect);
-        switchStartWithBall =       (Switch) retVal.findViewById(R.id.switchStartWithBall);
 
-        npBallsAcq =            (HorizontalNumberPicker) retVal.findViewById(R.id.numberPickerAutoNumBallsAcq);
-        npBallsShot =           (HorizontalNumberPicker) retVal.findViewById(R.id.numberPickerAutoNumBallsShot);
-        npBallsScored  =        (HorizontalNumberPicker) retVal.findViewById(R.id.numberPickerAutoNumBallsScored);
-        npBallsScoredHotHigh =  (HorizontalNumberPicker) retVal.findViewById(R.id.numberPickerAutoNumBallsHotHigh);
-        npBallsScoredHotLow =   (HorizontalNumberPicker) retVal.findViewById(R.id.numberPickerAutoNumBallsHotLow);
-        npBallsScoredHigh =     (HorizontalNumberPicker) retVal.findViewById(R.id.numberPickerAutoNumBallsHigh);
-        npBallsScoredLow =      (HorizontalNumberPicker) retVal.findViewById(R.id.numberPickerAutoNumBallsLow);
+        switchInAutoZone = (Switch) retVal.findViewById(R.id.autoFullyContainedInZone);
+        switchCreatedStack = (Switch) retVal.findViewById(R.id.autoCreatedStack);
+        npTotesMovedToAutoZone = (HorizontalNumberPicker) retVal.findViewById(R.id.autoTotesToAutoZone);
+        npRCMovedToAutoZone = (HorizontalNumberPicker) retVal.findViewById(R.id.autoRCToAutoZone);
+        npRCTakenFromStep = (HorizontalNumberPicker) retVal.findViewById(R.id.autoRCFromStep);
 
         buttonSelectStartLocation.setOnClickListener(this);
         buttonSelectEndLocation.setOnClickListener(this);
@@ -75,13 +69,11 @@ public class AutoFragment extends Fragment implements View.OnClickListener {
         if(sa != null){
             startingLocationX = sa.getStartingLocationX();
             startingLocationY = sa.getStartingLocationY();
-            npBallsAcq.setValue(sa.getBallsAcquired());
-            npBallsShot.setValue(sa.getBallsShot());
-            npBallsScored.setValue(sa.getBallsScored());
-            npBallsScoredHotHigh.setValue(sa.getBallsScoredHotHigh());
-            npBallsScoredHotLow.setValue(sa.getBallsScoredHotLow());
-            npBallsScoredHigh.setValue(sa.getBallsScoredHigh());
-            npBallsScoredLow.setValue(sa.getBallsScoredLow());
+            switchInAutoZone.setChecked(sa.getRobotInAutoZone());
+            switchCreatedStack.setChecked(sa.getRobotCreateStack());
+            npTotesMovedToAutoZone.setValue(sa.getTotesMovedToAutoZone());
+            npRCMovedToAutoZone.setValue(sa.getrCMovedToAutoZone());
+            npRCTakenFromStep.setValue(sa.getRCTakenFromStep());
             endingLocationX = sa.getEndingLocationX();
             endingLocationY = sa.getEndingLocationY();
         }
@@ -139,17 +131,14 @@ public class AutoFragment extends Fragment implements View.OnClickListener {
         if(sa == null)
             sa = new ScoutingAuto();
 
-        if (npBallsAcq != null) {
+        if (switchInAutoZone != null) {
             sa.setStartingLocationX(startingLocationX);
             sa.setStartingLocationY(startingLocationY);
-            sa.setStartedWithBall(switchStartWithBall.isChecked());
-            sa.setBallsAcquired(npBallsAcq.getValue());
-            sa.setBallsShot(npBallsShot.getValue());
-            sa.setBallsScored(npBallsScored.getValue());
-            sa.setBallsScoredHotHigh(npBallsScoredHotHigh.getValue());
-            sa.setBallsScoredHotLow(npBallsScoredHotLow.getValue());
-            sa.setBallsScoredHigh(npBallsScoredHigh.getValue());
-            sa.setBallsScoredLow(npBallsScoredLow.getValue());
+            sa.setRobotInAutoZone(switchInAutoZone.isChecked());
+            sa.setRobotCreateStack(switchCreatedStack.isChecked());
+            sa.setTotesMovedToAutoZone(npTotesMovedToAutoZone.getValue());
+            sa.setrCMovedToAutoZone(npRCMovedToAutoZone.getValue());
+            sa.setRCTakenFromStep(npRCTakenFromStep.getValue());
             sa.setEndingLocationX(endingLocationX);
             sa.setEndingLocationY(endingLocationY);
         }

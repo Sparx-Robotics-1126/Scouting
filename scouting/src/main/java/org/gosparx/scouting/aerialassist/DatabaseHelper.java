@@ -97,32 +97,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_SCOUTING_NAME = "scouter_name";
     private static final String TABLE_SCOUTING_AUTO_STARTING_LOCATION_X = "auto_starting_location_x";
     private static final String TABLE_SCOUTING_AUTO_STARTING_LOCATION_Y = "auto_starting_location_y";
-    private static final String TABLE_SCOUTING_AUTO_BALLS_ACQUIRED = "auto_balls_acquired";
-    private static final String TABLE_SCOUTING_AUTO_STARTED_WITH_BALL = "auto_started_with_ball";
-    private static final String TABLE_SCOUTING_AUTO_BALLS_SHOT = "auto_balls_shot";
-    private static final String TABLE_SCOUTING_AUTO_BALLS_SCORED = "auto_balls_scored";
-    private static final String TABLE_SCOUTING_AUTO_BALLS_SCORED_HOT_HIGH = "auto_balls_scored_hot_high";
-    private static final String TABLE_SCOUTING_AUTO_BALLS_SCORED_HOT_LOW = "auto_balls_scored_hot_low";
-    private static final String TABLE_SCOUTING_AUTO_BALLS_SCORED_HIGH = "auto_balls_scored_high";
-    private static final String TABLE_SCOUTING_AUTO_BALLS_SCORED_LOW = "auto_balls_scored_low";
+    private static final String TABLE_SCOUTING_AUTO_ROBOT_IN_ZONE = "auto_robot_in_zone";
+    private static final String TABLE_SCOUTING_AUTO_STACKED_TOTE_SET = "auto_stacked_tote_set";
+    private static final String TABLE_SCOUTING_AUTO_YELLOW_TOTES_TO_AUTO_ZONE = "auto_yellow_totes_to_auto_zone";
+    private static final String TABLE_SCOUTING_AUTO_RC_MOVED_TO_AUTO_ZONE = "auto_rc_moved_to_auto_zone";
+    private static final String TABLE_SCOUTING_AUTO_RC_TAKEN_FROM_STEP = "auto_rc_taken_from_step";
     private static final String TABLE_SCOUTING_AUTO_ENDING_LOCATION_X = "auto_ending_location_x";
     private static final String TABLE_SCOUTING_AUTO_ENDING_LOCATION_Y = "auto_ending_location_y";
-    private static final String TABLE_SCOUTING_TELE_ACQUIRED_FROM_FLOOR = "tele_acq_floor";
-    private static final String TABLE_SCOUTING_TELE_COMPLETED_ASSISTS_FROM_FLOOR = "tele_assist_floor";
-    private static final String TABLE_SCOUTING_TELE_ACQUIRED_FROM_HUMAN = "tele_acq_human";
-    private static final String TABLE_SCOUTING_TELE_COMPLETED_ASSISTS_FROM_HUMAN = "tele_assist_human";
-    private static final String TABLE_SCOUTING_TELE_SHOT_HIGH = "tele_shot_high";
-    private static final String TABLE_SCOUTING_TELE_SCORED_HIGH = "tele_scored_high";
-    private static final String TABLE_SCOUTING_TELE_SHOT_LOW = "tele_shot_low";
-    private static final String TABLE_SCOUTING_TELE_SCORED_LOW = "tele_scored_low";
-    private static final String TABLE_SCOUTING_TELE_CAUGHT_TRUSS = "tele_caught_truss";
-    private static final String TABLE_SCOUTING_TELE_THROWN_TRUSS = "tele_thrown_truss";
-    private static final String TABLE_SCOUTING_TELE_STAYED_ZONE = "tele_stayed_zone";
-    private static final String TABLE_SCOUTING_GENERAL_PLAYS_DEFENSE = "plays_defense";
-    private static final String TABLE_SCOUTING_GENERAL_NUM_PENALITES = "num_penalties";
+    private static final String TABLE_SCOUTING_TELE_TOTES_STACKED_1 = "tele_totes_stacked_1";
+    private static final String TABLE_SCOUTING_TELE_TOTES_STACKED_2 = "tele_totes_stacked_2";
+    private static final String TABLE_SCOUTING_TELE_TOTES_STACKED_3 = "tele_totes_stacked_3";
+    private static final String TABLE_SCOUTING_TELE_TOTES_STACKED_4 = "tele_totes_stacked_4";
+    private static final String TABLE_SCOUTING_GENERAL_NUM_FOULS = "gen_fouls";
+    private static final String TABLE_SCOUTING_GENERAL_RC_TAKEN_FROM_STEP = "gen_rc_taken_from_step";
+    private static final String TABLE_SCOUTING_GENERAL_DEAD = "gen_dead";
+    private static final String TABLE_SCOUTING_GENERAL_TIPPED_OVER = "gen_tipped_over";
+    private static final String TABLE_SCOUTING_GENERAL_TOTES_FROM_HP = "gen_totes_from_hp";
+    private static final String TABLE_SCOUTING_GENERAL_TOTES_ATTEMPTED_FROM_HP = "gen_totes_attempted_from_hp";
+    private static final String TABLE_SCOUTING_GENERAL_TOTES_FROM_LANDFILL = "gen_totes_from_landfill";
     private static final String TABLE_SCOUTING_GENERAL_COMMENTS_PENALTIES = "comment_penalties";
-    private static final String TABLE_SCOUTING_GENERAL_NUM_TECH_FOULS = "num_tech_fouls";
-    private static final String TABLE_SCOUTING_GENERAL_COMMENTS_TECH_FOULS = "comment_tech_fouls";
     private static final String TABLE_SCOUTING_GENERAL_COMMENTS = "general_comments";
 
     // Create Tables
@@ -180,32 +173,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + TABLE_SCOUTING_NAME + " TEXT, "
             + TABLE_SCOUTING_AUTO_STARTING_LOCATION_X + " INTEGER, "
             + TABLE_SCOUTING_AUTO_STARTING_LOCATION_Y + " INTEGER, "
-            + TABLE_SCOUTING_AUTO_STARTED_WITH_BALL + " INTEGER, "
-            + TABLE_SCOUTING_AUTO_BALLS_ACQUIRED + " INTEGER, "
-            + TABLE_SCOUTING_AUTO_BALLS_SHOT + " INTEGER, "
-            + TABLE_SCOUTING_AUTO_BALLS_SCORED + " INTEGER, "
-            + TABLE_SCOUTING_AUTO_BALLS_SCORED_HOT_HIGH + " INTEGER, "
-            + TABLE_SCOUTING_AUTO_BALLS_SCORED_HOT_LOW + " INTEGER, "
-            + TABLE_SCOUTING_AUTO_BALLS_SCORED_HIGH + " INTEGER, "
-            + TABLE_SCOUTING_AUTO_BALLS_SCORED_LOW + " INTEGER, "
+            + TABLE_SCOUTING_AUTO_ROBOT_IN_ZONE + " TEXT, "
+            + TABLE_SCOUTING_AUTO_STACKED_TOTE_SET + " TEXT, "
+            + TABLE_SCOUTING_AUTO_YELLOW_TOTES_TO_AUTO_ZONE + " INTEGER"
             + TABLE_SCOUTING_AUTO_ENDING_LOCATION_X + " INTEGER, "
             + TABLE_SCOUTING_AUTO_ENDING_LOCATION_Y + " INTEGER, "
-            + TABLE_SCOUTING_TELE_ACQUIRED_FROM_FLOOR + " INTEGER, "
-            + TABLE_SCOUTING_TELE_COMPLETED_ASSISTS_FROM_FLOOR + " INTEGER, "
-            + TABLE_SCOUTING_TELE_ACQUIRED_FROM_HUMAN + " INTEGER, "
-            + TABLE_SCOUTING_TELE_COMPLETED_ASSISTS_FROM_HUMAN + " INTEGER, "
-            + TABLE_SCOUTING_TELE_SHOT_HIGH + " INTEGER, "
-            + TABLE_SCOUTING_TELE_SCORED_HIGH + " INTEGER, "
-            + TABLE_SCOUTING_TELE_SHOT_LOW + " INTEGER, "
-            + TABLE_SCOUTING_TELE_SCORED_LOW + " INTEGER, "
-            + TABLE_SCOUTING_TELE_CAUGHT_TRUSS + " INTEGER, "
-            + TABLE_SCOUTING_TELE_THROWN_TRUSS + " INTEGER, "
-            + TABLE_SCOUTING_TELE_STAYED_ZONE + " TEXT, "
-            + TABLE_SCOUTING_GENERAL_PLAYS_DEFENSE + " INTEGER, "
-            + TABLE_SCOUTING_GENERAL_NUM_PENALITES + " INTEGER, "
+            +
             + TABLE_SCOUTING_GENERAL_COMMENTS_PENALTIES + " TEXT, "
-            + TABLE_SCOUTING_GENERAL_NUM_TECH_FOULS + " INTEGER, "
-            + TABLE_SCOUTING_GENERAL_COMMENTS_TECH_FOULS + " TEXT, "
+            +
             + TABLE_SCOUTING_GENERAL_COMMENTS + " TEXT)";
 
     public static SimpleDateFormat ISO6701_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

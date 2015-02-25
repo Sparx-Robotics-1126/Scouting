@@ -7,6 +7,14 @@ public class ScoutingAuto {
 
     private double startingLocationX;
     private double startingLocationY;
+    private boolean isRobotInAutoZone = false;
+    private boolean isRobotCreateStack = false;
+    private int totesMovedToAutoZone = -1;
+    private int rCMovedToAutoZone = -1;
+    private int rCTakenFromStep = -1;
+    private double endingLocationX;
+    private double endingLocationY;
+
     private boolean startedWithBall;
     private int ballsAcquired = -1;
     private int ballsShot = -1;
@@ -15,8 +23,7 @@ public class ScoutingAuto {
     private int ballsScoredHotLow = -1;
     private int ballsScoredHigh = -1;
     private int ballsScoredLow = -1;
-    private double endingLocationX;
-    private double endingLocationY;
+
 
     public double getStartingLocationX() {
         return startingLocationX;
@@ -33,6 +40,31 @@ public class ScoutingAuto {
     public void setStartingLocationY(double startingLocationY) {
         this.startingLocationY = startingLocationY;
     }
+
+    public void setRobotInAutoZone(boolean inZone){
+        isRobotInAutoZone = inZone;
+    }
+    public boolean getRobotInAutoZone(){return isRobotInAutoZone;}
+
+    public void setRobotCreateStack(boolean createdStack){
+        isRobotCreateStack = createdStack;
+    }
+    public boolean getRobotCreateStack(){return isRobotInAutoZone;}
+
+    public void setTotesMovedToAutoZone(int totes){
+        totesMovedToAutoZone = totes;
+    }
+    public int getTotesMovedToAutoZone(){return totesMovedToAutoZone;}
+
+    public void setrCMovedToAutoZone(int moved){
+        rCMovedToAutoZone = moved;
+    }
+    public int getrCMovedToAutoZone(){return rCMovedToAutoZone;}
+
+    public void setRCTakenFromStep(int taken){
+        rCTakenFromStep = taken;
+    }
+    public int getRCTakenFromStep(){return rCTakenFromStep;}
 
     public boolean isStartedWithBall() {
         return startedWithBall;

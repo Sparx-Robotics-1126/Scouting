@@ -11,148 +11,127 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/where_did_the_robot_start" />
+        android:text="@string/where_did_the_robot_start"
+        android:layout_alignBottom="@+id/buttonAutoStartLocationSelect"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
     <Button
         android:id="@+id/buttonAutoStartLocationSelect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textViewRobotStart"
-        android:layout_alignParentRight="true"
-        android:text="@string/select" />
+        android:text="@string/select"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/autoTotesToAutoZone"
+        android:layout_alignEnd="@+id/autoTotesToAutoZone" />
 
     <Switch
-        android:id="@+id/switchStartWithBall"
+        android:id="@+id/autoFullyContainedInZone"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/buttonAutoStartLocationSelect"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/did_the_team_start_with_a_ball"
+        android:text="@string/robot_fully_contained_in_auto_zone"
         android:checked="false"
         android:textOff="@string/no"
-        android:textOn="@string/yes" />
+        android:textOn="@string/yes"
+        android:layout_marginTop="39dp"
+        android:layout_below="@+id/textViewRobotStart"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:id="@+id/textViewAutoNumBallsAcq"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/switchStartWithBall"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/number_of_balls_acquired"
-        />
-    <org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker
-        android:id="@+id/numberPickerAutoNumBallsAcq"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textViewAutoNumBallsAcq"
-        android:layout_alignParentRight="true"
-        />
+        android:text="@string/number_of_yellow_totes_moved_to_auto_zone"
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/autoCreatedStack"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:autoText="false"
+        android:layout_toStartOf="@+id/autoTotesToAutoZone"
+        android:textSize="20dp" />
 
     <TextView
         android:id="@+id/textViewAutoNumBallsShot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/numberPickerAutoNumBallsAcq"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/number_of_balls_shot" />
-    <org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker
-        android:id="@+id/numberPickerAutoNumBallsShot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textViewAutoNumBallsShot"
-        android:layout_alignParentRight="true"
-        />
+        android:text="@string/number_of_RC_moved_to_auto_zone"
+        android:layout_marginTop="38dp"
+        android:layout_below="@+id/autoTotesToAutoZone"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:id="@+id/textViewAutoNumBallsScored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/numberPickerAutoNumBallsShot"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/number_of_balls_scored" />
-    <org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker
-        android:id="@+id/numberPickerAutoNumBallsScored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textViewAutoNumBallsScored"
-        android:layout_alignParentRight="true"
-        />
+        android:text="@string/number_of_RC_taken_from_the_step_auto"
+        android:layout_below="@+id/autoRCToAutoZone"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="38dp" />
 
-
-    <TextView
-        android:id="@+id/textViewAutoNumBallsHotHigh"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/numberPickerAutoNumBallsScored"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/number_of_balls_scored_in_hot_high" />
-    <org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker
-        android:id="@+id/numberPickerAutoNumBallsHotHigh"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textViewAutoNumBallsHotHigh"
-        android:layout_alignParentRight="true"
-        />
-
-    <TextView
-        android:id="@+id/textViewAutoNumBallsHotLow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/numberPickerAutoNumBallsHotHigh"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/number_of_balls_scored_in_hot_low" />
-    <org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker
-        android:id="@+id/numberPickerAutoNumBallsHotLow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textViewAutoNumBallsHotLow"
-        android:layout_alignParentRight="true"
-        />
-
-    <TextView
-        android:id="@+id/textViewAutoNumBallsHigh"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/numberPickerAutoNumBallsHotLow"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/number_of_balls_scored_in_high" />
-    <org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker
-        android:id="@+id/numberPickerAutoNumBallsHigh"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textViewAutoNumBallsHigh"
-        android:layout_alignParentRight="true"
-        />
-
-    <TextView
-        android:id="@+id/textViewAutoNumBallsLow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/numberPickerAutoNumBallsHigh"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/number_of_balls_scored_in_low" />
-    <org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker
-        android:id="@+id/numberPickerAutoNumBallsLow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textViewAutoNumBallsLow"
-        android:layout_alignParentRight="true"
-        />
 
     <TextView
         android:id="@+id/textViewAutoEndLocationSelect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/numberPickerAutoNumBallsLow"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/where_did_the_robot_end" />
+        android:text="@string/where_did_the_robot_end"
+        android:layout_alignTop="@+id/buttonAutoEndLocationSelect"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
     <Button
         android:id="@+id/buttonAutoEndLocationSelect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewAutoEndLocationSelect"
-        android:layout_alignParentRight="true"
-        android:text="@string/select">
+        android:text="@string/select"
+        android:layout_marginTop="38dp"
+        android:layout_below="@+id/autoRCFromStep"
+        android:layout_alignRight="@+id/autoRCFromStep"
+        android:layout_alignEnd="@+id/autoRCFromStep">
 
     </Button>
+
+    <Switch
+        android:id="@+id/autoCreatedStack"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/created_a_stacked_tote_set"
+        android:checked="false"
+        android:textOff="@string/no"
+        android:textOn="@string/yes"
+        android:layout_marginTop="38dp"
+        android:layout_below="@+id/autoFullyContainedInZone"
+        android:layout_alignRight="@+id/autoTotesToAutoZone"
+        android:layout_alignEnd="@+id/autoTotesToAutoZone" />
+
+    <org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker
+        android:id="@+id/autoRCToAutoZone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textViewAutoNumBallsShot"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker
+        android:id="@+id/autoRCFromStep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textViewAutoNumBallsScored"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <org.gosparx.scouting.aerialassist.controls.HorizontalNumberPicker
+        android:id="@+id/autoTotesToAutoZone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textViewAutoNumBallsAcq"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

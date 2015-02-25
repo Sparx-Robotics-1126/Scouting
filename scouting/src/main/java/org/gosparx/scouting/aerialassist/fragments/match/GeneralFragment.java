@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.SeekBar;
 import android.widget.Switch;
 
 import org.gosparx.scouting.aerialassist.R;
@@ -18,14 +17,16 @@ import org.gosparx.scouting.aerialassist.dto.ScoutingGeneral;
  */
 public class GeneralFragment extends Fragment{
 
-    private Switch switchPlaysDefence;
-
     private HorizontalNumberPicker npPenalties;
+    private HorizontalNumberPicker npStacksTippedOver;
+    private HorizontalNumberPicker npFailedAttemptsRConStack;
+    private HorizontalNumberPicker npRCTakenFromStep;
+    private Switch switchDead;
+    private Switch switchTippedRobot;
+    private HorizontalNumberPicker npTotesFromHP;
+    private HorizontalNumberPicker npTotesAttemptFromHP;
+    private HorizontalNumberPicker npTotesFromLandfill;
     private EditText editTextPenaltyComments;
-
-    private HorizontalNumberPicker npTechnicalFouls;
-    private EditText editTextTechnicalFoulComments;
-
     private EditText editTextGeneralComments;
 
     private ScoutingGeneral sg;
@@ -34,14 +35,16 @@ public class GeneralFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View retVal =  inflater.inflate(R.layout.fragment_general, container, false);
 
-        switchPlaysDefence = (Switch) retVal.findViewById(R.id.switchPlaysDefense);
-
         npPenalties = (HorizontalNumberPicker) retVal.findViewById(R.id.numberPickerPenalties);
-        editTextPenaltyComments = (EditText) retVal.findViewById(R.id.editTextPenaltyComments);
-
-        npTechnicalFouls = (HorizontalNumberPicker) retVal.findViewById(R.id.numberPickerTechnicalFouls);
-        editTextTechnicalFoulComments = (EditText) retVal.findViewById(R.id.editTextTechnicalFoulComments);
-
+        npStacksTippedOver = (HorizontalNumberPicker) retVal.findViewById(R.id.numberPickerStacksTipped);
+        npFailedAttemptsRConStack = (HorizontalNumberPicker) retVal.findViewById(R.id.numberPickerFailedRC);
+        npRCTakenFromStep = (HorizontalNumberPicker) retVal.findViewById(R.id.numberPickerRCTakenFromStep);
+        switchDead = (Switch) retVal.findViewById(R.id.switchDead);
+        switchTippedRobot = (Switch) retVal.findViewById(R.id.switchFlipped);
+        npTotesFromHP = (HorizontalNumberPicker) retVal.findViewById(R.id.numberPickerTotesAcquiredFromHP);
+        npTotesAttemptFromHP = (HorizontalNumberPicker) retVal.findViewById(R.id.numberPickerTotesAttemptFromHP);
+        npTotesFromLandfill = (HorizontalNumberPicker) retVal.findViewById(R.id.numberPickerTotesFromLandfill);
+        editTextPenaltyComments = (EditText) retVal.findViewById(R.id.editTextPenaltiesComments);
         editTextGeneralComments = (EditText) retVal.findViewById(R.id.editTextGeneralComments);
 
         return retVal;
@@ -52,11 +55,16 @@ public class GeneralFragment extends Fragment{
         super.onResume();
         
         if(sg != null){
-            switchPlaysDefence.setChecked(sg.isPlaysDefense());
             npPenalties.setValue(sg.getNumberOfPenalties());
+            npStacksTippedOver.setValue(sg.getNumberOfStacksTipped());
+            npFailedAttemptsRConStack.setValue(sg.getNumberOfFailedAttemptsOfRC());
+            npRCTakenFromStep.setValue(sg.getNumberOfRCTakenFromStep());
+            switchDead.setChecked(sg.getIsDead());
+            switchTippedRobot.setChecked(sg.getIsTipped());
+            npTotesFromHP.setValue(sg.getNumberOfTotesAcquiredFromHP());
+            npTotesAttemptFromHP.setValue(sg.getNumberOfTotesAttemptedFromHP());
+            npTotesFromLandfill.setValue(sg.getNumberOfTotesFromLandfill());
             editTextPenaltyComments.setText(sg.getCommentsOnPenalties());
-            npTechnicalFouls.setValue(sg.getNumberOfTechnicalFouls());
-            editTextTechnicalFoulComments.setText(sg.getCommentsOnTechnicalFouls());
             editTextGeneralComments.setText(sg.getGeneralComments());
         }
     }
@@ -69,12 +77,17 @@ public class GeneralFragment extends Fragment{
         if(sg == null)
             sg = new ScoutingGeneral();
 
-        if (switchPlaysDefence != null) {
-            sg.setPlaysDefense(switchPlaysDefence.isChecked());
+        if(npPenalties != null) {
             sg.setNumberOfPenalties(npPenalties.getValue());
             sg.setCommentsOnPenalties(editTextPenaltyComments.getText().toString());
-            sg.setNumberOfTechnicalFouls(npTechnicalFouls.getValue());
-            sg.setCommentsOnTechnicalFouls(editTextTechnicalFoulComments.getText().toString());
+            sg.setNumberOfStacksTipped(npStacksTippedOver.getValue());
+            sg.setNumberOfFailedAttemptsOfRC(npFailedAttemptsRConStack.getValue());
+            sg.setNumberOfRCTakenFromStep(npRCTakenFromStep.getValue());
+            sg.setIsDead(switchDead.isChecked());
+            sg.setIsTipped(switchTippedRobot.isChecked());
+            sg.setNumberOfTotesAcquiredFromHP(npTotesFromHP.getValue());
+            sg.setNumberOfTotesAttemptedFromHP(npTotesAttemptFromHP.getValue());
+            sg.setNumberOfTotesFromLandfill(npTotesFromLandfill.getValue());
             sg.setGeneralComments(editTextGeneralComments.getText().toString());
         }
         return sg;
