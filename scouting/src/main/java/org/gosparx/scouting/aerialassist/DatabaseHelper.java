@@ -109,9 +109,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_SCOUTING_TELE_TOTES_STACKED_3 = "tele_totes_stacked_3";
     private static final String TABLE_SCOUTING_TELE_TOTES_STACKED_4 = "tele_totes_stacked_4";
     private static final String TABLE_SCOUTING_GENERAL_NUM_FOULS = "gen_fouls";
+    private static final String TABLE_SCOUTING_GENERAL_FAILED_RC_ON_STACK = "gen_failed_rc_on_stack";
     private static final String TABLE_SCOUTING_GENERAL_RC_TAKEN_FROM_STEP = "gen_rc_taken_from_step";
     private static final String TABLE_SCOUTING_GENERAL_DEAD = "gen_dead";
-    private static final String TABLE_SCOUTING_GENERAL_TIPPED_OVER = "gen_tipped_over";
+    private static final String TABLE_SCOUTING_GENERAL_STACKS_TIPPED_OVER = "gen_tipped_over";
     private static final String TABLE_SCOUTING_GENERAL_TOTES_FROM_HP = "gen_totes_from_hp";
     private static final String TABLE_SCOUTING_GENERAL_TOTES_ATTEMPTED_FROM_HP = "gen_totes_attempted_from_hp";
     private static final String TABLE_SCOUTING_GENERAL_TOTES_FROM_LANDFILL = "gen_totes_from_landfill";
@@ -176,11 +177,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + TABLE_SCOUTING_AUTO_ROBOT_IN_ZONE + " TEXT, "
             + TABLE_SCOUTING_AUTO_STACKED_TOTE_SET + " TEXT, "
             + TABLE_SCOUTING_AUTO_YELLOW_TOTES_TO_AUTO_ZONE + " INTEGER"
+            + TABLE_SCOUTING_AUTO_RC_MOVED_TO_AUTO_ZONE + " INTEGER, "
+            + TABLE_SCOUTING_AUTO_RC_TAKEN_FROM_STEP + " INTEGER, "
             + TABLE_SCOUTING_AUTO_ENDING_LOCATION_X + " INTEGER, "
             + TABLE_SCOUTING_AUTO_ENDING_LOCATION_Y + " INTEGER, "
-            +
+            + TABLE_SCOUTING_TELE_TOTES_STACKED_1 + " INTEGER, "
+            + TABLE_SCOUTING_TELE_TOTES_STACKED_2 + " INTEGER, "
+            + TABLE_SCOUTING_TELE_TOTES_STACKED_3 + " INTEGER, "
+            + TABLE_SCOUTING_TELE_TOTES_STACKED_4 + " INTEGER, "
+            + TABLE_SCOUTING_GENERAL_NUM_FOULS + " INTEGER, "
+            + TABLE_SCOUTING_GENERAL_STACKS_TIPPED_OVER + " INTEGER, "
+            + TABLE_SCOUTING_GENERAL_
             + TABLE_SCOUTING_GENERAL_COMMENTS_PENALTIES + " TEXT, "
-            +
             + TABLE_SCOUTING_GENERAL_COMMENTS + " TEXT)";
 
     public static SimpleDateFormat ISO6701_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
