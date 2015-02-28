@@ -55,7 +55,7 @@ public class GeneralFragment extends Fragment{
         super.onResume();
         
         if(sg != null){
-            npPenalties.setValue(sg.getNumberOfPenalties());
+            npPenalties.setValue(sg.getNumberOfFouls());
             npStacksTippedOver.setValue(sg.getNumberOfStacksTipped());
             npFailedAttemptsRConStack.setValue(sg.getNumberOfFailedAttemptsOfRC());
             npRCTakenFromStep.setValue(sg.getNumberOfRCTakenFromStep());
@@ -78,7 +78,7 @@ public class GeneralFragment extends Fragment{
             sg = new ScoutingGeneral();
 
         if(npPenalties != null) {
-            sg.setNumberOfPenalties(npPenalties.getValue());
+            sg.setNumberOfFouls(npPenalties.getValue());
             sg.setCommentsOnPenalties(editTextPenaltyComments.getText().toString());
             sg.setNumberOfStacksTipped(npStacksTippedOver.getValue());
             sg.setNumberOfFailedAttemptsOfRC(npFailedAttemptsRConStack.getValue());
@@ -88,6 +88,7 @@ public class GeneralFragment extends Fragment{
             sg.setNumberOfTotesAcquiredFromHP(npTotesFromHP.getValue());
             sg.setNumberOfTotesAttemptedFromHP(npTotesAttemptFromHP.getValue());
             sg.setNumberOfTotesFromLandfill(npTotesFromLandfill.getValue());
+            sg.setCommentsOnPenalties(editTextPenaltyComments.getText().toString());
             sg.setGeneralComments(editTextGeneralComments.getText().toString());
         }
         return sg;

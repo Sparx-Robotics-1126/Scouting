@@ -33,36 +33,27 @@ public class TeamOverviewFragment extends Fragment {
     public static final String ARG_TEAM_KEY = "team_key";
 
     private TextView textViewTeamNickname;
-    private TextView textViewTeamName;
     private ImageView imageViewRobot;
     private TextView textViewOverallRecord;
-    private TextView textViewStartWithBall;
-    private TextView textViewNumberOfBallsAcquired;
-    private TextView textViewNumberOfBallsShot;
-    private TextView textViewNumberOfBallsScored;
-    private TextView textViewNumberOfBallsScoredHotHigh;
-    private TextView textViewNumberOfBallsScoredHotLow;
-    private TextView textViewNumberOfBallsScoredHigh;
-    private TextView textViewNumberOfBallsScoredLow;
-    private TextView textViewNumberBallsAcquiredFloor;
-    private TextView textViewNumberCompletionFloor;
-    private TextView textViewNumberBallsAcquiredHuman;
-    private TextView textViewNumberCompletionHuman;
-    private TextView textViewShotHigh;
-    private TextView textViewScoredHigh;
-    private TextView textViewShotLow;
-    private TextView textViewScoredLow;
-    private TextView textViewCaughtOverTruss;
-    private TextView textViewThrownOverTruss;
-    private TextView textViewAllianceZone;
-    private TextView textViewMiddleZone;
-    private TextView textViewOpponentZone;
-    private TextView textViewPlaysDefense;
-    private TextView textViewNumberPenalties;
-    private EditText editTextPenaltyComments;
-    private TextView textViewNumberTechnicalFouls;
-    private EditText editTextTechnicalFoulsComments;
-    private EditText editTextGeneralComments;
+
+    private TextView textViewAutoRobotInZone;
+    private TextView textViewAutoCreatedYellowStack;
+    private TextView textViewAutoNumYellowToAutoZone;
+    private TextView textViewAutoNumRCMovedToAutoZone;
+    private TextView textViewAutoNumRCFromStep;
+
+    private TextView textViewTeleNumTotesStacked;
+    private TextView textViewTeleRCStacked;
+    private TextView textViewTeleLitter;
+
+    private TextView textViewGenNumOfTotesFromHP;
+    private TextView textViewGenNumOfTotesFromLandfill;
+    private TextView textViewGenNumOfFouls;
+    private TextView textViewGenNumOfTippedStacks;
+    private TextView textViewGenDeadRobot;
+
+    private EditText editTextGenPenaltyComments;
+    private EditText editTextGenGeneralComments;
 
     private DatabaseHelper dbHelper;
 
@@ -77,37 +68,27 @@ public class TeamOverviewFragment extends Fragment {
         View retVal = inflater.inflate(R.layout.fragment_team_overview, container, false);
 
         textViewTeamNickname = (TextView) retVal.findViewById(R.id.textViewTeamNickname);
-        textViewTeamName = (TextView) retVal.findViewById(R.id.textViewTeamName);
-        imageViewRobot = (ImageView) retVal.findViewById(R.id.networkImageViewRobot);
+        imageViewRobot = (ImageView) retVal.findViewById(R.id.imageViewRobot);
         textViewOverallRecord = (TextView) retVal.findViewById(R.id.textViewOverallRecord);
-        textViewStartWithBall = (TextView) retVal.findViewById(R.id.textViewStartWithBall);
-        textViewNumberOfBallsAcquired = (TextView) retVal.findViewById(R.id.textView7);
-        textViewNumberOfBallsShot = (TextView) retVal.findViewById(R.id.textView7);
-        textViewNumberOfBallsScored = (TextView) retVal.findViewById(R.id.textView7);
-        textViewNumberOfBallsScoredHotHigh = (TextView) retVal.findViewById(R.id.textView7);
-        textViewNumberOfBallsScoredHotLow = (TextView) retVal.findViewById(R.id.textView7);
-        textViewNumberOfBallsScoredHigh = (TextView) retVal.findViewById(R.id.textView7);
-        textViewNumberOfBallsScoredLow = (TextView) retVal.findViewById(R.id.textView7);
-        textViewNumberBallsAcquiredFloor = (TextView) retVal.findViewById(R.id.textView7);
-        textViewNumberCompletionFloor = (TextView) retVal.findViewById(R.id.textView7);
-        textViewNumberBallsAcquiredHuman = (TextView) retVal.findViewById(R.id.textView7);
-        textViewNumberCompletionHuman = (TextView) retVal.findViewById(R.id.textView7);
-        textViewShotHigh = (TextView) retVal.findViewById(R.id.textView7);
-        textViewScoredHigh = (TextView) retVal.findViewById(R.id.textView7);
-        textViewShotLow = (TextView) retVal.findViewById(R.id.textView7);
-        textViewScoredLow = (TextView) retVal.findViewById(R.id.textView7);
-        textViewCaughtOverTruss = (TextView) retVal.findViewById(R.id.textView7);
-        textViewThrownOverTruss = (TextView) retVal.findViewById(R.id.textView7);
-        textViewAllianceZone = (TextView) retVal.findViewById(R.id.textView7);
-        textViewMiddleZone = (TextView) retVal.findViewById(R.id.textView7);
-        textViewOpponentZone = (TextView) retVal.findViewById(R.id.textView7);
-        textViewPlaysDefense = (TextView) retVal.findViewById(R.id.textView7);
-        textViewNumberPenalties = (TextView) retVal.findViewById(R.id.textView7);
-        editTextPenaltyComments = (EditText) retVal.findViewById(R.id.textView7);
-        textViewNumberTechnicalFouls = (TextView) retVal.findViewById(R.id.textView7);
-        editTextTechnicalFoulsComments = (EditText) retVal.findViewById(R.id.editTextPenaltiesComments);
-        editTextGeneralComments = (EditText) retVal.findViewById(R.id.editTextGeneralComments);
 
+        textViewAutoRobotInZone = (TextView) retVal.findViewById(R.id.textViewAutoRobotInZone);
+        textViewAutoCreatedYellowStack = (TextView) retVal.findViewById(R.id.textViewAutoYellowStack);
+        textViewAutoNumYellowToAutoZone = (TextView) retVal.findViewById(R.id.textViewAutoYellowToAutoZone);
+        textViewAutoNumRCMovedToAutoZone = (TextView) retVal.findViewById(R.id.textViewAutoRCMovedToAutoZone);
+        textViewAutoNumRCFromStep = (TextView) retVal.findViewById(R.id.textViewAutoRCFromStep);
+
+        textViewTeleNumTotesStacked = (TextView) retVal.findViewById(R.id.textViewTeleTotesStacked);
+        textViewTeleRCStacked = (TextView) retVal.findViewById(R.id.textViewTeleRCStacked);
+        textViewTeleLitter = (TextView) retVal.findViewById(R.id.textViewTeleLitterOnStack);
+
+        textViewGenNumOfTotesFromHP = (TextView) retVal.findViewById(R.id.textViewGenTotesFromHP);
+        textViewGenNumOfTotesFromLandfill = (TextView) retVal.findViewById(R.id.textViewGenTotesFromLandfill);
+        textViewGenNumOfFouls = (TextView) retVal.findViewById(R.id.textViewGenFouls);
+        textViewGenNumOfTippedStacks = (TextView) retVal.findViewById(R.id.textViewGenStacksTipped);
+        textViewGenDeadRobot = (TextView) retVal.findViewById(R.id.textViewGenDeadRobot);
+
+        editTextGenPenaltyComments = (EditText) retVal.findViewById(R.id.editTextPenaltiesComments);
+        editTextGenGeneralComments = (EditText) retVal.findViewById(R.id.editTextGeneralComments);
         return retVal;
     }
 
@@ -141,8 +122,7 @@ public class TeamOverviewFragment extends Fragment {
             teamKey = args.getString(ARG_TEAM_KEY);
         }
 
-        Team team = dbHelper.getTeam(teamKey);
-        textViewTeamName.setText(team.getName());
+        Team team = dbHelper.getTeam(teamKey);;
         textViewTeamNickname.setText(team.getNickname());
         Ion.with(imageViewRobot)
                 .placeholder(R.drawable.icon_launcher)
@@ -150,32 +130,20 @@ public class TeamOverviewFragment extends Fragment {
 
         Map<String, List<Scouting>> scoutingData = createScoutingMap(dbHelper.getScouting(eventKey, teamKey));
 
-        List<Double> startWithBall = new ArrayList<Double>();
-        List<Double> numberOfBallsAcquired = new ArrayList<Double>();
-        List<Double> numberOfBallsShot = new ArrayList<Double>();
-        List<Double> numberOfBallsScored = new ArrayList<Double>();
-        List<Double> numberOfBallsScoredHotHigh = new ArrayList<Double>();
-        List<Double> numberOfBallsScoredHotLow = new ArrayList<Double>();
-        List<Double> numberOfBallsScoredHigh = new ArrayList<Double>();
-        List<Double> numberOfBallsScoredLow = new ArrayList<Double>();
-        List<Double> numberOfBallsAcquiredFloor = new ArrayList<Double>();
-        List<Double> numberOfBallsCompletionFloor = new ArrayList<Double>();
-        List<Double> numberOfBallsAcquiredHuman = new ArrayList<Double>();
-        List<Double> numberOfBallsCompletionHuman = new ArrayList<Double>();
-        List<Double> shotHigh = new ArrayList<Double>();
-        List<Double> scoredHigh = new ArrayList<Double>();
-        List<Double> shotLow = new ArrayList<Double>();
-        List<Double> scoredLow = new ArrayList<Double>();
-        List<Double> caughtOverTruss = new ArrayList<Double>();
-        List<Double> thrownOverTruss = new ArrayList<Double>();
-        List<Double> allianceZone = new ArrayList<Double>();
-        List<Double> middleZone = new ArrayList<Double>();
-        List<Double> opponentZone = new ArrayList<Double>();
-        List<Double> playsDefence = new ArrayList<Double>();
-        List<Double> numberPenalties = new ArrayList<Double>();
+        List<Double> robotInAutoZone = new ArrayList<Double>();
+        List<Double> createdYellowStack = new ArrayList<Double>();
+        List<Double> movedTotesToAutoZone = new ArrayList<Double>();
+        List<Double> numRCMovedToAutoZone = new ArrayList<Double>();
+        List<Double> numRCFromStep = new ArrayList<Double>();
+        List<Double> numTotesStacked = new ArrayList<Double>();
+        List<Double> numrcStacked = new ArrayList<Double>();
+        List<Double> numLitterOnStacks = new ArrayList<Double>();
+        List<Double> numTotesFronHP = new ArrayList<Double>();
+        List<Double> numTotesFromLandfill = new ArrayList<Double>();
+        List<Double> numFouls = new ArrayList<Double>();
+        List<Double> numStacksTipped = new ArrayList<Double>();
+        List<Double> deadRobot = new ArrayList<Double>();
         List<String> penaltiesComments = new ArrayList<String>();
-        List<Double> numberTechnicalFouls = new ArrayList<Double>();
-        List<String> technicalFoulComment = new ArrayList<String>();
         List<String> generalComments = new ArrayList<String>();
 
         final String allianceString = "alliance";
@@ -183,157 +151,121 @@ public class TeamOverviewFragment extends Fragment {
         final String opponentString = "opponent";
 
         for (List<Scouting> entry : scoutingData.values()) {
-            List<Boolean> startWithBallMatch = new ArrayList<Boolean>();
-            List<Integer> numberOfBallsAcquiredMatch = new ArrayList<Integer>();
-            List<Integer> numberOfBallsShotMatch = new ArrayList<Integer>();
-            List<Integer> numberOfBallsScoredMatch = new ArrayList<Integer>();
-            List<Integer> numberOfBallsScoredHotHighMatch = new ArrayList<Integer>();
-            List<Integer> numberOfBallsScoredHotLowMatch = new ArrayList<Integer>();
-            List<Integer> numberOfBallsScoredHighMatch = new ArrayList<Integer>();
-            List<Integer> numberOfBallsScoredLowMatch = new ArrayList<Integer>();
-            List<Integer> numberOfBallsAcquiredFloorMatch = new ArrayList<Integer>();
-            List<Integer> numberOfBallsCompletionFloorMatch = new ArrayList<Integer>();
-            List<Integer> numberOfBallsAcquiredHumanMatch = new ArrayList<Integer>();
-            List<Integer> numberOfBallsCompletionHumanMatch = new ArrayList<Integer>();
-            List<Integer> shotHighMatch = new ArrayList<Integer>();
-            List<Integer> scoredHighMatch = new ArrayList<Integer>();
-            List<Integer> shotLowMatch = new ArrayList<Integer>();
-            List<Integer> scoredLowMatch = new ArrayList<Integer>();
-            List<Integer> caughtOverTrussMatch = new ArrayList<Integer>();
-            List<Integer> thrownOverTrussMatch = new ArrayList<Integer>();
-            List<Integer> allianceZoneMatch = new ArrayList<Integer>();
-            List<Integer> middleZoneMatch = new ArrayList<Integer>();
-            List<Integer> opponentZoneMatch = new ArrayList<Integer>();
-            List<Boolean> playsDefenceMatch = new ArrayList<Boolean>();
-            List<Integer> numberPenaltiesMatch = new ArrayList<Integer>();
-            List<Integer> numberTechnicalFoulsMatch = new ArrayList<Integer>();
+            List<Boolean> robotInAutoZoneMatch = new ArrayList<Boolean>();
+            List<Boolean> createdYellowStackMatch = new ArrayList<Boolean>();
+            List<Integer> movedTotesToAutoZoneMatch = new ArrayList<Integer>();
+            List<Integer> numRCMovedToAutoZoneMatch = new ArrayList<Integer>();
+            List<Integer> numRCFromStepMatch = new ArrayList<Integer>();
+
+            List<Integer> numTotesStackedMatch = new ArrayList<Integer>();
+            List<Integer> numRcStackedMatch = new ArrayList<Integer>();
+            List<Integer> numLitterOnStacksMatch = new ArrayList<Integer>();
+            List<Integer> numTotesFromHPMatch = new ArrayList<Integer>();
+            List<Integer> numTotesFromLandfillMatch = new ArrayList<Integer>();
+            List<Integer> numFoulsMatch = new ArrayList<Integer>();
+            List<Integer> numStacksTippedMatch = new ArrayList<Integer>();
+            List<Boolean> deadRobotMatch = new ArrayList<Boolean>();
             for(Scouting scouting : entry){
-                startWithBallMatch.add(scouting.getAuto().isStartedWithBall());
-                if(scouting.getAuto().getBallsAcquired() != -1)
-                    numberOfBallsAcquiredMatch.add(scouting.getAuto().getBallsAcquired());
-                if(scouting.getAuto().getBallsShot() != -1)
-                    numberOfBallsShotMatch.add(scouting.getAuto().getBallsShot());
-                if(scouting.getAuto().getBallsScored() != -1)
-                    numberOfBallsScoredMatch.add(scouting.getAuto().getBallsScored());
-                if(scouting.getAuto().getBallsScoredHotHigh() != -1)
-                    numberOfBallsScoredHotHighMatch.add(scouting.getAuto().getBallsScoredHotHigh());
-                if(scouting.getAuto().getBallsScoredHotLow() != -1)
-                    numberOfBallsScoredHotLowMatch.add(scouting.getAuto().getBallsScoredHotLow());
-                if(scouting.getAuto().getBallsScoredHigh() != -1)
-                    numberOfBallsScoredHighMatch.add(scouting.getAuto().getBallsScoredHigh());
-                if(scouting.getAuto().getBallsScoredLow() != -1)
-                    numberOfBallsScoredLowMatch.add(scouting.getAuto().getBallsScoredLow());
-                if(scouting.getTele().getBallsAcquiredFromFloor() != -1)
-                    numberOfBallsAcquiredFloorMatch.add(scouting.getTele().getBallsAcquiredFromFloor());
-                if(scouting.getTele().getCompletedAssistsFromFloor() != -1)
-                    numberOfBallsCompletionFloorMatch.add(scouting.getTele().getCompletedAssistsFromFloor());
-                if(scouting.getTele().getBallsAcquiredFromHuman() != -1)
-                    numberOfBallsAcquiredHumanMatch.add(scouting.getTele().getBallsAcquiredFromHuman());
-                if(scouting.getTele().getCompletedAssistsFromHuman() != -1)
-                    numberOfBallsCompletionHumanMatch.add(scouting.getTele().getCompletedAssistsFromHuman());
-                if(scouting.getTele().getShotHigh() != -1)
-                    shotHighMatch.add(scouting.getTele().getShotHigh());
-                if(scouting.getTele().getScoredHigh() != -1)
-                    scoredHighMatch.add(scouting.getTele().getScoredHigh());
-                if(scouting.getTele().getShotLow() != -1)
-                    shotLowMatch.add(scouting.getTele().getShotLow());
-                if(scouting.getTele().getScoredLow() != -1)
-                    scoredLowMatch.add(scouting.getTele().getScoredLow());
-                if(scouting.getTele().getBallsCaughtOverTruss() != -1)
-                    caughtOverTrussMatch.add(scouting.getTele().getBallsCaughtOverTruss());
-                if(scouting.getTele().getBallsThrownOverTruss() != -1)
-                    thrownOverTrussMatch.add(scouting.getTele().getBallsThrownOverTruss());
-                allianceZoneMatch.add(allianceString.equals(scouting.getTele().getStayedInZone())?1:0);
-                middleZoneMatch.add(middleString.equals(scouting.getTele().getStayedInZone())?1:0);
-                opponentZoneMatch.add(opponentString.equals(scouting.getTele().getStayedInZone())?1:0);
-                playsDefenceMatch.add(scouting.getGeneral().isPlaysDefense());
-                if(scouting.getGeneral().getNumberOfPenalties() != -1)
-                    numberPenaltiesMatch.add(scouting.getGeneral().getNumberOfPenalties());
+                if(scouting.getAuto().getRCTakenFromStep() != -1){
+
+                }
+                robotInAutoZoneMatch.add(scouting.getAuto().getRobotInAutoZone());
+                createdYellowStackMatch.add(scouting.getAuto().getRobotCreateStack());
+                if(scouting.getAuto().getTotesMovedToAutoZone() != -1)
+                    movedTotesToAutoZoneMatch.add(scouting.getAuto().getTotesMovedToAutoZone());
+                if(scouting.getAuto().getRcMovedToAutoZone() != -1)
+                    numRCMovedToAutoZoneMatch.add(scouting.getAuto().getRcMovedToAutoZone());
+                if(scouting.getAuto().getRCTakenFromStep() != -1)
+                    numRCFromStepMatch.add(scouting.getAuto().getRCTakenFromStep());
+
+                int totesStacked = 0;
+                if(scouting.getTele().getTotesStacked1() != -1)
+                    totesStacked += (scouting.getTele().getTotesStacked1());
+                if(scouting.getTele().getTotesStacked2() != -1)
+                    totesStacked+=(scouting.getTele().getTotesStacked2());
+                if(scouting.getTele().getTotesStacked3() != -1)
+                    totesStacked+=(scouting.getTele().getTotesStacked3());
+                if(scouting.getTele().getTotesStacked4() != -1)
+                    totesStacked+=(scouting.getTele().getTotesStacked4());
+                numTotesStackedMatch.add(totesStacked);
+
+                int rcCapped = 0;
+                rcCapped+=(scouting.getTele().getRCStacked1()?1:0);
+                rcCapped+=(scouting.getTele().getRCStacked2()?1:0);
+                rcCapped+=(scouting.getTele().getRCStacked3()?1:0);
+                rcCapped+=(scouting.getTele().getRCStacked4()?1:0);
+                numRcStackedMatch.add(rcCapped);
+
+                int litter = 0;
+                litter+=(scouting.getTele().getLitter1()?1:0);
+                litter+=(scouting.getTele().getLitter2()?1:0);
+                litter+=(scouting.getTele().getLitter3()?1:0);
+                litter+=(scouting.getTele().getLitter4()?1:0);
+                if(scouting.getGeneral().getNumberOfTotesAcquiredFromHP() != -1)
+                    numTotesFromHPMatch.add(scouting.getGeneral().getNumberOfTotesAcquiredFromHP());
+                if(scouting.getGeneral().getNumberOfTotesFromLandfill() != -1)
+                    numTotesFromLandfillMatch.add(scouting.getGeneral().getNumberOfTotesFromLandfill());
+                if(scouting.getGeneral().getNumberOfFouls() != -1)
+                    numFoulsMatch.add(scouting.getGeneral().getNumberOfFouls());
+                if(scouting.getGeneral().getNumberOfStacksTipped() != -1)
+                    numStacksTippedMatch.add(scouting.getGeneral().getNumberOfStacksTipped());
+                deadRobotMatch.add(scouting.getGeneral().getIsDead());
+
                 penaltiesComments.add(scouting.getGeneral().getCommentsOnPenalties());
-                if(scouting.getGeneral().getNumberOfTechnicalFouls() != -1)
-                    numberTechnicalFoulsMatch.add(scouting.getGeneral().getNumberOfTechnicalFouls());
-                technicalFoulComment.add(scouting.getGeneral().getCommentsOnTechnicalFouls());
                 generalComments.add(scouting.getGeneral().getGeneralComments());
             }
-            startWithBall.add(averageBoolean(startWithBallMatch));
-            numberOfBallsAcquired.add(average(numberOfBallsAcquiredMatch));
-            numberOfBallsShot.add(average(numberOfBallsShotMatch));
-            numberOfBallsScored.add(average(numberOfBallsScoredMatch));
-            numberOfBallsScoredHotHigh.add(average(numberOfBallsScoredHotHighMatch));
-            numberOfBallsScoredHotLow.add(average(numberOfBallsScoredHotLowMatch));
-            numberOfBallsScoredHigh.add(average(numberOfBallsScoredHighMatch));
-            numberOfBallsScoredLow.add(average(numberOfBallsScoredLowMatch));
-            numberOfBallsAcquiredFloor.add(average(numberOfBallsAcquiredFloorMatch));
-            numberOfBallsCompletionFloor.add(average(numberOfBallsCompletionFloorMatch));
-            numberOfBallsAcquiredHuman.add(average(numberOfBallsAcquiredHumanMatch));
-            numberOfBallsCompletionHuman.add(average(numberOfBallsCompletionHumanMatch));
-            shotHigh.add(average(shotHighMatch));
-            scoredHigh.add(average(scoredHighMatch));
-            shotLow.add(average(shotLowMatch));
-            scoredLow.add(average(scoredLowMatch));
-            caughtOverTruss.add(average(caughtOverTrussMatch));
-            thrownOverTruss.add(average(thrownOverTrussMatch));
-            allianceZone.add(average(allianceZoneMatch));
-            middleZone.add(average(middleZoneMatch));
-            opponentZone.add(average(opponentZoneMatch));
-            playsDefence.add(averageBoolean(playsDefenceMatch));
-            numberPenalties.add(average(numberPenaltiesMatch));
-            numberTechnicalFouls.add(average(numberTechnicalFoulsMatch));
+            robotInAutoZone.add(averageBoolean(robotInAutoZoneMatch));
+            createdYellowStack.add(averageBoolean(createdYellowStackMatch));
+            movedTotesToAutoZone.add(average(movedTotesToAutoZoneMatch));
+            numRCMovedToAutoZone.add(average(numRCMovedToAutoZoneMatch));
+            numRCFromStep.add(average(numRCFromStepMatch));
+            numTotesStacked.add(average(numTotesStackedMatch));
+            numrcStacked.add(average(numRcStackedMatch));
+            numLitterOnStacks.add(average(numLitterOnStacksMatch));
+            numTotesFronHP.add(average(numTotesFromHPMatch));
+            numTotesFromLandfill.add(average(numTotesFromLandfillMatch));
+            numFouls.add(average(numFoulsMatch));
+            numStacksTipped.add(average(numStacksTippedMatch));
+            deadRobot.add(averageBoolean(deadRobotMatch));
         }
 
 
         DecimalFormat df = new DecimalFormat();
         df.setMinimumFractionDigits(2);
         df.setMaximumFractionDigits(2);
-        double tempDouble = average(startWithBall);
-        int tempInt = (int) (tempDouble * startWithBall.size());
-        textViewStartWithBall.setText(tempInt + " of " + startWithBall.size() + " (" + (int)(tempDouble*100) + ")");
-        textViewNumberOfBallsAcquired.setText(df.format(average(numberOfBallsAcquired)));
-        textViewNumberOfBallsShot.setText(df.format(average(numberOfBallsShot)));
-        textViewNumberOfBallsScored.setText(df.format(average(numberOfBallsScored)));
-        textViewNumberOfBallsScoredHotHigh.setText(df.format(average(numberOfBallsScoredHotHigh)));
-        textViewNumberOfBallsScoredHotLow.setText(df.format(average(numberOfBallsScoredHotLow)));
-        textViewNumberOfBallsScoredHigh.setText(df.format(average(numberOfBallsScoredHigh)));
-        textViewNumberOfBallsScoredLow.setText(df.format(average(numberOfBallsScoredLow)));
-        textViewNumberBallsAcquiredFloor.setText(df.format(average(numberOfBallsAcquiredFloor)));
-        textViewNumberCompletionFloor.setText(df.format(average(numberOfBallsCompletionFloor)));
-        textViewNumberBallsAcquiredHuman.setText(df.format(average(numberOfBallsAcquiredHuman)));
-        textViewNumberCompletionHuman.setText(df.format(average(numberOfBallsCompletionHuman)));
-        textViewShotHigh.setText(df.format(average(shotHigh)));
-        textViewScoredHigh.setText(df.format(average(scoredHigh)));
-        textViewShotLow.setText(df.format(average(shotLow)));
-        textViewScoredLow.setText(df.format(average(scoredLow)));
-        textViewCaughtOverTruss.setText(df.format(average(caughtOverTruss)));
-        textViewThrownOverTruss.setText(df.format(average(thrownOverTruss)));
-        tempDouble = average(allianceZone);
-        tempInt = (int) (tempDouble * allianceZone.size());
-        textViewAllianceZone.setText(tempInt + " of " + allianceZone.size() + " (" + (int)(tempDouble*100) + ")");
-        tempDouble = average(middleZone);
-        tempInt = (int) (tempDouble * middleZone.size());
-        textViewMiddleZone.setText(tempInt + " of " + middleZone.size() + " (" + (int)(tempDouble*100) + ")");
-        tempDouble = average(opponentZone);
-        tempInt = (int) (tempDouble * opponentZone.size());
-        textViewOpponentZone.setText(tempInt + " of " + opponentZone.size() + " (" + (int)(tempDouble*100) + ")");
-        tempDouble = average(playsDefence);
-        tempInt = (int) (tempDouble * playsDefence.size());
-        textViewPlaysDefense.setText(tempInt + " of " + playsDefence.size() + " (" + (int)(tempDouble*100) + ")");
-        textViewNumberPenalties.setText(df.format(average(numberPenalties)));
-        StringBuilder sb = new StringBuilder();
-        for(String comment : penaltiesComments){
-            sb.append(comment).append("\n");
-        }
-        editTextPenaltyComments.setText(sb.toString());
-        textViewNumberTechnicalFouls.setText(df.format(average(numberTechnicalFouls)));
-        sb = new StringBuilder();
-        for(String comment : technicalFoulComment){
-            sb.append(comment).append("\n");
-        }
-        editTextTechnicalFoulsComments.setText(sb.toString());
-        sb = new StringBuilder();
-        for(String comment : generalComments){
-            sb.append(comment).append("\n");
-        }
-        editTextGeneralComments.setText(sb.toString());
+        double tempDouble = average(robotInAutoZone);
+        int tempInt = (int) (tempDouble * robotInAutoZone.size());
+        textViewAutoRobotInZone.setText("Robot in Zone: " + tempInt + " of " + robotInAutoZone.size() + " (" + (int)(tempDouble*100) + "%)");
+        tempDouble = average(createdYellowStack);
+        tempInt = (int) (tempDouble * createdYellowStack.size());
+        textViewAutoCreatedYellowStack.setText("Created a Yellow Stack: " + tempInt + " of " + createdYellowStack.size() + " (" + (int)(tempDouble*100) + "%)");
+        textViewAutoNumYellowToAutoZone.setText("Number of Yellow to Auto Zone " + df.format(average(createdYellowStack)));
+        textViewAutoNumRCMovedToAutoZone.setText("Number of R/C moved to auto zone: " + df.format(average(numRCMovedToAutoZone)));
+        textViewAutoNumRCFromStep.setText("Number of R/C taken for the step: " + df.format(average(numRCFromStep)));
+
+        textViewTeleNumTotesStacked.setText("Number of Totes stacked (per match)" +df.format(average(numTotesStacked)));
+        textViewTeleRCStacked.setText("Number of R/C stacked: " + df.format(average(numrcStacked)));
+        textViewTeleLitter.setText("Number of litter of stacks: " + df.format(average(numLitterOnStacks)));
+
+        textViewGenNumOfTotesFromHP.setText("Totes from HP: " + df.format(average(numTotesFronHP)));
+        textViewGenNumOfTotesFromLandfill.setText("Totes from Landfill: " + df.format(average(numTotesFromLandfill)));
+        textViewGenNumOfFouls.setText("Number of Fouls: " + df.format(average(numFouls)));
+        textViewGenNumOfTippedStacks.setText("Number of Tipped Stacks: " + df.format(average(numStacksTipped)));
+        tempDouble = average(deadRobot);
+        tempInt = (int) (tempDouble * deadRobot.size());
+        textViewGenDeadRobot.setText("Dead robot: " + tempInt + " of " + deadRobot.size() + " (" + (int)(tempDouble*100) + "%)");
+
+//        StringBuilder sb = new StringBuilder();
+//        for(String comment : penaltiesComments){
+//            sb.append(comment).append("\n");
+//        }
+//        editTextGenPenaltyComments.setText(sb.toString());
+//
+//        sb = new StringBuilder();
+//        for(String comment : generalComments){
+//            sb.append(comment).append("\n");
+//        }
+//        editTextGenGeneralComments.setText(sb.toString());
     }
 
     /**

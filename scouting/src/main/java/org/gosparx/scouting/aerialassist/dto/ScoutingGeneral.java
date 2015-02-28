@@ -5,10 +5,6 @@ package org.gosparx.scouting.aerialassist.dto;
  */
 public class ScoutingGeneral {
 
-    private boolean playsDefense;
-    private int numberOfTechnicalFouls = -1;
-    private String commentsOnTechnicalFouls;
-
     private int numberOfPenalties = -1;
     private int numberOfStacksTipped = -1;
     private int numberOfFailedAttemptsOfRC = -1;
@@ -63,19 +59,10 @@ public class ScoutingGeneral {
     }
     public int getNumberOfTotesFromLandfill(){return numberOfTotesFromLandfill;}
 
-    public boolean isPlaysDefense() {
-        return playsDefense;
-    }
-
-    public void setPlaysDefense(boolean playsDefense) {
-        this.playsDefense = playsDefense;
-    }
-
-    public int getNumberOfPenalties() {
+    public int getNumberOfFouls() {
         return numberOfPenalties;
     }
-
-    public void setNumberOfPenalties(int numberOfPenalties) {
+    public void setNumberOfFouls(int numberOfPenalties) {
         this.numberOfPenalties = numberOfPenalties;
     }
 
@@ -85,22 +72,6 @@ public class ScoutingGeneral {
 
     public void setCommentsOnPenalties(String commentsOnPenalties) {
         this.commentsOnPenalties = commentsOnPenalties;
-    }
-
-    public int getNumberOfTechnicalFouls() {
-        return numberOfTechnicalFouls;
-    }
-
-    public void setNumberOfTechnicalFouls(int numberOfTechnicalFouls) {
-        this.numberOfTechnicalFouls = numberOfTechnicalFouls;
-    }
-
-    public String getCommentsOnTechnicalFouls() {
-        return commentsOnTechnicalFouls;
-    }
-
-    public void setCommentsOnTechnicalFouls(String commentsOnTechnicalFouls) {
-        this.commentsOnTechnicalFouls = commentsOnTechnicalFouls;
     }
 
     public String getGeneralComments() {

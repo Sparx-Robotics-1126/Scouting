@@ -5,22 +5,20 @@ package org.gosparx.scouting.aerialassist.dto;
  */
 public class ScoutingTele {
 
-    private int ballsAcquiredFromFloor = -1;
-    private int completedAssistsFromFloor = -1;
-    private int ballsAcquiredFromHuman = -1;
-    private int completedAssistsFromHuman = -1;
-    private int shotHigh = -1;
-    private int scoredHigh = -1;
-    private int shotLow = -1;
-    private int scoredLow = -1;
-    private int ballsCaughtOverTruss = -1;
-    private int ballsThrownOverTruss = -1;
-    private String stayedInZone;
-
     private int totesStacked1 = -1;
     private int totesStacked2 = -1;
     private int totesStacked3 = -1;
     private int totesStacked4 = -1;
+
+    private boolean rcStacked1 = false;
+    private boolean rcStacked2 = false;
+    private boolean rcStacked3 = false;
+    private boolean rcStacked4 = false;
+
+    private boolean litter1 = false;
+    private boolean litter2 = false;
+    private boolean litter3 = false;
+    private boolean litter4 = false;
 
     public void setTotesStacked1(int stacked){
         totesStacked1 = stacked;
@@ -40,94 +38,29 @@ public class ScoutingTele {
     public void setTotesStacked4(int stacked){
         totesStacked4 = stacked;
     }
-
     public int getTotesStacked4(){return totesStacked4;}
 
-    public int getBallsAcquiredFromFloor() {
-        return ballsAcquiredFromFloor;
-    }
+    public void setRCStacked1(boolean stacked){ rcStacked1 = stacked;}
+    public boolean getRCStacked1(){ return rcStacked1;}
 
-    public void setBallsAcquiredFromFloor(int ballsAcquiredFromFloor) {
-        this.ballsAcquiredFromFloor = ballsAcquiredFromFloor;
-    }
+    public void setRCStacked2(boolean stacked){ rcStacked2 = stacked;}
+    public boolean getRCStacked2(){ return rcStacked2;}
 
-    public int getCompletedAssistsFromFloor() {
-        return completedAssistsFromFloor;
-    }
+    public void setRCStacked3(boolean stacked){ rcStacked3 = stacked;}
+    public boolean getRCStacked3(){ return rcStacked3;}
 
-    public void setCompletedAssistsFromFloor(int completedAssistsFromFloor) {
-        this.completedAssistsFromFloor = completedAssistsFromFloor;
-    }
+    public void setRCStacked4(boolean stacked){ rcStacked4 = stacked;}
+    public boolean getRCStacked4(){ return rcStacked4;}
 
-    public int getBallsAcquiredFromHuman() {
-        return ballsAcquiredFromHuman;
-    }
+    public void setLitter1(boolean litterOn){ litter1 = litterOn;}
+    public boolean getLitter1(){ return litter1;}
 
-    public void setBallsAcquiredFromHuman(int ballsAcquiredFromHuman) {
-        this.ballsAcquiredFromHuman = ballsAcquiredFromHuman;
-    }
+    public void setLitter2(boolean litterOn){ litter2 = litterOn;}
+    public boolean getLitter2(){ return litter2;}
 
-    public int getCompletedAssistsFromHuman() {
-        return completedAssistsFromHuman;
-    }
+    public void setLitter3(boolean litterOn){ litter3 = litterOn;}
+    public boolean getLitter3(){ return litter3;}
 
-    public void setCompletedAssistsFromHuman(int completedAssistsFromHuman) {
-        this.completedAssistsFromHuman = completedAssistsFromHuman;
-    }
-
-    public int getShotHigh() {
-        return shotHigh;
-    }
-
-    public void setShotHigh(int shotHigh) {
-        this.shotHigh = shotHigh;
-    }
-
-    public int getScoredHigh() {
-        return scoredHigh;
-    }
-
-    public void setScoredHigh(int scoredHigh) {
-        this.scoredHigh = scoredHigh;
-    }
-
-    public int getShotLow() {
-        return shotLow;
-    }
-
-    public void setShotLow(int shotLow) {
-        this.shotLow = shotLow;
-    }
-
-    public int getScoredLow() {
-        return scoredLow;
-    }
-
-    public void setScoredLow(int scoredLow) {
-        this.scoredLow = scoredLow;
-    }
-
-    public int getBallsCaughtOverTruss() {
-        return ballsCaughtOverTruss;
-    }
-
-    public void setBallsCaughtOverTruss(int ballsCaughtOverTruss) {
-        this.ballsCaughtOverTruss = ballsCaughtOverTruss;
-    }
-
-    public int getBallsThrownOverTruss() {
-        return ballsThrownOverTruss;
-    }
-
-    public void setBallsThrownOverTruss(int ballsThrownOverTruss) {
-        this.ballsThrownOverTruss = ballsThrownOverTruss;
-    }
-
-    public String getStayedInZone() {
-        return stayedInZone;
-    }
-
-    public void setStayedInZone(String stayedInZone) {
-        this.stayedInZone = stayedInZone;
-    }
+    public void setLitter4(boolean litterOn){ litter4 = litterOn;}
+    public boolean getLitter4(){ return litter4;}
 }

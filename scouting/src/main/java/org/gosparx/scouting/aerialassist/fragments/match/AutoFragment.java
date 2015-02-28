@@ -72,7 +72,7 @@ public class AutoFragment extends Fragment implements View.OnClickListener {
             switchInAutoZone.setChecked(sa.getRobotInAutoZone());
             switchCreatedStack.setChecked(sa.getRobotCreateStack());
             npTotesMovedToAutoZone.setValue(sa.getTotesMovedToAutoZone());
-            npRCMovedToAutoZone.setValue(sa.getrCMovedToAutoZone());
+            npRCMovedToAutoZone.setValue(sa.getRcMovedToAutoZone());
             npRCTakenFromStep.setValue(sa.getRCTakenFromStep());
             endingLocationX = sa.getEndingLocationX();
             endingLocationY = sa.getEndingLocationY();
@@ -137,7 +137,7 @@ public class AutoFragment extends Fragment implements View.OnClickListener {
             sa.setRobotInAutoZone(switchInAutoZone.isChecked());
             sa.setRobotCreateStack(switchCreatedStack.isChecked());
             sa.setTotesMovedToAutoZone(npTotesMovedToAutoZone.getValue());
-            sa.setrCMovedToAutoZone(npRCMovedToAutoZone.getValue());
+            sa.setRcMovedToAutoZone(npRCMovedToAutoZone.getValue());
             sa.setRCTakenFromStep(npRCTakenFromStep.getValue());
             sa.setEndingLocationX(endingLocationX);
             sa.setEndingLocationY(endingLocationY);

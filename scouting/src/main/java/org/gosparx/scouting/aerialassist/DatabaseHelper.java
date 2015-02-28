@@ -34,7 +34,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     // Database Name
-    private static final String DATABASE_NAME = "arialAssist";
+    private static final String DATABASE_NAME = "RecycleRush";
 
     // Table Names
     private static final String TABLE_EVENTS = "events";
@@ -108,10 +108,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_SCOUTING_TELE_TOTES_STACKED_2 = "tele_totes_stacked_2";
     private static final String TABLE_SCOUTING_TELE_TOTES_STACKED_3 = "tele_totes_stacked_3";
     private static final String TABLE_SCOUTING_TELE_TOTES_STACKED_4 = "tele_totes_stacked_4";
+    private static final String TABLE_SCOUTING_TELE_RC_STACKED_1 = "tele_rc_stacked_1";
+    private static final String TABLE_SCOUTING_TELE_RC_STACKED_2 = "tele_rc_stacked_2";
+    private static final String TABLE_SCOUTING_TELE_RC_STACKED_3 = "tele_rc_stacked_3";
+    private static final String TABLE_SCOUTING_TELE_RC_STACKED_4 = "tele_rc_stacked_4";
+    private static final String TABLE_SCOUTING_TELE_LITTER_1 = "tele_litter_1";
+    private static final String TABLE_SCOUTING_TELE_LITTER_2 = "tele_litter_2";
+    private static final String TABLE_SCOUTING_TELE_LITTER_3 = "tele_litter_3";
+    private static final String TABLE_SCOUTING_TELE_LITTER_4 = "tele_litter_4";
     private static final String TABLE_SCOUTING_GENERAL_NUM_FOULS = "gen_fouls";
     private static final String TABLE_SCOUTING_GENERAL_FAILED_RC_ON_STACK = "gen_failed_rc_on_stack";
     private static final String TABLE_SCOUTING_GENERAL_RC_TAKEN_FROM_STEP = "gen_rc_taken_from_step";
     private static final String TABLE_SCOUTING_GENERAL_DEAD = "gen_dead";
+    private static final String TABLE_SCOUTING_GENERAL_ROBOT_TIPPED_OVER = "gen_robot_tipped";
     private static final String TABLE_SCOUTING_GENERAL_STACKS_TIPPED_OVER = "gen_tipped_over";
     private static final String TABLE_SCOUTING_GENERAL_TOTES_FROM_HP = "gen_totes_from_hp";
     private static final String TABLE_SCOUTING_GENERAL_TOTES_ATTEMPTED_FROM_HP = "gen_totes_attempted_from_hp";
@@ -174,9 +183,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + TABLE_SCOUTING_NAME + " TEXT, "
             + TABLE_SCOUTING_AUTO_STARTING_LOCATION_X + " INTEGER, "
             + TABLE_SCOUTING_AUTO_STARTING_LOCATION_Y + " INTEGER, "
-            + TABLE_SCOUTING_AUTO_ROBOT_IN_ZONE + " TEXT, "
-            + TABLE_SCOUTING_AUTO_STACKED_TOTE_SET + " TEXT, "
-            + TABLE_SCOUTING_AUTO_YELLOW_TOTES_TO_AUTO_ZONE + " INTEGER"
+            + TABLE_SCOUTING_AUTO_ROBOT_IN_ZONE + " INTEGER, "
+            + TABLE_SCOUTING_AUTO_STACKED_TOTE_SET + " INTEGER, "
+            + TABLE_SCOUTING_AUTO_YELLOW_TOTES_TO_AUTO_ZONE + " INTEGER, "
             + TABLE_SCOUTING_AUTO_RC_MOVED_TO_AUTO_ZONE + " INTEGER, "
             + TABLE_SCOUTING_AUTO_RC_TAKEN_FROM_STEP + " INTEGER, "
             + TABLE_SCOUTING_AUTO_ENDING_LOCATION_X + " INTEGER, "
@@ -185,9 +194,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + TABLE_SCOUTING_TELE_TOTES_STACKED_2 + " INTEGER, "
             + TABLE_SCOUTING_TELE_TOTES_STACKED_3 + " INTEGER, "
             + TABLE_SCOUTING_TELE_TOTES_STACKED_4 + " INTEGER, "
+            + TABLE_SCOUTING_TELE_RC_STACKED_1 + " INTEGER, "
+            + TABLE_SCOUTING_TELE_RC_STACKED_2 + " INTEGER, "
+            + TABLE_SCOUTING_TELE_RC_STACKED_3 + " INTEGER, "
+            + TABLE_SCOUTING_TELE_RC_STACKED_4 + " INTEGER, "
+            + TABLE_SCOUTING_TELE_LITTER_1 + " INTEGER, "
+            + TABLE_SCOUTING_TELE_LITTER_2 + " INTEGER, "
+            + TABLE_SCOUTING_TELE_LITTER_3 + " INTEGER, "
+            + TABLE_SCOUTING_TELE_LITTER_4 + " INTEGER, "
             + TABLE_SCOUTING_GENERAL_NUM_FOULS + " INTEGER, "
             + TABLE_SCOUTING_GENERAL_STACKS_TIPPED_OVER + " INTEGER, "
-            + TABLE_SCOUTING_GENERAL_
+            + TABLE_SCOUTING_GENERAL_FAILED_RC_ON_STACK + " INTEGER, "
+            + TABLE_SCOUTING_GENERAL_RC_TAKEN_FROM_STEP + " INTEGER, "
+            + TABLE_SCOUTING_GENERAL_DEAD + " INTEGER, "
+            + TABLE_SCOUTING_GENERAL_ROBOT_TIPPED_OVER + " INTEGER, "
+            + TABLE_SCOUTING_GENERAL_TOTES_FROM_HP + " INTEGER, "
+            + TABLE_SCOUTING_GENERAL_TOTES_ATTEMPTED_FROM_HP + " INTEGER, "
+            + TABLE_SCOUTING_GENERAL_TOTES_FROM_LANDFILL + " INTEGER, "
             + TABLE_SCOUTING_GENERAL_COMMENTS_PENALTIES + " TEXT, "
             + TABLE_SCOUTING_GENERAL_COMMENTS + " TEXT)";
 
@@ -537,36 +560,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (scoutingAuto != null) {
             values.put(TABLE_SCOUTING_AUTO_STARTING_LOCATION_X, scoutingAuto.getStartingLocationX());
             values.put(TABLE_SCOUTING_AUTO_STARTING_LOCATION_Y, scoutingAuto.getStartingLocationY());
-            values.put(TABLE_SCOUTING_AUTO_BALLS_ACQUIRED, scoutingAuto.getBallsAcquired());
-            values.put(TABLE_SCOUTING_AUTO_STARTED_WITH_BALL, scoutingAuto.isStartedWithBall());
-            values.put(TABLE_SCOUTING_AUTO_BALLS_SHOT, scoutingAuto.getBallsShot());
-            values.put(TABLE_SCOUTING_AUTO_BALLS_SCORED, scoutingAuto.getBallsScored());
-            values.put(TABLE_SCOUTING_AUTO_BALLS_SCORED_HOT_HIGH, scoutingAuto.getBallsScoredHotHigh());
-            values.put(TABLE_SCOUTING_AUTO_BALLS_SCORED_HOT_LOW, scoutingAuto.getBallsScoredHotLow());
-            values.put(TABLE_SCOUTING_AUTO_BALLS_SCORED_HIGH, scoutingAuto.getBallsScoredHigh());
-            values.put(TABLE_SCOUTING_AUTO_BALLS_SCORED_LOW, scoutingAuto.getBallsScoredLow());
+            values.put(TABLE_SCOUTING_AUTO_ROBOT_IN_ZONE, scoutingAuto.getRobotInAutoZone());
+            values.put(TABLE_SCOUTING_AUTO_STACKED_TOTE_SET, scoutingAuto.getRobotCreateStack());
+            values.put(TABLE_SCOUTING_AUTO_YELLOW_TOTES_TO_AUTO_ZONE, scoutingAuto.getTotesMovedToAutoZone());
+            values.put(TABLE_SCOUTING_AUTO_RC_MOVED_TO_AUTO_ZONE, scoutingAuto.getRcMovedToAutoZone());
+            values.put(TABLE_SCOUTING_AUTO_RC_TAKEN_FROM_STEP, scoutingAuto.getRCTakenFromStep());
             values.put(TABLE_SCOUTING_AUTO_ENDING_LOCATION_X, scoutingAuto.getEndingLocationX());
             values.put(TABLE_SCOUTING_AUTO_ENDING_LOCATION_Y, scoutingAuto.getEndingLocationY());
         }
         if (scoutingTele != null) {
-            values.put(TABLE_SCOUTING_TELE_ACQUIRED_FROM_FLOOR, scoutingTele.getBallsAcquiredFromFloor());
-            values.put(TABLE_SCOUTING_TELE_COMPLETED_ASSISTS_FROM_FLOOR, scoutingTele.getCompletedAssistsFromFloor());
-            values.put(TABLE_SCOUTING_TELE_ACQUIRED_FROM_HUMAN, scoutingTele.getBallsAcquiredFromHuman());
-            values.put(TABLE_SCOUTING_TELE_COMPLETED_ASSISTS_FROM_HUMAN, scoutingTele.getCompletedAssistsFromHuman());
-            values.put(TABLE_SCOUTING_TELE_SHOT_HIGH, scoutingTele.getShotHigh());
-            values.put(TABLE_SCOUTING_TELE_SCORED_HIGH, scoutingTele.getScoredHigh());
-            values.put(TABLE_SCOUTING_TELE_SHOT_LOW, scoutingTele.getShotLow());
-            values.put(TABLE_SCOUTING_TELE_SCORED_LOW, scoutingTele.getScoredLow());
-            values.put(TABLE_SCOUTING_TELE_CAUGHT_TRUSS, scoutingTele.getBallsCaughtOverTruss());
-            values.put(TABLE_SCOUTING_TELE_THROWN_TRUSS, scoutingTele.getBallsThrownOverTruss());
-            values.put(TABLE_SCOUTING_TELE_STAYED_ZONE, scoutingTele.getStayedInZone());
+            values.put(TABLE_SCOUTING_TELE_TOTES_STACKED_1, scoutingTele.getTotesStacked1());
+            values.put(TABLE_SCOUTING_TELE_TOTES_STACKED_2, scoutingTele.getTotesStacked2());
+            values.put(TABLE_SCOUTING_TELE_TOTES_STACKED_3, scoutingTele.getTotesStacked3());
+            values.put(TABLE_SCOUTING_TELE_TOTES_STACKED_4, scoutingTele.getTotesStacked4());
+            values.put(TABLE_SCOUTING_TELE_RC_STACKED_1, scoutingTele.getRCStacked1());
+            values.put(TABLE_SCOUTING_TELE_RC_STACKED_2, scoutingTele.getRCStacked2());
+            values.put(TABLE_SCOUTING_TELE_RC_STACKED_3, scoutingTele.getRCStacked3());
+            values.put(TABLE_SCOUTING_TELE_RC_STACKED_4, scoutingTele.getRCStacked4());
+            values.put(TABLE_SCOUTING_TELE_LITTER_1, scoutingTele.getLitter1());
+            values.put(TABLE_SCOUTING_TELE_LITTER_2, scoutingTele.getLitter2());
+            values.put(TABLE_SCOUTING_TELE_LITTER_3, scoutingTele.getLitter3());
+            values.put(TABLE_SCOUTING_TELE_LITTER_4, scoutingTele.getLitter4());
         }
         if (scoutingGeneral != null) {
-            values.put(TABLE_SCOUTING_GENERAL_PLAYS_DEFENSE, scoutingGeneral.isPlaysDefense());
-            values.put(TABLE_SCOUTING_GENERAL_NUM_PENALITES, scoutingGeneral.getNumberOfPenalties());
+            values.put(TABLE_SCOUTING_GENERAL_NUM_FOULS, scoutingGeneral.getNumberOfFouls());
+            values.put(TABLE_SCOUTING_GENERAL_STACKS_TIPPED_OVER, scoutingGeneral.getNumberOfStacksTipped());
+            values.put(TABLE_SCOUTING_GENERAL_FAILED_RC_ON_STACK, scoutingGeneral.getNumberOfFailedAttemptsOfRC());
+            values.put(TABLE_SCOUTING_GENERAL_RC_TAKEN_FROM_STEP, scoutingGeneral.getNumberOfRCTakenFromStep());
+            values.put(TABLE_SCOUTING_GENERAL_DEAD, scoutingGeneral.getIsDead());
+            values.put(TABLE_SCOUTING_GENERAL_ROBOT_TIPPED_OVER, scoutingGeneral.getIsTipped());
+            values.put(TABLE_SCOUTING_GENERAL_TOTES_FROM_HP, scoutingGeneral.getNumberOfTotesAcquiredFromHP());
+            values.put(TABLE_SCOUTING_GENERAL_TOTES_ATTEMPTED_FROM_HP, scoutingGeneral.getNumberOfTotesAttemptedFromHP());
+            values.put(TABLE_SCOUTING_GENERAL_TOTES_FROM_LANDFILL, scoutingGeneral.getNumberOfTotesFromLandfill());
             values.put(TABLE_SCOUTING_GENERAL_COMMENTS_PENALTIES, scoutingGeneral.getCommentsOnPenalties());
-            values.put(TABLE_SCOUTING_GENERAL_NUM_TECH_FOULS, scoutingGeneral.getNumberOfTechnicalFouls());
-            values.put(TABLE_SCOUTING_GENERAL_COMMENTS_TECH_FOULS, scoutingGeneral.getCommentsOnTechnicalFouls());
             values.put(TABLE_SCOUTING_GENERAL_COMMENTS, scoutingGeneral.getGeneralComments());
         }
         return values;
@@ -651,42 +677,47 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         data.setEventKey(c.getString(c.getColumnIndex(TABLE_SCOUTING_EVENT_KEY)));
         data.setTeamKey(c.getString(c.getColumnIndex(TABLE_SCOUTING_TEAM_KEY)));
         data.setMatchKey(c.getString(c.getColumnIndex(TABLE_SCOUTING_MATCH_KEY)));
+        System.out.println("SENDING TEAM INFO");
 
         ScoutingAuto auto = new ScoutingAuto();
         data.setAuto(auto);
         auto.setStartingLocationX(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_STARTING_LOCATION_X)));
         auto.setStartingLocationY(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_STARTING_LOCATION_Y)));
-        auto.setStartedWithBall(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_STARTED_WITH_BALL)) == 1);
-        auto.setBallsAcquired(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_ACQUIRED)));
-        auto.setBallsShot(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_SHOT)));
-        auto.setBallsScored(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_SCORED)));
-        auto.setBallsScoredHotHigh(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_SCORED_HOT_HIGH)));
-        auto.setBallsScoredHotLow(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_SCORED_HOT_LOW)));
-        auto.setBallsScoredHigh(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_SCORED_HIGH)));
-        auto.setBallsScoredLow(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_BALLS_SCORED_LOW)));
+        auto.setRobotInAutoZone(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_ROBOT_IN_ZONE)) == 1);
+        auto.setRobotCreateStack(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_STACKED_TOTE_SET)) == 1);
+        auto.setTotesMovedToAutoZone(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_YELLOW_TOTES_TO_AUTO_ZONE)));
+        auto.setRcMovedToAutoZone(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_RC_MOVED_TO_AUTO_ZONE)));
+        auto.setRCTakenFromStep(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_RC_TAKEN_FROM_STEP)));
         auto.setEndingLocationX(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_ENDING_LOCATION_X)));
         auto.setEndingLocationY(c.getInt(c.getColumnIndex(TABLE_SCOUTING_AUTO_ENDING_LOCATION_Y)));
 
         ScoutingTele tele = new ScoutingTele();
         data.setTele(tele);
-        tele.setBallsAcquiredFromFloor(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_ACQUIRED_FROM_FLOOR)));
-        tele.setCompletedAssistsFromFloor(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_COMPLETED_ASSISTS_FROM_FLOOR)));
-        tele.setBallsAcquiredFromHuman(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_ACQUIRED_FROM_HUMAN)));
-        tele.setCompletedAssistsFromHuman(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_COMPLETED_ASSISTS_FROM_HUMAN)));
-        tele.setShotHigh(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_SHOT_HIGH)));
-        tele.setScoredHigh(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_SCORED_HIGH)));
-        tele.setShotLow(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_SHOT_LOW)));
-        tele.setScoredLow(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_SCORED_LOW)));
-        tele.setBallsCaughtOverTruss(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_CAUGHT_TRUSS)));
-        tele.setBallsThrownOverTruss(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_THROWN_TRUSS)));
+        tele.setTotesStacked1(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_TOTES_STACKED_1)));
+        tele.setTotesStacked2(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_TOTES_STACKED_2)));
+        tele.setTotesStacked3(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_TOTES_STACKED_3)));
+        tele.setTotesStacked4(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_TOTES_STACKED_4)));
+        tele.setRCStacked1(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_RC_STACKED_1))==1);
+        tele.setRCStacked2(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_RC_STACKED_2))==1);
+        tele.setRCStacked3(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_RC_STACKED_3))==1);
+        tele.setRCStacked4(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_RC_STACKED_4))==1);
+        tele.setLitter1(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_LITTER_1))==1);
+        tele.setLitter2(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_LITTER_2))==1);
+        tele.setLitter3(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_LITTER_3))==1);
+        tele.setLitter4(c.getInt(c.getColumnIndex(TABLE_SCOUTING_TELE_LITTER_4))==1);
 
         ScoutingGeneral general = new ScoutingGeneral();
         data.setGeneral(general);
-        general.setPlaysDefense(c.getInt(c.getColumnIndex(TABLE_SCOUTING_GENERAL_PLAYS_DEFENSE)) == 1);
-        general.setNumberOfPenalties(c.getInt(c.getColumnIndex(TABLE_SCOUTING_GENERAL_NUM_PENALITES)));
+        general.setNumberOfFouls(c.getInt(c.getColumnIndex(TABLE_SCOUTING_GENERAL_NUM_FOULS)));
+        general.setNumberOfStacksTipped(c.getInt(c.getColumnIndex(TABLE_SCOUTING_GENERAL_STACKS_TIPPED_OVER)));
+        general.setNumberOfFailedAttemptsOfRC(c.getInt(c.getColumnIndex(TABLE_SCOUTING_GENERAL_FAILED_RC_ON_STACK)));
+        general.setNumberOfRCTakenFromStep(c.getInt(c.getColumnIndex(TABLE_SCOUTING_GENERAL_RC_TAKEN_FROM_STEP)));
+        general.setIsDead(c.getInt(c.getColumnIndex(TABLE_SCOUTING_GENERAL_DEAD)) == 1);
+        general.setIsTipped(c.getInt(c.getColumnIndex(TABLE_SCOUTING_GENERAL_ROBOT_TIPPED_OVER)) == 1);
+        general.setNumberOfTotesAcquiredFromHP(c.getInt(c.getColumnIndex(TABLE_SCOUTING_GENERAL_TOTES_FROM_HP)));
+        general.setNumberOfTotesAttemptedFromHP(c.getInt(c.getColumnIndex(TABLE_SCOUTING_GENERAL_TOTES_ATTEMPTED_FROM_HP)));
+        general.setNumberOfTotesFromLandfill(c.getInt(c.getColumnIndex(TABLE_SCOUTING_GENERAL_TOTES_FROM_LANDFILL)));
         general.setCommentsOnPenalties(c.getString(c.getColumnIndex(TABLE_SCOUTING_GENERAL_COMMENTS_PENALTIES)));
-        general.setNumberOfTechnicalFouls(c.getInt(c.getColumnIndex(TABLE_SCOUTING_GENERAL_NUM_TECH_FOULS)));
-        general.setCommentsOnTechnicalFouls(c.getString(c.getColumnIndex(TABLE_SCOUTING_GENERAL_COMMENTS_TECH_FOULS)));
         general.setGeneralComments(c.getString(c.getColumnIndex(TABLE_SCOUTING_GENERAL_COMMENTS)));
 
         return data;

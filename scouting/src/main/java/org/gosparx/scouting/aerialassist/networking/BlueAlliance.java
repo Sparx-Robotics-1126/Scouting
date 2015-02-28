@@ -106,6 +106,7 @@ public class BlueAlliance {
                     public void onCompleted(Exception e, Event event) {
                         if(e != null){
                             Log.e(TAG, "Issue getting event("+eventCode+")", e);
+                            System.out.println("THE EVENTS WERE NOT LOADED");
 
                             if(callback != null)
                                 callback.handleFinishDownload(false);

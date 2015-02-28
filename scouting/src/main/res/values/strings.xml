@@ -28,17 +28,15 @@
     <string name="number_of_totes_attempted_from_HP">Number of totes attempted to get from HP: </string>
     <string name="number_of_totes_acquired_from_landfill">Number of totes acquired from landfill: </string>
 
-    <string name="number_of_totes_stacked"># of totes stacked: </string>
-    <string name="number_of_RC_Stacked"># of RC stacked: </string>
-    <string name="litter">Litter: </string>
-    <string name= "rc_on_partner_stack">RC on partner_stack</string>
-    <string name="litter_on_partners_stack">Litter on partners stack:</string>
+    <string name="tele_number_of_totes_stacked"># of totes stacked: </string>
+    <string name="tele_rc_stacked">RC stacked: </string>
+    <string name="tele_litter">Litter: </string>
+    <string name= "tele_rc_on_partner_stack">RC on partner_stack</string>
+    <string name="tele_litter_on_partners_stack">Litter on partners stack:</string>
     <string name="first">1st</string>
     <string name="second">2st</string>
     <string name="third">3st</string>
     <string name="fourth">4st</string>
-    <string name="fifth">5st</string>
-    <string name="sixth">6st</string>
 
     <string name="select_robot_location">Select the robots location: </string>
     <string name="where_did_the_robot_start">Where did the robot start? </string>
